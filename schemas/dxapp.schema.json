@@ -71,7 +71,10 @@
       "markdownDescription": "**Input Specification**  \nDefines the input parameters for the app.",
       "items": {
         "type": "object",
-        "required": ["name", "class"],
+        "required": [
+          "name",
+          "class"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -80,7 +83,23 @@
           },
           "class": {
             "type": "string",
-            "enum": ["int", "float", "string", "boolean", "hash", "record", "file", "applet", "array:int", "array:float", "array:string", "array:boolean", "array:record", "array:file", "array:applet"],
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
             "description": "Data type of the input parameter.",
             "markdownDescription": "**Input Class**  \nData type of the input parameter.",
             "markdownEnumDescriptions": [
@@ -117,7 +136,9 @@
           },
           "patterns": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Patterns to validate the input parameter.",
             "markdownDescription": "**Patterns**  \nPatterns to validate the input parameter."
           },
@@ -137,7 +158,10 @@
       "markdownDescription": "**Output Specification**  \nDefines the output parameters for the app.",
       "items": {
         "type": "object",
-        "required": ["name", "class"],
+        "required": [
+          "name",
+          "class"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -146,7 +170,23 @@
           },
           "class": {
             "type": "string",
-            "enum": ["int", "float", "string", "boolean", "hash", "record", "file", "applet", "array:int", "array:float", "array:string", "array:boolean", "array:record", "array:file", "array:applet"],
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
             "description": "Data type of the output parameter.",
             "markdownDescription": "**Output Class**  \nData type of the output parameter.",
             "markdownEnumDescriptions": [
@@ -174,7 +214,9 @@
           },
           "patterns": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Patterns to validate the output parameter.",
             "markdownDescription": "**Patterns**  \nPatterns to validate the output parameter."
           },
@@ -192,11 +234,73 @@
       "type": "object",
       "description": "Defines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
       "markdownDescription": "**Run Specification**  \nDefines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
-      "required": ["interpreter", "file", "distribution", "release"],
+      "required": [
+        "interpreter",
+        "file",
+        "distribution",
+        "release"
+      ],
       "properties": {
+        "assetDepends": {
+          "type": "array",
+          "description": "List of asset dependencies required by the app. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
+          "markdownDescription": "**assetDepends**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
+          "items": {
+            "type": "object",
+            "oneOf": [
+              {
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID of the asset."
+                  },
+                  "folder": {
+                    "type": "string",
+                    "description": "Optional folder path for the asset."
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "required": [
+                  "name",
+                  "project",
+                  "version"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the asset."
+                  },
+                  "project": {
+                    "type": "string",
+                    "description": "Project containing the asset."
+                  },
+                  "version": {
+                    "type": "string",
+                    "description": "Version of the asset."
+                  },
+                  "folder": {
+                    "type": "string",
+                    "description": "Optional folder path for the asset."
+                  }
+                },
+                "additionalProperties": false
+              }
+            ],
+            "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+          },
+          "additionalProperties": false
+        },
         "interpreter": {
           "type": "string",
-          "enum": ["bash", "python3"],
+          "enum": [
+            "bash",
+            "python3"
+          ],
           "description": "The language interpreter to use for running the app.",
           "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app.",
           "markdownEnumDescriptions": [
@@ -211,7 +315,9 @@
         },
         "distribution": {
           "type": "string",
-          "enum": ["Ubuntu"],
+          "enum": [
+            "Ubuntu"
+          ],
           "description": "OS Distribution.",
           "markdownDescription": "**Distribution**  \nOperating system distribution for the app. Only `Ubuntu` is supported.",
           "markdownEnumDescriptions": [
@@ -220,7 +326,13 @@
         },
         "release": {
           "type": "string",
-          "enum": ["24.04", "20.04", "16.04", "14.04", "12.04"],
+          "enum": [
+            "24.04",
+            "20.04",
+            "16.04",
+            "14.04",
+            "12.04"
+          ],
           "description": "Ubuntu release version.",
           "markdownDescription": "**Release**  \nUbuntu release version for the app.",
           "markdownEnumDescriptions": [
@@ -268,14 +380,18 @@
       "type": "array",
       "description": "List of developer usernames for the app.",
       "markdownDescription": "**Developers**  \nList of developer usernames for the app.",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "additionalProperties": false
     },
     "authorizedUsers": {
       "type": "array",
       "description": "List of authorized user IDs for the app.",
       "markdownDescription": "**Authorized Users**  \nList of authorized user IDs for the app.",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "additionalProperties": false
     },
     "regionalOptions": {
@@ -289,17 +405,68 @@
             "type": "object",
             "description": "System requirements for the region.",
             "markdownDescription": "**System Requirements**  \nSystem requirements for the region.",
-            "additionalProperties": {
-              "type": "object",
-              "properties": {
-                "instanceType": {
-                  "type": "string",
-                  "description": "Instance type for the region.",
-                  "markdownDescription": "**Instance Type**  \nInstance type for the region."
-                }
+            "properties": {
+              "instanceType": {
+                "type": "string",
+                "description": "Instance type for the region.",
+                "markdownDescription": "**Instance Type**  \nInstance type for the region."
               },
-              "additionalProperties": false
-            }
+              "assetDepends": {
+                "type": "array",
+                "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
+                "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
+                "items": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "ID of the asset."
+                        },
+                        "folder": {
+                          "type": "string",
+                          "description": "Optional folder path for the asset."
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "required": [
+                        "name",
+                        "project",
+                        "version"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the asset."
+                        },
+                        "project": {
+                          "type": "string",
+                          "description": "Project containing the asset."
+                        },
+                        "version": {
+                          "type": "string",
+                          "description": "Version of the asset."
+                        },
+                        "folder": {
+                          "type": "string",
+                          "description": "Optional folder path for the asset."
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ],
+                  "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false
@@ -313,7 +480,9 @@
       "type": "array",
       "description": "Categories for the app.",
       "markdownDescription": "**Categories**  \nCategories for the app.",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "additionalProperties": false
     },
     "access": {
@@ -348,7 +517,10 @@
         },
         {
           "type": "array",
-          "items": {"type": "string", "description": "Resource file or directory."}
+          "items": {
+            "type": "string",
+            "description": "Resource file or directory."
+          }
         }
       ],
       "description": "Resource files or directories required by the app.",
