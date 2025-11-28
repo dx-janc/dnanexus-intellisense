@@ -237,9 +237,24 @@
         },
         "timeoutPolicy": {
           "type": "object",
-          "description": "Timeout policy for app execution.",
-          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution.",
-          "additionalProperties": false
+          "description": "Timeout policy for app execution. Keys can be entry point names or '*' for all. Each value is an object with keys like 'minutes' or 'hours'.",
+          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution. Use '*' for all entry points, or specify entry point names. Each value is an object with keys like 'minutes' or 'hours'.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "minutes": {
+                "type": "number",
+                "description": "Timeout in minutes.",
+                "markdownDescription": "**Minutes**  \nTimeout in minutes."
+              },
+              "hours": {
+                "type": "number",
+                "description": "Timeout in hours.",
+                "markdownDescription": "**Hours**  \nTimeout in hours."
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "version": {
           "type": "string",
