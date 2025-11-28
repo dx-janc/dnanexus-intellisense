@@ -16,113 +16,329 @@
     "regionalOptions"
   ],
   "properties": {
-    "name": { "type": "string" },
-    "title": { "type": "string" },
-    "summary": { "type": "string" },
-    "description": { "type": "string" },
-    "dxapi": { "type": "string" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "openSource": { "type": "boolean" },
-    "httpsApp": { "type": "boolean" },
+    "name": {
+      "type": "string",
+      "description": "Unique identifier for the app (e.g. 'my-app'). No spaces allowed.",
+      "markdownDescription": "**App Name**  \nUnique identifier for the app. Use lowercase letters, numbers, and underscores only. Example: `my_app`.",
+      "additionalProperties": false
+    },
+    "title": {
+      "type": "string",
+      "description": "Human readable name shown in the UI.",
+      "markdownDescription": "**Title**  \nHuman readable name for the app, shown in the DNAnexus UI.",
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short summary of the app's functionality.",
+      "markdownDescription": "**Summary**  \nShort summary describing the app's main purpose.",
+      "additionalProperties": false
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the app, its features, and usage notes.",
+      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes.",
+      "additionalProperties": false
+    },
+    "dxapi": {
+      "type": "string",
+      "description": "DNAnexus API version required by the app.",
+      "markdownDescription": "**dxAPI**  \nDNAnexus API version required by the app. Example: `1.0.0`.",
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic versioning (e.g. 0.0.1).",
+      "markdownDescription": "**Version**  \nSemantic versioning for the app, e.g., `1.0.0`. Update this field whenever you make changes to the app.",
+      "additionalProperties": false
+    },
+    "openSource": {
+      "type": "boolean",
+      "description": "Indicates if the app is open source.",
+      "markdownDescription": "**Open Source**  \nSet to `true` if the app is open source.",
+      "additionalProperties": false
+    },
+    "httpsApp": {
+      "type": "boolean",
+      "description": "Indicates if the app is an HTTPS web app.",
+      "markdownDescription": "**HTTPS App**  \nSet to `true` if the app is an HTTPS web app.",
+      "additionalProperties": false
+    },
     "inputSpec": {
       "type": "array",
+      "description": "Defines the input parameters for the app.",
+      "markdownDescription": "**Input Specification**  \nDefines the input parameters for the app.",
       "items": {
         "type": "object",
         "required": ["name", "class"],
         "properties": {
-          "name": { "type": "string" },
+          "name": {
+            "type": "string",
+            "description": "Name of the input parameter.",
+            "markdownDescription": "**Input Name**  \nName of the input parameter."
+          },
           "class": {
             "type": "string",
-            "enum": [
-              "int", "float", "string", "boolean", "hash", "record", "file", "applet",
-              "array:int", "array:float", "array:string", "array:boolean",
-              "array:record", "array:file", "array:applet"
+            "enum": ["int", "float", "string", "boolean", "hash", "record", "file", "applet", "array:int", "array:float", "array:string", "array:boolean", "array:record", "array:file", "array:applet"],
+            "description": "Data type of the input parameter.",
+            "markdownDescription": "**Input Class**  \nData type of the input parameter.",
+            "markdownEnumDescriptions": [
+              "`int`: Integer value.",
+              "`float`: Floating point value.",
+              "`string`: String value.",
+              "`boolean`: Boolean value (true/false).",
+              "`hash`: Key-value object.",
+              "`record`: DNAnexus record object.",
+              "`file`: DNAnexus file object.",
+              "`applet`: DNAnexus applet object.",
+              "`array:int`: Array of integers.",
+              "`array:float`: Array of floats.",
+              "`array:string`: Array of strings.",
+              "`array:boolean`: Array of booleans.",
+              "`array:record`: Array of record objects.",
+              "`array:file`: Array of file objects.",
+              "`array:applet`: Array of applet objects."
             ]
           },
-          "optional": { "type": "boolean" },
-          "label": { "type": "string" },
-          "default": {},
-          "patterns": { "type": "array", "items": { "type": "string" } },
-          "help": { "type": "string" }
-        }
-      }
+          "optional": {
+            "type": "boolean",
+            "description": "Whether the input parameter is optional.",
+            "markdownDescription": "**Optional**  \nSet to `true` if the input parameter is optional."
+          },
+          "label": {
+            "type": "string",
+            "description": "Label for the input parameter.",
+            "markdownDescription": "**Label**  \nLabel for the input parameter."
+          },
+          "default": {
+            "description": "Default value for the input parameter.",
+            "markdownDescription": "**Default**  \nDefault value for the input parameter."
+          },
+          "patterns": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Patterns to validate the input parameter.",
+            "markdownDescription": "**Patterns**  \nPatterns to validate the input parameter."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the input parameter.",
+            "markdownDescription": "**Help**  \nHelp text for the input parameter."
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false
     },
     "outputSpec": {
       "type": "array",
+      "description": "Defines the output parameters for the app.",
+      "markdownDescription": "**Output Specification**  \nDefines the output parameters for the app.",
       "items": {
         "type": "object",
         "required": ["name", "class"],
         "properties": {
-          "name": { "type": "string" },
+          "name": {
+            "type": "string",
+            "description": "Name of the output parameter.",
+            "markdownDescription": "**Output Name**  \nName of the output parameter."
+          },
           "class": {
             "type": "string",
-            "enum": [
-              "int", "float", "string", "boolean", "hash", "record", "file", "applet",
-              "array:int", "array:float", "array:string", "array:boolean",
-              "array:record", "array:file", "array:applet"
+            "enum": ["int", "float", "string", "boolean", "hash", "record", "file", "applet", "array:int", "array:float", "array:string", "array:boolean", "array:record", "array:file", "array:applet"],
+            "description": "Data type of the output parameter.",
+            "markdownDescription": "**Output Class**  \nData type of the output parameter.",
+            "markdownEnumDescriptions": [
+              "`int`: Integer value.",
+              "`float`: Floating point value.",
+              "`string`: String value.",
+              "`boolean`: Boolean value (true/false).",
+              "`hash`: Key-value object.",
+              "`record`: DNAnexus record object.",
+              "`file`: DNAnexus file object.",
+              "`applet`: DNAnexus applet object.",
+              "`array:int`: Array of integers.",
+              "`array:float`: Array of floats.",
+              "`array:string`: Array of strings.",
+              "`array:boolean`: Array of booleans.",
+              "`array:record`: Array of record objects.",
+              "`array:file`: Array of file objects.",
+              "`array:applet`: Array of applet objects."
             ]
           },
-          "label": { "type": "string" },
-          "patterns": { "type": "array", "items": { "type": "string" } },
-          "help": { "type": "string" }
-        }
-      }
+          "label": {
+            "type": "string",
+            "description": "Label for the output parameter.",
+            "markdownDescription": "**Label**  \nLabel for the output parameter."
+          },
+          "patterns": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Patterns to validate the output parameter.",
+            "markdownDescription": "**Patterns**  \nPatterns to validate the output parameter."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the output parameter.",
+            "markdownDescription": "**Help**  \nHelp text for the output parameter."
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false
     },
     "runSpec": {
       "type": "object",
+      "description": "Defines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
+      "markdownDescription": "**Run Specification**  \nDefines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
       "required": ["interpreter", "file", "distribution", "release"],
       "properties": {
-        "interpreter": { "type": "string" },
-        "file": { "type": "string" },
-        "distribution": { "type": "string", "enum": ["Ubuntu"] },
+        "interpreter": {
+          "type": "string",
+          "enum": ["bash", "python3"],
+          "description": "The language interpreter to use for running the app.",
+          "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app.",
+          "markdownEnumDescriptions": [
+            "`bash`: Bash shell interpreter.",
+            "`python3`: Python 3 interpreter."
+          ]
+        },
+        "file": {
+          "type": "string",
+          "description": "Entry point script filename.",
+          "markdownDescription": "**File**  \nEntry point script filename for the app."
+        },
+        "distribution": {
+          "type": "string",
+          "enum": ["Ubuntu"],
+          "description": "OS Distribution.",
+          "markdownDescription": "**Distribution**  \nOperating system distribution for the app. Only `Ubuntu` is supported.",
+          "markdownEnumDescriptions": [
+            "`Ubuntu`: The only supported OS distribution for DNAnexus apps."
+          ]
+        },
         "release": {
           "type": "string",
-          "enum": ["24.04", "20.04", "16.04", "14.04", "12.04"]
+          "enum": ["24.04", "20.04", "16.04", "14.04", "12.04"],
+          "description": "Ubuntu release version.",
+          "markdownDescription": "**Release**  \nUbuntu release version for the app.",
+          "markdownEnumDescriptions": [
+            "`24.04`: Ubuntu 24.04 LTS (latest supported release).",
+            "`20.04`: Ubuntu 20.04 LTS.",
+            "`16.04`: Ubuntu 16.04 LTS.",
+            "`14.04`: Ubuntu 14.04 LTS.",
+            "`12.04`: Ubuntu 12.04 LTS."
+          ]
         },
-        "execDepends": { "$ref": "./execDepends.schema.json" },
-        "timeoutPolicy": { "type": "object" },
-        "version": { "type": "string" }
-      }
+        "execDepends": {
+          "$ref": "./execDepends.schema.json",
+          "markdownDescription": "**execDepends**  \nList of software dependencies required by the app. See execDepends.schema.json for details."
+        },
+        "timeoutPolicy": {
+          "type": "object",
+          "description": "Timeout policy for app execution.",
+          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution.",
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the run specification.",
+          "markdownDescription": "**RunSpec Version**  \nVersion of the run specification."
+        }
+      },
+      "additionalProperties": false
     },
     "developers": {
       "type": "array",
-      "items": { "type": "string" }
+      "description": "List of developer usernames for the app.",
+      "markdownDescription": "**Developers**  \nList of developer usernames for the app.",
+      "items": {"type": "string"},
+      "additionalProperties": false
     },
     "authorizedUsers": {
       "type": "array",
-      "items": { "type": "string" }
+      "description": "List of authorized user IDs for the app.",
+      "markdownDescription": "**Authorized Users**  \nList of authorized user IDs for the app.",
+      "items": {"type": "string"},
+      "additionalProperties": false
     },
     "regionalOptions": {
       "type": "object",
+      "description": "Region-specific options for app execution.",
+      "markdownDescription": "**Regional Options**  \nRegion-specific options for app execution.",
       "additionalProperties": {
         "type": "object",
         "properties": {
           "systemRequirements": {
             "type": "object",
+            "description": "System requirements for the region.",
+            "markdownDescription": "**System Requirements**  \nSystem requirements for the region.",
             "additionalProperties": {
               "type": "object",
               "properties": {
-                "instanceType": { "type": "string" }
-              }
+                "instanceType": {
+                  "type": "string",
+                  "description": "Instance type for the region.",
+                  "markdownDescription": "**Instance Type**  \nInstance type for the region."
+                }
+              },
+              "additionalProperties": false
             }
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
-    "details": {},
+    "details": {
+      "description": "Additional details for the app.",
+      "markdownDescription": "**Details**  \nAdditional details for the app."
+    },
     "categories": {
       "type": "array",
-      "items": { "type": "string" }
+      "description": "Categories for the app.",
+      "markdownDescription": "**Categories**  \nCategories for the app.",
+      "items": {"type": "string"},
+      "additionalProperties": false
     },
-    "access": { "type": "object" },
-    "ignoreReuse": { "type": "boolean" },
-    "treeTurnaroundTimeThreshold": { "type": "number" },
-    "billing": { "type": "string" },
+    "access": {
+      "type": "object",
+      "description": "Access control settings for the app.",
+      "markdownDescription": "**Access**  \nAccess control settings for the app.",
+      "additionalProperties": false
+    },
+    "ignoreReuse": {
+      "type": "boolean",
+      "description": "If true, disables reuse of previous results.",
+      "markdownDescription": "**Ignore Reuse**  \nIf true, disables reuse of previous results.",
+      "additionalProperties": false
+    },
+    "treeTurnaroundTimeThreshold": {
+      "type": "number",
+      "description": "Threshold for tree turnaround time in seconds.",
+      "markdownDescription": "**Tree Turnaround Time Threshold**  \nThreshold for tree turnaround time in seconds.",
+      "additionalProperties": false
+    },
+    "billing": {
+      "type": "string",
+      "description": "Billing information for the app.",
+      "markdownDescription": "**Billing**  \nBilling information for the app.",
+      "additionalProperties": false
+    },
     "resources": {
       "oneOf": [
-        { "type": "string" },
-        { "type": "array", "items": { "type": "string" } }
-      ]
+        {
+          "type": "string",
+          "description": "Resource file or directory."
+        },
+        {
+          "type": "array",
+          "items": {"type": "string", "description": "Resource file or directory."}
+        }
+      ],
+      "description": "Resource files or directories required by the app.",
+      "markdownDescription": "**Resources**  \nResource files or directories required by the app."
     }
-  }
+  },
+  "additionalProperties": false
 }
