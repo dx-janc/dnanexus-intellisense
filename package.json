@@ -14,15 +14,15 @@
   "contributes": {
     "jsonValidation": [
       {
-        "fileMatch": "dxapp.json",
+        "fileMatch": ["**/dxapp.json"],
         "url": "./schemas/dxapp.schema.json"
       },
       {
-        "fileMatch": "dxworkflow.json",
+        "fileMatch": ["**/dxworkflow.json"],
         "url": "./schemas/dxworkflow.schema.json"
       },
       {
-        "fileMatch": "dxasset.json",
+        "fileMatch": ["**/dxasset.json"],
         "url": "./schemas/dxasset.schema.json"
       }
     ]

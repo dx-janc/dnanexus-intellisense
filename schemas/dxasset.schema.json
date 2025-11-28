@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "DNAnexus Asset Metadata",
   "type": "object",
   "required": [
@@ -11,22 +11,28 @@
     "execDepends",
     "title"
   ],
+  "additionalProperties": false,
   "properties": {
+    "additionalProperties": false,
     "name": {
       "type": "string",
-      "description": "A unique identifier for the asset bundle. Use lowercase letters, numbers, and underscores only."
+      "description": "A unique identifier for the asset bundle. Use lowercase letters, numbers, and underscores only.",
+      "markdownDescription": "**Asset Name**  \nA unique identifier for the asset bundle. Use only lowercase letters, numbers, and underscores.  \nExample: `my_asset_01`"
     },
     "version": {
       "type": "string",
-      "description": "Semantic version of the asset (e.g., '1.0.0'). Update this when making changes to the asset."
+      "description": "Semantic version of the asset (e.g., '1.0.0'). Update this when making changes to the asset.",
+      "markdownDescription": "**Version**  \nSemantic version of the asset, e.g., `1.0.0`. Update this field whenever you make changes to the asset.  \n[Semantic Versioning Guide](https://semver.org/)"
     },
     "title": {
       "type": "string",
-      "description": "A human-readable name for the asset bundle, shown in the DNAnexus UI."
+      "description": "A human-readable name for the asset bundle, shown in the DNAnexus UI.",
+      "markdownDescription": "**Title**  \nA human-readable name for the asset bundle, displayed in the DNAnexus UI. Make it descriptive and clear for users."
     },
     "description": {
       "type": "string",
-      "description": "A detailed explanation of what the asset bundle does, its purpose, and any important usage notes."
+      "description": "A detailed explanation of what the asset bundle does, its purpose, and any important usage notes.",
+      "markdownDescription": "**Description**  \nProvide a detailed explanation of the asset bundle, its purpose, and any important usage notes. Use Markdown for formatting."
     },
     "distribution": {
       "type": "string",
@@ -34,7 +40,11 @@
         "Ubuntu"
       ],
       "default": "Ubuntu",
-      "description": "The base operating system for the asset. Only 'Ubuntu' is currently supported."
+      "description": "The base operating system for the asset. Only 'Ubuntu' is currently supported.",
+      "markdownDescription": "**Distribution**  \nThe base operating system for the asset. Only `Ubuntu` is supported.",
+      "markdownEnumDescriptions": [
+        "`Ubuntu`: The only supported OS distribution for DNAnexus assets. [Learn more](https://ubuntu.com/)"
+      ]
     },
     "release": {
       "type": "string",
@@ -45,60 +55,35 @@
         "14.04",
         "12.04"
       ],
-      "description": "The Ubuntu release version for the asset (e.g., '24.04'). Must match the runSpec.release of the app(let) that uses this asset."
+      "description": "The Ubuntu release version for the asset (e.g., '24.04'). Must match the runSpec.release of the app(let) that uses this asset.",
+      "markdownDescription": "**Release**  \nThe Ubuntu release version for the asset (e.g., `24.04`). Must match the `runSpec.release` of the app(let) that uses this asset.",
+      "markdownEnumDescriptions": [
+        "`24.04`: Ubuntu 24.04 LTS (latest supported release). [Ubuntu 24.04](https://releases.ubuntu.com/24.04/) ",
+        "`20.04`: Ubuntu 20.04 LTS. [Ubuntu 20.04](https://releases.ubuntu.com/20.04/) ",
+        "`16.04`: Ubuntu 16.04 LTS. [Ubuntu 16.04](https://releases.ubuntu.com/16.04/) ",
+        "`14.04`: Ubuntu 14.04 LTS. [Ubuntu 14.04](https://releases.ubuntu.com/14.04/) ",
+        "`12.04`: Ubuntu 12.04 LTS. [Ubuntu 12.04](https://releases.ubuntu.com/12.04/) "
+      ],
+      "additionalProperties": false
     },
     "execDepends": {
-      "type": "array",
-      "description": "List of software dependencies required by the asset. Each item can be a package name (string), or an object specifying name, package_manager, and version.",
-      "items": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Name of the package (default manager: apt)."
-          },
-          {
-            "type": "object",
-            "required": [
-              "name"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of the dependency package."
-              },
-              "package_manager": {
-                "type": "string",
-                "enum": [
-                  "apt",
-                  "pip",
-                  "git",
-                  "cran",
-                  "gem",
-                  "cpan"
-                ],
-                "default": "apt",
-                "description": "The package manager to use for installing the dependency."
-              },
-              "version": {
-                "type": "string",
-                "description": "Specific version of the package to install (optional)."
-              }
-            },
-            "description": "Detailed dependency specification."
-          }
-        ]
-      }
+      "$ref": "./execDepends.schema.json",
+      "markdownDescription": "**execDepends**  \nList of software dependencies required by the asset. See [execDepends.schema.json](./execDepends.schema.json) for details and supported fields."
     },
     "instanceType": {
       "type": "string",
-      "description": "DNAnexus instance type (e.g., 'mem1_ssd1_v2_x8') used to build the asset bundle. Choose based on resource requirements."
+      "description": "DNAnexus instance type (e.g., 'mem1_ssd1_v2_x8') used to build the asset bundle. Choose based on resource requirements.",
+      "markdownDescription": "**Instance Type**  \nDNAnexus instance type (e.g., `mem1_ssd1_v2_x8`) used to build the asset bundle. Select based on your resource requirements.",
+      "additionalProperties": false
     },
     "excludeResource": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources."
+      "description": "List of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources.",
+      "markdownDescription": "**Exclude Resource**  \nList of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources.",
+      "additionalProperties": false
     },
     "runSpecVersion": {
       "type": "string",
@@ -106,7 +91,13 @@
         "0",
         "1"
       ],
-      "description": "Internal versioning for asset builder logic. Usually leave as default unless instructed otherwise."
+      "description": "Internal versioning for asset builder logic. Usually leave as default unless instructed otherwise.",
+      "markdownDescription": "**runSpecVersion**  \nInternal versioning for asset builder logic. Usually leave as default unless instructed otherwise.",
+      "markdownEnumDescriptions": [
+        "`0`: Legacy asset builder logic.",
+        "`1`: Current asset builder logic."
+      ],
+      "additionalProperties": false
     }
   }
 }

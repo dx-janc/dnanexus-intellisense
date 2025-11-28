@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "array",
+    "description": "List of software dependencies required by the asset or app. Each item must be an object specifying at least 'name', and may include other fields such as 'package_manager', 'version', 'stages', 'url', 'tag', 'destdir', 'build_commands'.",
+    "items": {
+        "type": "object",
+        "required": [
+            "name"
+        ],
+        "properties": {
+            "name": {
+                "type": "string",
+                "description": "Name of the dependency package."
+            },
+            "package_manager": {
+                "type": "string",
+                "enum": [
+                    "apt",
+                    "pip",
+                    "git",
+                    "cran",
+                    "gem",
+                    "cpan"
+                ],
+                "description": "The package manager to use for installing the dependency."
+            },
+            "version": {
+                "type": "string",
+                "description": "Specific version of the package to install (optional)."
+            },
+            "stages": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Stages in which the dependency is required (e.g., ['work'])."
+            },
+            "url": {
+                "type": "string",
+                "description": "URL to fetch the dependency from (used for git or other sources)."
+            },
+            "tag": {
+                "type": "string",
+                "description": "Tag or branch to use when fetching from a VCS (e.g., git)."
+            },
+            "destdir": {
+                "type": "string",
+                "description": "Destination directory for installing the dependency."
+            },
+            "build_commands": {
+                "type": "string",
+                "description": "Commands to run to build/install the dependency after fetching."
+            }
+        },
+        "additionalProperties": true,
+        "description": "Detailed dependency specification."
+    }
+}

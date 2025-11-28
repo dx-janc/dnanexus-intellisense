@@ -66,6 +66,9 @@
         "release"
       ],
       "properties": {
+        "execDepends": {
+          "$ref": "./execDepends.schema.json"
+        },
         "interpreter": {
           "type": "string",
           "enum": [
