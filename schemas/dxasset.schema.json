@@ -45,11 +45,11 @@
         "14.04",
         "12.04"
       ],
-      "description": "The Ubuntu release version for the asset (e.g., '20.04'). Must match the release of the app that uses this asset."
+      "description": "The Ubuntu release version for the asset (e.g., '24.04'). Must match the runSpec.release of the app(let) that uses this asset."
     },
     "execDepends": {
       "type": "array",
-      "description": "List of software dependencies required by the asset. Each item can be a package name (string) or an object specifying name, package_manager, and version.",
+      "description": "List of software dependencies required by the asset. Each item can be a package name (string), or an object specifying name, package_manager, and version.",
       "items": {
         "oneOf": [
           {
