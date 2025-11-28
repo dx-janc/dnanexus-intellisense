@@ -1,7 +1,9 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "array",
-    "description": "List of software dependencies required by the asset or app. Each item must be an object specifying at least 'name', and may include other fields such as 'package_manager', 'version', 'stages', 'url', 'tag', 'destdir', 'build_commands'.",
+    "description": "List of software dependencies required by the asset or app. Each item must be an object specifying at least 'name', and may include other fields such as 'package_manager', 'version', 'stages', 'url', 'tag', 'destdir', 'build_commands'.\n\nIf your program relies on packages that must be present in the system to run, specify them here.\n- Basic APT package: {\"name\": \"samtools\"}\n- APT package with version and limited to 'work' stage: {\"name\": \"bedtools\", \"version\": \"2.16.1-1\", \"stages\": [\"work\"]}\n- Git repository: {\"name\": \"dx-toolkit\", \"package_manager\": \"git\", \"url\": \"https://github.com/dnanexus/dx-toolkit.git\", ... }\n- Language-specific package managers: {\"name\": \"pysam\", \"package_manager\": \"pip\", ... } etc.",
+    "markdownDescription": "**execDepends**  \nList of software dependencies required by the asset or app. Each item must be an object specifying at least `name`, and may include other fields such as `package_manager`, `version`, `stages`, `url`, `tag`, `destdir`, `build_commands`.\n\nIf your program relies on packages that must be present in the system to run, specify them here.\n- **Basic APT package**: `{\"name\": \"samtools\"}`\n- **APT package with version and limited to 'work' stage**: `{\"name\": \"bedtools\", \"version\": \"2.16.1-1\", \"stages\": [\"work\"]}`\n- **Git repository**: `{\"name\": \"dx-toolkit\", \"package_manager\": \"git\", \"url\": \"https://github.com/dnanexus/dx-toolkit.git\", ... }`\n- **Language-specific package managers**: `{\"name\": \"pysam\", \"package_manager\": \"pip\", ... }` etc.",
+    "additionalProperties": false,
     "items": {
         "type": "object",
         "required": [
@@ -10,7 +12,8 @@
         "properties": {
             "name": {
                 "type": "string",
-                "description": "Name of the dependency package."
+                "description": "Name of the dependency package. For example, 'samtools' for a basic APT package, or 'pysam' for a Python package.",
+                "markdownDescription": "**Name**  \nName of the dependency package.\n- **Examples**  \n  - For `apt`: `samtools`\n  - For `pip`: `pysam`\n  - For `cpan`: `Bio::SeqIO`"
             },
             "package_manager": {
                 "type": "string",
@@ -22,37 +25,53 @@
                     "gem",
                     "cpan"
                 ],
-                "description": "The package manager to use for installing the dependency."
+                "description": "The package manager to use for installing the dependency. Use 'apt' for system packages, 'pip' for Python, 'git' for repositories, 'cran' for R, 'gem' for Ruby, and 'cpan' for Perl.",
+                "markdownDescription": "**Package Manager**  \nThe package manager to use for installing the dependency.\n- `apt`: System package (e.g., `samtools`, `bedtools`)\n- `pip`: Python package (e.g., `pysam`)\n- `git`: Git repository (e.g., `dx-toolkit`)\n- `cran`: R package (e.g., `plyr`, `ggplot2`)\n- `gem`: Ruby package (e.g., `bio`)\n- `cpan`: Perl package (e.g., `Bio::SeqIO`)",
+                "markdownEnumDescriptions": [
+                    "`apt`: Install using the Advanced Package Tool (APT) for Ubuntu. [APT Docs](https://wiki.debian.org/apt)",
+                    "`pip`: Install using Python's package manager (pip). [pip Docs](https://pip.pypa.io/en/stable/)",
+                    "`git`: Clone from a Git repository. [Git Docs](https://git-scm.com/doc)",
+                    "`cran`: Install from the Comprehensive R Archive Network (CRAN). [CRAN Docs](https://cran.r-project.org/manuals.html)",
+                    "`gem`: Install using RubyGems. [RubyGems Docs](https://guides.rubygems.org/)",
+                    "`cpan`: Install using CPAN for Perl. [CPAN Docs](https://www.cpan.org/modules/INSTALL.html)"
+                ]
             },
             "version": {
                 "type": "string",
-                "description": "Specific version of the package to install (optional)."
+                "description": "Specific version of the package to install (optional). For example, '2.16.1-1' for a specific version of bedtools.",
+                "markdownDescription": "**Version**  \nSpecific version of the package to install (optional).\n- Example: `2.16.1-1` for `bedtools`"
             },
             "stages": {
                 "type": "array",
                 "items": {
                     "type": "string"
                 },
-                "description": "Stages in which the dependency is required (e.g., ['work'])."
+                "description": "Stages in which the dependency is required. For example, ['work'] limits installation to only the 'work' entry point. By default, dependencies install for all entry points.",
+                "markdownDescription": "**Stages**  \nStages in which the dependency is required.\n- Example: `[\"work\"]` limits installation to the 'work' entry point."
             },
             "url": {
                 "type": "string",
-                "description": "URL to fetch the dependency from (used for git or other sources)."
+                "description": "URL to fetch the dependency from (used for git or other sources). For example, a Git repository for dx-toolkit.",
+                "markdownDescription": "**URL**  \nURL to fetch the dependency from (used for git or other sources).\n- Example: `https://github.com/dnanexus/dx-toolkit.git` for a Git repository."
             },
             "tag": {
                 "type": "string",
-                "description": "Tag or branch to use when fetching from a VCS (e.g., git)."
+                "description": "Tag or branch to use when fetching from a VCS (e.g., git). For example, 'master' for the main branch.",
+                "markdownDescription": "**Tag**  \nTag or branch to use when fetching from a VCS (e.g., git).\n- Example: `master` for the main branch."
             },
             "destdir": {
                 "type": "string",
-                "description": "Destination directory for installing the dependency."
+                "description": "Destination directory for installing the dependency. For example, '/opt/dx-toolkit' for a Git repository.",
+                "markdownDescription": "**Destination Directory**  \nDestination directory for installing the dependency.\n- Example: `/opt/dx-toolkit` for a Git repository."
             },
             "build_commands": {
                 "type": "string",
-                "description": "Commands to run to build/install the dependency after fetching."
+                "description": "Commands to run to build/install the dependency after fetching. For example, 'make install DESTDIR=/ PREFIX=/opt/dnanexus' for building dx-toolkit.",
+                "markdownDescription": "**Build Commands**  \nCommands to run to build/install the dependency after fetching.\n- Example: `make install DESTDIR=/ PREFIX=/opt/dnanexus` for building dx-toolkit."
             }
         },
-        "additionalProperties": true,
-        "description": "Detailed dependency specification."
+        "additionalProperties": false,
+        "description": "Detailed dependency specification.",
+        "markdownDescription": "**Dependency Object**  \nDefines a single dependency with required and optional fields."
     }
 }
