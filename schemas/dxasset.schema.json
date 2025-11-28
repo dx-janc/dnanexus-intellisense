@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "title": "DNAnexus Asset Metadata",
   "type": "object",
   "required": [
@@ -12,54 +12,101 @@
     "title"
   ],
   "properties": {
-    "name": { "type": "string" },
-    "version": { "type": "string" },
-    "title": { "type": "string" },
-    "description": { "type": "string" },
+    "name": {
+      "type": "string",
+      "description": "A unique identifier for the asset bundle. Use lowercase letters, numbers, and underscores only."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the asset (e.g., '1.0.0'). Update this when making changes to the asset."
+    },
+    "title": {
+      "type": "string",
+      "description": "A human-readable name for the asset bundle, shown in the DNAnexus UI."
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed explanation of what the asset bundle does, its purpose, and any important usage notes."
+    },
     "distribution": {
       "type": "string",
-      "enum": ["Ubuntu"],
-      "default": "Ubuntu"
+      "enum": [
+        "Ubuntu"
+      ],
+      "default": "Ubuntu",
+      "description": "The base operating system for the asset. Only 'Ubuntu' is currently supported."
     },
     "release": {
       "type": "string",
-      "enum": ["24.04", "20.04", "16.04", "14.04", "12.04"],
-      "description": "Must match the Ubuntu release of the app that uses this asset."
+      "enum": [
+        "24.04",
+        "20.04",
+        "16.04",
+        "14.04",
+        "12.04"
+      ],
+      "description": "The Ubuntu release version for the asset (e.g., '20.04'). Must match the release of the app that uses this asset."
     },
     "execDepends": {
       "type": "array",
+      "description": "List of software dependencies required by the asset. Each item can be a package name (string) or an object specifying name, package_manager, and version.",
       "items": {
         "oneOf": [
-          { "type": "string" },
+          {
+            "type": "string",
+            "description": "Name of the package (default manager: apt)."
+          },
           {
             "type": "object",
-            "required": ["name"],
+            "required": [
+              "name"
+            ],
             "properties": {
-              "name": { "type": "string" },
+              "name": {
+                "type": "string",
+                "description": "Name of the dependency package."
+              },
               "package_manager": {
                 "type": "string",
-                "enum": ["apt", "pip", "git", "cran", "gem", "cpan"],
-                "default": "apt"
+                "enum": [
+                  "apt",
+                  "pip",
+                  "git",
+                  "cran",
+                  "gem",
+                  "cpan"
+                ],
+                "default": "apt",
+                "description": "The package manager to use for installing the dependency."
               },
-              "version": { "type": "string" }
-            }
+              "version": {
+                "type": "string",
+                "description": "Specific version of the package to install (optional)."
+              }
+            },
+            "description": "Detailed dependency specification."
           }
         ]
       }
     },
     "instanceType": {
       "type": "string",
-      "description": "The instance type on which the asset bundle will be built."
+      "description": "DNAnexus instance type (e.g., 'mem1_ssd1_v2_x8') used to build the asset bundle. Choose based on resource requirements."
     },
     "excludeResource": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Files and directories that should not be included in the asset bundle."
+      "items": {
+        "type": "string"
+      },
+      "description": "List of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources."
     },
     "runSpecVersion": {
       "type": "string",
-      "enum": ["0", "1"],
-      "description": "Internal versioning for asset builder logic."
+      "enum": [
+        "0",
+        "1"
+      ],
+      "description": "Internal versioning for asset builder logic. Usually leave as default unless instructed otherwise."
     }
   }
 }
