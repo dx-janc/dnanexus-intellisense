@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DNAnexus Asset Metadata",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "description",
+    "distribution",
+    "release",
+    "execDepends",
+    "title"
+  ],
+  "properties": {
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "distribution": {
+      "type": "string",
+      "enum": ["Ubuntu"],
+      "default": "Ubuntu"
+    },
+    "release": {
+      "type": "string",
+      "enum": ["24.04", "20.04", "16.04", "14.04", "12.04"],
+      "description": "Must match the Ubuntu release of the app that uses this asset."
+    },
+    "execDepends": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "package_manager": {
+                "type": "string",
+                "enum": ["apt", "pip", "git", "cran", "gem", "cpan"],
+                "default": "apt"
+              },
+              "version": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+    "instanceType": {
+      "type": "string",
+      "description": "The instance type on which the asset bundle will be built."
+    },
+    "excludeResource": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Files and directories that should not be included in the asset bundle."
+    },
+    "runSpecVersion": {
+      "type": "string",
+      "enum": ["0", "1"],
+      "description": "Internal versioning for asset builder logic."
+    }
+  }
+}
