@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DNAnexus App Metadata",
+  "type": "object",
+  "required": [
+    "name",
+    "title",
+    "inputSpec",
+    "runSpec"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique identifier for the app (e.g. 'my-app'). No spaces allowed."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human readable name shown in the UI."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic versioning (e.g. 0.0.1)."
+    },
+    "inputSpec": {
+      "type": "array",
+      "description": "Defines the input parameters for the app.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "class"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "file",
+              "string",
+              "int",
+              "float",
+              "boolean",
+              "hash",
+              "array:file"
+            ],
+            "description": "The data type of the input."
+          },
+          "optional": {
+            "type": "boolean"
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "runSpec": {
+      "type": "object",
+      "required": [
+        "interpreter",
+        "file",
+        "distribution",
+        "release"
+      ],
+      "properties": {
+        "interpreter": {
+          "type": "string",
+          "enum": [
+            "bash",
+            "python3"
+          ],
+          "description": "The language interpreter to use."
+        },
+        "distribution": {
+          "type": "string",
+          "enum": [
+            "Ubuntu"
+          ],
+          "description": "OS Distribution."
+        },
+        "release": {
+          "type": "string",
+          "enum": [
+            "20.04",
+            "24.04"
+          ],
+          "description": "Ubuntu release version."
+        },
+        "file": {
+          "type": "string",
+          "description": "Entry point script filename."
+        }
+      }
+    }
+  }
+}
