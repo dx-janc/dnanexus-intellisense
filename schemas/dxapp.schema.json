@@ -242,58 +242,9 @@
       ],
       "properties": {
         "assetDepends": {
-          "type": "array",
-          "description": "List of asset dependencies required by the app. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
-          "markdownDescription": "**assetDepends**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
-          "items": {
-            "type": "object",
-            "oneOf": [
-              {
-                "required": [
-                  "id"
-                ],
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "ID of the asset."
-                  },
-                  "folder": {
-                    "type": "string",
-                    "description": "Optional folder path for the asset."
-                  }
-                },
-                "additionalProperties": false
-              },
-              {
-                "required": [
-                  "name",
-                  "project",
-                  "version"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the asset."
-                  },
-                  "project": {
-                    "type": "string",
-                    "description": "Project containing the asset."
-                  },
-                  "version": {
-                    "type": "string",
-                    "description": "Version of the asset."
-                  },
-                  "folder": {
-                    "type": "string",
-                    "description": "Optional folder path for the asset."
-                  }
-                },
-                "additionalProperties": false
-              }
-            ],
-            "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
-          },
-          "additionalProperties": false
+          "$ref": "./assetDepends.schema.json",
+          "description": "List of asset dependencies required by the app.",
+          "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included."
         },
         "systemRequirements": {
           "type": "object",
@@ -415,7 +366,8 @@
           "aws:ap-southeast-2",
           "azure:westus",
           "azure:westeurope",
-          "azure:uksouth-ofh"
+          "azure:uksouth-ofh",
+          "oci:us-ashburn-1"
         ],
         "markdownEnumDescriptions": [
           "`aws:us-east-1`: AWS US (East)",
@@ -426,7 +378,8 @@
           "`aws:ap-southeast-2`: AWS Asia Pacific (Sydney)",
           "`azure:westus`: Azure West US",
           "`azure:westeurope`: Azure West Europe",
-          "`azure:uksouth-ofh`: Azure OFH-TRE (London)"
+          "`azure:uksouth-ofh`: Azure OFH-TRE (London)",
+          "`oci:us-ashburn-1`: OCI US (East)"
         ]
       },
       "patternProperties": {
@@ -439,73 +392,14 @@
               "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region.",
               "properties": {
                 "instanceType": {
-                  "oneOf": [
-                    {
-                      "$ref": "./instanceTypes.aws.schema.json"
-                    },
-                    {
-                      "$ref": "./instanceTypes.gpu.schema.json"
-                    },
-                    {
-                      "$ref": "./instanceTypes.fpga.schema.json"
-                    }
-                  ],
+                  "$ref": "./instanceTypes.aws.all.schema.json",
                   "description": "Instance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types.",
                   "markdownDescription": "**Instance Type**  \nInstance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types."
                 },
                 "assetDepends": {
-                  "type": "array",
-                  "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
-                  "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
-                  "items": {
-                    "type": "object",
-                    "oneOf": [
-                      {
-                        "required": [
-                          "id"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "ID of the asset."
-                          },
-                          "folder": {
-                            "type": "string",
-                            "description": "Optional folder path for the asset."
-                          }
-                        },
-                        "additionalProperties": false
-                      },
-                      {
-                        "required": [
-                          "name",
-                          "project",
-                          "version"
-                        ],
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "Name of the asset."
-                          },
-                          "project": {
-                            "type": "string",
-                            "description": "Project containing the asset."
-                          },
-                          "version": {
-                            "type": "string",
-                            "description": "Version of the asset."
-                          },
-                          "folder": {
-                            "type": "string",
-                            "description": "Optional folder path for the asset."
-                          }
-                        },
-                        "additionalProperties": false
-                      }
-                    ],
-                    "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
-                  },
-                  "additionalProperties": false
+                  "$ref": "./assetDepends.schema.json",
+                  "description": "List of asset dependencies required for this region.",
+                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
                 }
               },
               "additionalProperties": false
@@ -522,70 +416,38 @@
               "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region.",
               "properties": {
                 "instanceType": {
-                  "oneOf": [
-                    {
-                      "$ref": "./instanceTypes.azure.schema.json"
-                    },
-                    {
-                      "$ref": "./instanceTypes.gpu.schema.json"
-                    }
-                  ],
+                  "$ref": "./instanceTypes.azure.all.schema.json",
                   "description": "Instance type for this Azure region. Choose from standard Azure or GPU instance types.",
                   "markdownDescription": "**Instance Type**  \nInstance type for this Azure region. Choose from standard Azure or GPU instance types."
                 },
                 "assetDepends": {
-                  "type": "array",
-                  "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
-                  "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
-                  "items": {
-                    "type": "object",
-                    "oneOf": [
-                      {
-                        "required": [
-                          "id"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "ID of the asset."
-                          },
-                          "folder": {
-                            "type": "string",
-                            "description": "Optional folder path for the asset."
-                          }
-                        },
-                        "additionalProperties": false
-                      },
-                      {
-                        "required": [
-                          "name",
-                          "project",
-                          "version"
-                        ],
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "Name of the asset."
-                          },
-                          "project": {
-                            "type": "string",
-                            "description": "Project containing the asset."
-                          },
-                          "version": {
-                            "type": "string",
-                            "description": "Version of the asset."
-                          },
-                          "folder": {
-                            "type": "string",
-                            "description": "Optional folder path for the asset."
-                          }
-                        },
-                        "additionalProperties": false
-                      }
-                    ],
-                    "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
-                  },
-                  "additionalProperties": false
+                  "$ref": "./assetDepends.schema.json",
+                  "description": "List of asset dependencies required for this region.",
+                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "^oci:": {
+          "type": "object",
+          "properties": {
+            "systemRequirements": {
+              "type": "object",
+              "description": "System requirements for the OCI region.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region.",
+              "properties": {
+                "instanceType": {
+                  "$ref": "./instanceTypes.oci.all.schema.json",
+                  "description": "Instance type for this OCI region. Choose from standard OCI or GPU instance types.",
+                  "markdownDescription": "**Instance Type**  \nInstance type for this OCI region. Choose from standard OCI or GPU instance types."
+                },
+                "assetDepends": {
+                  "$ref": "./assetDepends.schema.json",
+                  "description": "List of asset dependencies required for this region.",
+                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
                 }
               },
               "additionalProperties": false

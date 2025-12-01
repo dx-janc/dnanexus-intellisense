@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "All AWS Instance Types",
+  "description": "All AWS instance types including standard, GPU, and FPGA",
+  "type": "string",
+  "oneOf": [
+    {
+      "$ref": "./instanceTypes.aws.schema.json"
+    },
+    {
+      "$ref": "./instanceTypes.aws.gpu.schema.json"
+    },
+    {
+      "$ref": "./instanceTypes.aws.fpga.schema.json"
+    }
+  ]
+}

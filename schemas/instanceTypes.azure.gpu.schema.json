@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Azure GPU Instance Types",
+  "description": "GPU instance types available on Azure",
+  "type": "string",
+  "enum": [
+    "azure:mem3_ssd2_gpu4_x64"
+  ],
+  "markdownEnumDescriptions": [
+    "`azure:mem3_ssd2_gpu4_x64`: 64 cores, 488 GiB RAM, 2,048 GB storage, 4 NVIDIA V100 GPUs (64 GiB VRAM) - High memory"
+  ]
+}

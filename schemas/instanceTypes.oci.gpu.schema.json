@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OCI GPU Instance Types",
+  "description": "GPU instance types available on OCI",
+  "type": "string",
+  "enum": [
+    "oci:mem2_ssd1_GPU_v2_x24",
+    "oci:mem3_ssd1_GPU_v3_x12",
+    "oci:mem3_ssd1_GPU_v3_x24",
+    "oci:mem3_ssd1_GPU_v3_x48",
+    "oci:mem3_ssd2_GPU_vA10_x30",
+    "oci:mem3_ssd2_GPU_vA10_x60"
+  ],
+  "markdownEnumDescriptions": [
+    "`oci:mem2_ssd1_GPU_v2_x24`: 24 cores, 70.3 GiB RAM, 480 GB storage, 1 NVIDIA P100 GPU (16 GiB VRAM)",
+    "`oci:mem3_ssd1_GPU_v3_x12`: 12 cores, 87.9 GiB RAM, 240 GB storage, 1 NVIDIA V100 GPU (16 GiB VRAM)",
+    "`oci:mem3_ssd1_GPU_v3_x24`: 24 cores, 175.8 GiB RAM, 480 GB storage, 2 NVIDIA V100 GPUs (32 GiB VRAM)",
+    "`oci:mem3_ssd1_GPU_v3_x48`: 48 cores, 351.6 GiB RAM, 960 GB storage, 4 NVIDIA V100 GPUs (64 GiB VRAM)",
+    "`oci:mem3_ssd2_GPU_vA10_x30`: 30 cores, 234.4 GiB RAM, 960 GB storage, 1 NVIDIA A10 GPU (24 GiB VRAM)",
+    "`oci:mem3_ssd2_GPU_vA10_x60`: 60 cores, 468.8 GiB RAM, 1,920 GB storage, 2 NVIDIA A10 GPUs (48 GiB VRAM)"
+  ]
+}

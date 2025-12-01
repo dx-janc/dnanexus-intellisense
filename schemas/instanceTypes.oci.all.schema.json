@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "All OCI Instance Types",
+  "description": "All OCI instance types including standard and GPU",
+  "type": "string",
+  "oneOf": [
+    {
+      "$ref": "./instanceTypes.oci.schema.json"
+    },
+    {
+      "$ref": "./instanceTypes.oci.gpu.schema.json"
+    }
+  ]
+}

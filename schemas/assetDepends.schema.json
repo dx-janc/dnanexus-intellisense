@@ -1,0 +1,60 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Asset Dependencies",
+    "description": "Schema for asset dependencies specification",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "oneOf": [
+            {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID of the asset.",
+                        "markdownDescription": "**Asset ID**  \nThe unique identifier of the asset."
+                    },
+                    "folder": {
+                        "type": "string",
+                        "description": "Optional folder path for the asset.",
+                        "markdownDescription": "**Folder**  \nOptional folder path where the asset is located."
+                    }
+                },
+                "additionalProperties": false
+            },
+            {
+                "required": [
+                    "name",
+                    "project",
+                    "version"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the asset.",
+                        "markdownDescription": "**Asset Name**  \nThe name of the asset."
+                    },
+                    "project": {
+                        "type": "string",
+                        "description": "Project containing the asset.",
+                        "markdownDescription": "**Project**  \nThe project ID where the asset is located."
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Version of the asset.",
+                        "markdownDescription": "**Version**  \nThe version of the asset to use."
+                    },
+                    "folder": {
+                        "type": "string",
+                        "description": "Optional folder path for the asset.",
+                        "markdownDescription": "**Folder**  \nOptional folder path where the asset is located."
+                    }
+                },
+                "additionalProperties": false
+            }
+        ],
+        "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+    }
+}

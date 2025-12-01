@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "GPU Instance Types",
-  "description": "GPU instance types available on AWS and Azure on the DNAnexus Platform",
+  "title": "AWS GPU Instance Types",
+  "description": "GPU instance types available on AWS",
   "type": "string",
   "enum": [
     "mem2_ssd1_gpu_x16",
@@ -31,8 +31,7 @@
     "mem3_ssd1_gpu1_x32",
     "mem3_ssd1_gpu_x8",
     "mem3_ssd1_gpu_x32",
-    "mem3_ssd1_gpu_x64",
-    "azure:mem3_ssd2_gpu4_x64"
+    "mem3_ssd1_gpu_x64"
   ],
   "markdownEnumDescriptions": [
     "`mem2_ssd1_gpu_x16`: 16 cores, 64 GiB RAM, 225 GB storage, 1 NVIDIA T4 GPU (16 GiB VRAM)",
@@ -62,7 +61,6 @@
     "`mem3_ssd1_gpu1_x32`: 32 cores, 256 GiB RAM, 900 GB storage, 1 NVIDIA L4 GPU (24 GiB VRAM) - Limited access, Not available in aws:me-south-1",
     "`mem3_ssd1_gpu_x8`: 8 cores, 61 GiB RAM, 160 GB storage, 1 NVIDIA V100 GPU (16 GiB VRAM)",
     "`mem3_ssd1_gpu_x32`: 32 cores, 244 GiB RAM, 640 GB storage, 4 NVIDIA V100 GPUs (64 GiB VRAM) - High memory",
-    "`mem3_ssd1_gpu_x64`: 64 cores, 488 GiB RAM, 1,280 GB storage, 8 NVIDIA V100 GPUs (128 GiB VRAM) - High memory",
-    "`azure:mem3_ssd2_gpu4_x64`: 64 cores, 488 GiB RAM, 2,048 GB storage, 4 NVIDIA V100 GPUs (64 GiB VRAM) - High memory"
+    "`mem3_ssd1_gpu_x64`: 64 cores, 488 GiB RAM, 1,280 GB storage, 8 NVIDIA V100 GPUs (128 GiB VRAM) - High memory"
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "All Azure Instance Types",
+  "description": "All Azure instance types including standard and GPU",
+  "type": "string",
+  "oneOf": [
+    {
+      "$ref": "./instanceTypes.azure.schema.json"
+    },
+    {
+      "$ref": "./instanceTypes.azure.gpu.schema.json"
+    }
+  ]
+}
