@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "System Requirements Entry Point Mapping",
   "type": "object",
-  "description": "System requirements mapping for entry points. Keys are entry point names or '*' for all entry points.",
-  "markdownDescription": "**System Requirements**  \nDefine system requirements for each entry point. Use `*` to apply requirements to all entry points, or specify individual entry point names.",
+  "description": "System requirements mapping for entry points. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
+  "markdownDescription": "**System Requirements**  \nDefine system requirements for each entry point. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` to apply requirements to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": {\n    \"instanceType\": \"mem1_ssd1_v2_x4\"\n  },\n  \"main\": {\n    \"instanceType\": \"mem1_ssd1_v2_x8\"\n  }\n}\n```",
   "additionalProperties": {
     "type": "object",
     "description": "Requirements for a specific entry point.",

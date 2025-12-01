@@ -372,13 +372,53 @@
           "properties": {
             "restartOn": {
               "type": "object",
-              "description": "Mapping of error types to restart limits.",
-              "markdownDescription": "**Restart On**  \nMap error types to maximum restart attempts. Use `\"*\"` for system errors, `\"UnresponsiveWorker\"` for unresponsive workers, etc. The value is the maximum number of restart attempts.",
-              "additionalProperties": {
-                "type": "integer",
-                "minimum": 0,
-                "description": "Maximum number of restart attempts for this error type."
-              }
+              "description": "Mapping of restartable failure reasons to restart limits.",
+              "markdownDescription": "**Restart On**  \nMap restartable failure reasons to maximum restart attempts. The value is the maximum number of restart attempts (integer).\n\n**Example:**\n```json\n{\n  \"*\": 1,\n  \"UnresponsiveWorker\": 3,\n  \"SpotInstanceInterruption\": 5\n}\n```",
+              "properties": {
+                "ExecutionError": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts when execution fails with error.",
+                  "markdownDescription": "**Execution Error**  \nMaximum number of restart attempts when execution fails with an error."
+                },
+                "UnresponsiveWorker": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts when worker becomes unresponsive.",
+                  "markdownDescription": "**Unresponsive Worker**  \nMaximum number of restart attempts when the worker becomes unresponsive."
+                },
+                "JMInternalError": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts for job manager internal errors.",
+                  "markdownDescription": "**Job Manager Internal Error**  \nMaximum number of restart attempts for job manager internal errors."
+                },
+                "AppInternalError": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts for application internal errors.",
+                  "markdownDescription": "**Application Internal Error**  \nMaximum number of restart attempts for application internal errors."
+                },
+                "JobTimeoutExceeded": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts when job exceeds timeout limit.",
+                  "markdownDescription": "**Job Timeout Exceeded**  \nMaximum number of restart attempts when the job exceeds its timeout limit."
+                },
+                "SpotInstanceInterruption": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts when spot instance is interrupted.",
+                  "markdownDescription": "**Spot Instance Interruption**  \nMaximum number of restart attempts when a spot instance is interrupted."
+                },
+                "*": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Maximum restart attempts for all other restartable failure reasons.",
+                  "markdownDescription": "**All Other Failures**  \nMaximum number of restart attempts for all restartable failure reasons not explicitly specified above."
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -443,8 +483,8 @@
         },
         "timeoutPolicy": {
           "type": "object",
-          "description": "Timeout policy for app execution. Keys can be entry point names or '*' for all. Each value is an object with keys like 'minutes' or 'hours'.",
-          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution. Use '*' for all entry points, or specify entry point names. Each value is an object with keys like 'minutes' or 'hours'.",
+          "description": "Timeout policy for app execution. Keys can be entry point names or '*' for all. Each value is an object with 'minutes' or 'hours'.",
+          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or `\"*\"` to apply to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": { \"hours\": 48 },\n  \"main\": { \"minutes\": 30 }\n}\n```",
           "additionalProperties": {
             "type": "object",
             "properties": {
@@ -526,8 +566,8 @@
               "allOf": [
                 {"$ref": "./systemRequirements.schema.json"},
                 {
-                  "description": "System requirements for this AWS region. Keys are entry point names or '*' for all entry points.",
-                  "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names or `*` for all entry points. For AWS regions, `instanceType` must reference AWS instance types.",
+                  "description": "System requirements for this AWS region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For AWS regions, `instanceType` must reference AWS instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"mem1_ssd1_v2_x4\" },\n  \"main\": { \"instanceType\": \"mem3_ssd1_v2_x8\" }\n}\n```",
                   "additionalProperties": {
                     "properties": {
                       "instanceType": {
@@ -592,8 +632,8 @@
               "allOf": [
                 {"$ref": "./systemRequirements.schema.json"},
                 {
-                  "description": "System requirements for this Azure region. Keys are entry point names or '*' for all entry points.",
-                  "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names or `*` for all entry points. For Azure regions, `instanceType` must reference Azure instance types.",
+                  "description": "System requirements for this Azure region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For Azure regions, `instanceType` must reference Azure instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"azure:mem1_ssd1_x4\" }\n}\n```",
                   "additionalProperties": {
                     "properties": {
                       "instanceType": {
@@ -658,8 +698,8 @@
               "allOf": [
                 {"$ref": "./systemRequirements.schema.json"},
                 {
-                  "description": "System requirements for this OCI region. Keys are entry point names or '*' for all entry points.",
-                  "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names or `*` for all entry points. For OCI regions, `instanceType` must reference OCI instance types.",
+                  "description": "System requirements for this OCI region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For OCI regions, `instanceType` must reference OCI instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"oci:VM.Standard.E3.Flex.4.16\" }\n}\n```",
                   "additionalProperties": {
                     "properties": {
                       "instanceType": {
@@ -723,7 +763,7 @@
     "details": {
       "type": "object",
       "description": "Arbitrary metadata for the app. Recognized fields include contact info, upstream version, author, URL, licenses, citations, and changelog.",
-      "markdownDescription": "**Details**  \nArbitrary metadata for the app. Some key/value pairs are recognized by the DNAnexus website for rendering contact information and other metadata.",
+      "markdownDescription": "**Details**  \nArbitrary metadata for the app. The properties listed below are **recognized by the DNAnexus platform**, but you can add any custom key-value pairs.\n\n**Custom keys example:**\n```json\n{\n  \"contactEmail\": \"dev@example.com\",\n  \"myCustomField\": \"custom value\",\n  \"internalVersion\": \"v2.3.1\"\n}\n```",
       "properties": {
         "contactEmail": {
           "type": "string",
