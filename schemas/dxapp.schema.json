@@ -38,7 +38,13 @@
     "description": {
       "type": "string",
       "description": "Detailed description of the app, its features, and usage notes.",
-      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes.",
+      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes. If not provided, `dx build` includes the `Readme.md` file content.",
+      "additionalProperties": false
+    },
+    "developerNotes": {
+      "type": "string",
+      "description": "Detailed notes covering extra details for developers.",
+      "markdownDescription": "**Developer Notes**  \nDetailed notes for developers working with this app. If not provided, `dx build` includes the `Readme.developer.md` file content, if available.",
       "additionalProperties": false
     },
     "dxapi": {
@@ -61,10 +67,42 @@
       "additionalProperties": false
     },
     "httpsApp": {
-      "type": "boolean",
-      "description": "Indicates if the app is an HTTPS web app.",
-      "markdownDescription": "**HTTPS App**  \nSet to `true` if the app is an HTTPS web app.",
-      "additionalProperties": false
+      "oneOf": [
+        {
+          "type": "boolean",
+          "description": "Enable HTTPS app with default settings."
+        },
+        {
+          "type": "object",
+          "description": "HTTPS app configuration with custom settings.",
+          "properties": {
+            "ports": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "enum": [443, 8080, 8081]
+              },
+              "description": "Array of ports to expose via HTTPS proxy.",
+              "markdownDescription": "**Ports**  \nArray of ports to allow access through the HTTPS proxy. Allowed values: `443`, `8080`, `8081`."
+            },
+            "shared_access": {
+              "type": "string",
+              "enum": ["VIEW", "CONTRIBUTE", "ADMINISTER", "NONE"],
+              "description": "Access level required to access the HTTPS endpoint.",
+              "markdownDescription": "**Shared Access**  \nRestrict access to users with the specified project access level. Use `NONE` to limit access to only the launching user.",
+              "markdownEnumDescriptions": [
+                "Users with VIEW access to the project can access the endpoint.",
+                "Users with CONTRIBUTE access to the project can access the endpoint.",
+                "Users with ADMINISTER access to the project can access the endpoint.",
+                "Only the launching user can access the endpoint."
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ],
+      "description": "Enable HTTPS access to jobs. Can be boolean or object with ports and shared_access.",
+      "markdownDescription": "**HTTPS App**  \nExternally expose jobs to the internet via an HTTPS proxy at `https://job-xxxx.dnanexus.cloud/`. Set to `true` for default settings, or provide an object to configure `ports` and `shared_access`."
     },
     "inputSpec": {
       "type": "array",
@@ -147,6 +185,43 @@
             "type": "string",
             "description": "Help text for the input parameter.",
             "markdownDescription": "**Help**  \nHelp text for the input parameter."
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Display label for this suggestion.",
+                  "markdownDescription": "**Name**  \nDisplay label shown in the UI for this suggestion."
+                },
+                "project": {
+                  "type": "string",
+                  "description": "ID of the project containing suggested inputs.",
+                  "markdownDescription": "**Project**  \nProject ID where suggested files are located. Example: `project-xxxx`"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Folder path in the project (defaults to '/').",
+                  "markdownDescription": "**Path**  \nFolder path within the project. Defaults to `/` if not specified."
+                }
+              },
+              "additionalProperties": false
+            },
+            "description": "Array of suggestion objects to help users select input values.",
+            "markdownDescription": "**Suggestions**  \nHelp users select input values by suggesting projects and folders containing appropriate files."
+          },
+          "group": {
+            "type": "string",
+            "description": "Grouping label shown in UI to organize inputs.",
+            "markdownDescription": "**Group**  \nGrouping label used to organize related inputs in the UI. Example: `Advanced Options`"
+          },
+          "choices": {
+            "type": "array",
+            "items": {},
+            "description": "Enumerated choices restricting possible values for this input.",
+            "markdownDescription": "**Choices**  \nRestrict this input to a specific set of allowed values. The type of array items should match the input class."
           }
         },
         "additionalProperties": false
@@ -247,12 +322,74 @@
           "description": "List of asset dependencies required by the app.",
           "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included."
         },
-        "systemRequirements": {
+        "bundledDepends": {
+          "type": "array",
+          "description": "Bundled dependencies for the app. Files to be made available in the execution environment.",
+          "markdownDescription": "**Bundled Dependencies**  \nList of files to be made available in the execution environment. Each item specifies a `name` (filename) and `id` (DNAnexus link to the file).",
+          "items": {
+            "type": "object",
+            "required": ["name", "id"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the bundled dependency file.",
+                "markdownDescription": "**Name**  \nFilename of the bundled dependency."
+              },
+              "id": {
+                "$ref": "./dnanexusLink.schema.json",
+                "description": "DNAnexus link to the file.",
+                "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "headJobOnDemand": {
+          "type": "boolean",
+          "description": "Whether headJobOnDemand is enabled by default for this app(let). Can be overridden at runtime.",
+          "markdownDescription": "**Head Job On Demand**  \nEnable head job on demand by default. When enabled, the head job (entry point) runs only when needed, reducing costs for workflow orchestration. Can be overridden at runtime."
+        },
+        "restartableEntryPoints": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["all"],
+              "description": "Allow all entry points to be restarted."
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of specific entry point names that can be restarted."
+            }
+          ],
+          "description": "Entry points that may be restarted if a restartable error occurs.",
+          "markdownDescription": "**Restartable Entry Points**  \nSpecify which entry points can be automatically restarted on restartable errors. Use `\"all\"` to allow all entry points, or provide an array of specific entry point names."
+        },
+        "executionPolicy": {
           "type": "object",
+          "description": "Options governing job restart policy.",
+          "markdownDescription": "**Execution Policy**  \nConfigure automatic restart behavior for jobs. Specify restart limits for different error types.",
+          "properties": {
+            "restartOn": {
+              "type": "object",
+              "description": "Mapping of error types to restart limits.",
+              "markdownDescription": "**Restart On**  \nMap error types to maximum restart attempts. Use `\"*\"` for system errors, `\"UnresponsiveWorker\"` for unresponsive workers, etc. The value is the maximum number of restart attempts.",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Maximum number of restart attempts for this error type."
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "systemRequirements": {
+          "$ref": "./systemRequirements.schema.json",
           "description": "System requirements for the app (deprecated, use 'regionalOptions' instead).",
           "markdownDescription": "**System Requirements**  \nSystem requirements for the app.",
-          "deprecationMessage": "This property is deprecated. Use 'regionalOptions.regionName.systemRequirements' instead for region-specific system requirements.",
-          "additionalProperties": false
+          "deprecationMessage": "This property is deprecated. Use 'regionalOptions.regionName.systemRequirements' instead for region-specific system requirements."
         },
         "interpreter": {
           "type": "string",
@@ -388,20 +525,20 @@
           "type": "object",
           "properties": {
             "systemRequirements": {
-              "type": "object",
-              "description": "System requirements for this AWS region. Keys are entry point names or '*' for all entry points.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "instanceType": {
-                    "$ref": "./instanceTypes.aws.all.schema.json",
-                    "description": "Instance type for this entry point. Choose from standard AWS, GPU, or FPGA instance types.",
-                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard AWS, GPU, or FPGA instance types."
+              "allOf": [
+                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "description": "System requirements for this AWS region. Keys are entry point names or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names or `*` for all entry points. For AWS regions, `instanceType` must reference AWS instance types.",
+                  "additionalProperties": {
+                    "properties": {
+                      "instanceType": {
+                        "$ref": "./instanceTypes.aws.all.schema.json"
+                      }
+                    }
                   }
-                },
-                "additionalProperties": false
-              }
+                }
+              ]
             },
             "bundledDepends": {
               "type": "array",
@@ -454,20 +591,20 @@
           "type": "object",
           "properties": {
             "systemRequirements": {
-              "type": "object",
-              "description": "System requirements for this Azure region. Keys are entry point names or '*' for all entry points.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "instanceType": {
-                    "$ref": "./instanceTypes.azure.all.schema.json",
-                    "description": "Instance type for this entry point. Choose from standard Azure or GPU instance types.",
-                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard Azure or GPU instance types."
+              "allOf": [
+                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "description": "System requirements for this Azure region. Keys are entry point names or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names or `*` for all entry points. For Azure regions, `instanceType` must reference Azure instance types.",
+                  "additionalProperties": {
+                    "properties": {
+                      "instanceType": {
+                        "$ref": "./instanceTypes.azure.all.schema.json"
+                      }
+                    }
                   }
-                },
-                "additionalProperties": false
-              }
+                }
+              ]
             },
             "bundledDepends": {
               "type": "array",
@@ -520,20 +657,20 @@
           "type": "object",
           "properties": {
             "systemRequirements": {
-              "type": "object",
-              "description": "System requirements for this OCI region. Keys are entry point names or '*' for all entry points.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "instanceType": {
-                    "$ref": "./instanceTypes.oci.all.schema.json",
-                    "description": "Instance type for this entry point. Choose from standard OCI or GPU instance types.",
-                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard OCI or GPU instance types."
+              "allOf": [
+                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "description": "System requirements for this OCI region. Keys are entry point names or '*' for all entry points.",
+                  "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names or `*` for all entry points. For OCI regions, `instanceType` must reference OCI instance types.",
+                  "additionalProperties": {
+                    "properties": {
+                      "instanceType": {
+                        "$ref": "./instanceTypes.oci.all.schema.json"
+                      }
+                    }
                   }
-                },
-                "additionalProperties": false
-              }
+                }
+              ]
             },
             "bundledDepends": {
               "type": "array",
@@ -638,17 +775,99 @@
     },
     "categories": {
       "type": "array",
-      "description": "Categories for the app.",
-      "markdownDescription": "**Categories**  \nCategories for the app.",
+      "description": "Categories for the app. Recognized categories are displayed specially on the platform, but custom categories are also allowed.",
+      "markdownDescription": "**Categories**  \nCategorize your app for easier discovery on the DNAnexus platform. The values listed below are **recognized categories** that receive special treatment in the UI (organized sections, filtering, etc.). However, you can also specify **custom category names** if none of the recognized categories fit your use case.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "Annotation",
+          "Assembly",
+          "Debugging",
+          "Export",
+          "Import",
+          "Mappings Manipulation",
+          "Read Manipulation",
+          "Read Mapping",
+          "Reports",
+          "RNA-Seq",
+          "Statistics",
+          "Structural Variation",
+          "Variation Calling"
+        ],
+        "markdownEnumDescriptions": [
+          "Tools for annotating variants, genes, or genomic regions.",
+          "Genome or transcriptome assembly tools.",
+          "Development and debugging utilities.",
+          "Export data to external formats or systems.",
+          "Import data from external sources.",
+          "Manipulate alignment/mapping files (BAM/SAM/CRAM).",
+          "Quality control, trimming, filtering of sequencing reads.",
+          "Align reads to reference genomes.",
+          "Generate analysis reports and visualizations.",
+          "RNA sequencing analysis (expression, splicing, etc.).",
+          "Statistical analysis tools.",
+          "Detect structural variants (SVs, CNVs, etc.).",
+          "Call variants (SNPs, indels) from sequencing data."
+        ]
       },
       "additionalProperties": false
     },
     "access": {
       "type": "object",
-      "description": "Access control settings for the app.",
-      "markdownDescription": "**Access**  \nAccess control settings for the app.",
+      "description": "Access control settings for the app. Request additional permissions beyond default limited access.",
+      "markdownDescription": "**Access**  \nRequest additional permissions for the app. By default, apps have limited access to ensure privacy and reproducibility. See [App Permissions](https://documentation.dnanexus.com/developer/apps/app-permissions) for details.",
+      "properties": {
+        "project": {
+          "type": "string",
+          "enum": ["NONE", "VIEW", "UPLOAD", "CONTRIBUTE", "ADMINISTER"],
+          "description": "Access level to the project in which the app is run.",
+          "markdownDescription": "**Project Access**  \nGrant the app access to the project in which it is run. Default is `NONE` for apps, `VIEW` for applets.",
+          "markdownEnumDescriptions": [
+            "No access to the project.",
+            "Read-only access to project contents.",
+            "Can upload files to the project.",
+            "Can create, modify, and delete objects.",
+            "Full administrative access to the project."
+          ]
+        },
+        "allProjects": {
+          "type": "string",
+          "enum": ["NONE", "VIEW", "UPLOAD", "CONTRIBUTE", "ADMINISTER"],
+          "description": "Access level to all projects the user can access.",
+          "markdownDescription": "**All Projects Access**  \nGrant the app access to all projects the user running the app can access. Use this carefully as it grants broad access.",
+          "markdownEnumDescriptions": [
+            "No access to other projects.",
+            "Read-only access to all user projects.",
+            "Can upload files to all user projects.",
+            "Can create, modify, and delete objects in all user projects.",
+            "Full administrative access to all user projects."
+          ]
+        },
+        "network": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Domain name or IP address."
+              },
+              "description": "List of specific domains the app can access."
+            },
+            {
+              "type": "string",
+              "enum": ["*"],
+              "description": "Grant access to all domains."
+            }
+          ],
+          "description": "Network access permissions. Provide specific domains or '*' for all.",
+          "markdownDescription": "**Network Access**  \nGrant the app network access. Provide an array of specific domains (e.g., `['github.com', 'api.example.com']`) or use `'*'` to allow all domains."
+        },
+        "developer": {
+          "type": "boolean",
+          "description": "Allow the app to act as a developer on behalf of the user.",
+          "markdownDescription": "**Developer Access**  \nGrant the app permissions to act as a developer on behalf of the user. This allows the app to create new apps, access unpublished apps, etc. **Use with extreme caution**."
+        }
+      },
       "additionalProperties": false
     },
     "ignoreReuse": {
@@ -658,7 +877,8 @@
       "additionalProperties": false
     },
     "treeTurnaroundTimeThreshold": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
       "description": "Threshold for tree turnaround time in seconds.",
       "markdownDescription": "**Tree Turnaround Time Threshold (in seconds)**  \nFor a root execution, the turnaround time is the time between its creation time and the time it reaches the [terminal state](https://documentation.dnanexus.com/user/running-apps-and-workflows/job-lifecycle) (or the current time if it is not in a terminal state). The terminal states of an execution are `done`, `terminated`, and `failed`.",
       "additionalProperties": false

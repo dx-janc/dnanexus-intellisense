@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "System Requirements Entry Point Mapping",
+  "type": "object",
+  "description": "System requirements mapping for entry points. Keys are entry point names or '*' for all entry points.",
+  "markdownDescription": "**System Requirements**  \nDefine system requirements for each entry point. Use `*` to apply requirements to all entry points, or specify individual entry point names.",
+  "additionalProperties": {
+    "type": "object",
+    "description": "Requirements for a specific entry point.",
+    "markdownDescription": "**Entry Point Requirements**  \nSystem requirements for this entry point.",
+    "properties": {
+      "instanceType": {
+        "type": "string",
+        "description": "Instance type for this entry point. Must match the cloud provider for the region.",
+        "markdownDescription": "**Instance Type**  \nInstance type for this entry point. The value must be appropriate for the cloud provider of the region where the app runs."
+      },
+      "fpgaDriver": {
+        "type": "string",
+        "description": "FPGA driver version required. Use format 'version:hash' (e.g., '1.4.0:111.14.4.5.0-1').",
+        "markdownDescription": "**FPGA Driver**  \nFPGA driver version required for this entry point. Format: `version:hash` (e.g., `1.4.0:111.14.4.5.0-1`). Only applicable when using FPGA instance types."
+      },
+      "nvidiaDriver": {
+        "type": "string",
+        "description": "NVIDIA driver version required. Use format 'version:hash' (e.g., '450.80.02:525.147.05-0ubuntu1~20.04.1').",
+        "markdownDescription": "**NVIDIA Driver**  \nNVIDIA GPU driver version required for this entry point. Format: `version:hash` (e.g., `450.80.02:525.147.05-0ubuntu1~20.04.1`). Only applicable when using GPU instance types."
+      },
+      "clusterSpec": {
+        "type": "object",
+        "description": "Spark cluster configuration for distributed computing.",
+        "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["spark"],
+            "description": "Type of cluster. Currently only 'spark' is supported.",
+            "markdownDescription": "**Cluster Type**  \nType of cluster to provision. Currently only `spark` is supported."
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the cluster software (e.g., '2.4.4').",
+            "markdownDescription": "**Version**  \nVersion of Spark to use (e.g., `2.4.4`, `3.1.1`)."
+          },
+          "initialInstanceCount": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Initial number of worker instances in the cluster.",
+            "markdownDescription": "**Initial Instance Count**  \nNumber of worker nodes to provision initially. Must be at least 1."
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            },
+            "description": "Array of port numbers to expose from worker nodes.",
+            "markdownDescription": "**Ports**  \nPort numbers to expose from worker nodes for inter-node communication."
+          },
+          "bootstrapScript": {
+            "type": "string",
+            "description": "Shell script to run on each worker node after startup.",
+            "markdownDescription": "**Bootstrap Script**  \nShell script to execute on each worker node after it starts. Use this to install additional software or configure the environment."
+          }
+        },
+        "required": ["type", "version", "initialInstanceCount"],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}
