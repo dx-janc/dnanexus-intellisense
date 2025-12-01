@@ -21,9 +21,9 @@
     },
     "version": {
       "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "description": "Semantic version of the asset (e.g., '1.0.0'). Update this when making changes to the asset.",
-      "markdownDescription": "**Version**  \nSemantic version of the asset, e.g., `1.0.0`. Update this field whenever you make changes to the asset.  \n[Semantic Versioning Guide](https://semver.org/)"
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$",
+      "description": "Semantic version of the asset (e.g., '1.0.0', '1.0.0-rc.1', '1.0.0+build.123'). Update this when making changes to the asset.",
+      "markdownDescription": "**Version**  \nSemantic version of the asset following [semver](https://semver.org/) specification. Examples: `1.0.0`, `1.0.0-rc.1`, `1.0.0+build.123`. Update this field whenever you make changes to the asset."
     },
     "title": {
       "type": "string",

@@ -48,9 +48,9 @@
     },
     "version": {
       "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "description": "Semantic versioning (e.g. 0.0.1).",
-      "markdownDescription": "**Version**  \nSemantic versioning for the app, e.g., `1.0.0`. Update this field whenever you make changes to the app.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$",
+      "description": "Semantic versioning (e.g. 1.0.0, 1.0.0-rc.1, 1.0.0+build.123).",
+      "markdownDescription": "**Version**  \nSemantic versioning for the app following [semver](https://semver.org/) specification. Examples: `1.0.0`, `1.0.0-rc.1`, `1.0.0+build.123`. Update this field whenever you make changes to the app.",
       "additionalProperties": false
     },
     "openSource": {
