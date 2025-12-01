@@ -21,6 +21,7 @@
     },
     "version": {
       "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
       "description": "Semantic version of the asset (e.g., '1.0.0'). Update this when making changes to the asset.",
       "markdownDescription": "**Version**  \nSemantic version of the asset, e.g., `1.0.0`. Update this field whenever you make changes to the asset.  \n[Semantic Versioning Guide](https://semver.org/)"
     },
@@ -43,7 +44,7 @@
       "description": "The base operating system for the asset. Only 'Ubuntu' is currently supported.",
       "markdownDescription": "**Distribution**  \nThe base operating system for the asset. Only `Ubuntu` is supported.",
       "markdownEnumDescriptions": [
-        "`Ubuntu`: The only supported OS distribution for DNAnexus assets. [Learn more](https://ubuntu.com/)"
+        "The only supported OS distribution for DNAnexus assets. [Learn more](https://ubuntu.com/)"
       ]
     },
     "release": {
@@ -58,13 +59,12 @@
       "description": "The Ubuntu release version for the asset (e.g., '24.04'). Must match the runSpec.release of the app(let) that uses this asset.",
       "markdownDescription": "**Release**  \nThe Ubuntu release version for the asset (e.g., `24.04`). Must match the `runSpec.release` of the app(let) that uses this asset.",
       "markdownEnumDescriptions": [
-        "`24.04`: Ubuntu 24.04 LTS (latest supported release). [Ubuntu 24.04](https://releases.ubuntu.com/24.04/) ",
-        "`20.04`: Ubuntu 20.04 LTS. [Ubuntu 20.04](https://releases.ubuntu.com/20.04/) ",
-        "`16.04`: Ubuntu 16.04 LTS. [Ubuntu 16.04](https://releases.ubuntu.com/16.04/) ",
-        "`14.04`: Ubuntu 14.04 LTS. [Ubuntu 14.04](https://releases.ubuntu.com/14.04/) ",
-        "`12.04`: Ubuntu 12.04 LTS. [Ubuntu 12.04](https://releases.ubuntu.com/12.04/) "
-      ],
-      "additionalProperties": false
+        "[Ubuntu 24.04 LTS](https://releases.ubuntu.com/24.04/) (latest supported release)",
+        "[Ubuntu 20.04 LTS](https://releases.ubuntu.com/20.04/)",
+        "[Ubuntu 16.04 LTS](https://releases.ubuntu.com/16.04/)",
+        "[Ubuntu 14.04 LTS](https://releases.ubuntu.com/14.04/)",
+        "[Ubuntu 12.04 LTS](https://releases.ubuntu.com/12.04/)"
+      ]
     },
     "execDepends": {
       "$ref": "./execDepends.schema.json",
@@ -73,8 +73,7 @@
     "instanceType": {
       "type": "string",
       "description": "DNAnexus instance type (e.g., 'mem1_ssd1_v2_x8') used to build the asset bundle. Choose based on resource requirements.",
-      "markdownDescription": "**Instance Type**  \nDNAnexus instance type (e.g., `mem1_ssd1_v2_x8`) used to build the asset bundle. Select based on your resource requirements.",
-      "additionalProperties": false
+      "markdownDescription": "**Instance Type**  \nDNAnexus instance type (e.g., `mem1_ssd1_v2_x8`) used to build the asset bundle. Select based on your resource requirements."
     },
     "excludeResource": {
       "type": "array",
@@ -82,8 +81,7 @@
         "type": "string"
       },
       "description": "List of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources.",
-      "markdownDescription": "**Exclude Resource**  \nList of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources.",
-      "additionalProperties": false
+      "markdownDescription": "**Exclude Resource**  \nList of files or directories to exclude from the asset bundle. Useful for omitting temporary or unnecessary resources."
     },
     "runSpecVersion": {
       "type": "string",
@@ -94,10 +92,9 @@
       "description": "Internal versioning for asset builder logic. Usually leave as default unless instructed otherwise.",
       "markdownDescription": "**runSpecVersion**  \nInternal versioning for asset builder logic. Usually leave as default unless instructed otherwise.",
       "markdownEnumDescriptions": [
-        "`0`: Legacy asset builder logic.",
-        "`1`: Current asset builder logic."
-      ],
-      "additionalProperties": false
+        "Legacy asset builder logic.",
+        "Current asset builder logic."
+      ]
     }
   }
 }

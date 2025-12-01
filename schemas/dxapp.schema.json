@@ -262,8 +262,8 @@
           "description": "The language interpreter to use for running the app.",
           "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app.",
           "markdownEnumDescriptions": [
-            "`bash`: Bash shell interpreter.",
-            "`python3`: Python 3 interpreter."
+            "Bash shell interpreter.",
+            "Python 3 interpreter."
           ]
         },
         "file": {
@@ -279,7 +279,7 @@
           "description": "OS Distribution.",
           "markdownDescription": "**Distribution**  \nOperating system distribution for the app. Only `Ubuntu` is supported.",
           "markdownEnumDescriptions": [
-            "`Ubuntu`: The only supported OS distribution for DNAnexus apps."
+            "The only supported OS distribution for DNAnexus apps."
           ]
         },
         "release": {
@@ -294,11 +294,11 @@
           "description": "Ubuntu release version.",
           "markdownDescription": "**Release**  \nUbuntu release version for the app.",
           "markdownEnumDescriptions": [
-            "`24.04`: Ubuntu 24.04 LTS (latest supported release).",
-            "`20.04`: Ubuntu 20.04 LTS.",
-            "`16.04`: Ubuntu 16.04 LTS.",
-            "`14.04`: Ubuntu 14.04 LTS.",
-            "`12.04`: Ubuntu 12.04 LTS."
+            "Ubuntu 24.04 LTS (latest supported release).",
+            "Ubuntu 20.04 LTS.",
+            "Ubuntu 16.04 LTS.",
+            "Ubuntu 14.04 LTS.",
+            "Ubuntu 12.04 LTS."
           ]
         },
         "execDepends": {
@@ -370,16 +370,16 @@
           "oci:us-ashburn-1"
         ],
         "markdownEnumDescriptions": [
-          "`aws:us-east-1`: AWS US (East)",
-          "`aws:eu-central-1`: AWS Europe (Frankfurt)",
-          "`aws:eu-west-2`: AWS UKB-RAP (London)",
-          "`aws:eu-west-2-g`: AWS Europe (London)",
-          "`aws:me-south-1`: AWS Middle East (Bahrain)",
-          "`aws:ap-southeast-2`: AWS Asia Pacific (Sydney)",
-          "`azure:westus`: Azure West US",
-          "`azure:westeurope`: Azure West Europe",
-          "`azure:uksouth-ofh`: Azure OFH-TRE (London)",
-          "`oci:us-ashburn-1`: OCI US (East)"
+          "AWS US (East)",
+          "AWS Europe (Frankfurt)",
+          "AWS UKB-RAP (London)",
+          "AWS Europe (London)",
+          "AWS Middle East (Bahrain)",
+          "AWS Asia Pacific (Sydney)",
+          "Azure West US",
+          "Azure West Europe",
+          "Azure UK South OFH",
+          "OCI US (Ashburn)"
         ]
       },
       "patternProperties": {
