@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FPGA Instance Types",
+  "description": "FPGA instance types available on AWS on the DNAnexus Platform",
+  "type": "string",
+  "enum": [
+    "mem3_ssd2_fpga1_x8",
+    "mem3_ssd2_fpga1_x16",
+    "mem3_ssd2_fpga1_x24",
+    "mem3_ssd2_fpga2_x48",
+    "mem3_ssd2_fpga1_x64",
+    "mem3_ssd2_fpga8_x192"
+  ],
+  "markdownEnumDescriptions": [
+    "`mem3_ssd2_fpga1_x8`: 8 cores, 122 GiB RAM, 470 GB storage, 1 FPGA - Deprecated (unavailable after December 20, 2025)",
+    "`mem3_ssd2_fpga1_x16`: 16 cores, 244 GiB RAM, 940 GB storage, 2 FPGAs - Deprecated (unavailable after December 20, 2025)",
+    "`mem3_ssd2_fpga1_x24`: 24 cores, 256 GiB RAM, 940 GB storage, 1 FPGA - Limited access",
+    "`mem3_ssd2_fpga2_x48`: 48 cores, 512 GiB RAM, 1,880 GB storage, 2 FPGAs - Limited access",
+    "`mem3_ssd2_fpga1_x64`: 64 cores, 976 GiB RAM, 3,760 GB storage, 8 FPGAs - Deprecated (unavailable after December 20, 2025)",
+    "`mem3_ssd2_fpga8_x192`: 192 cores, 2,048 GiB RAM, 7,520 GB storage, 8 FPGAs - High memory, Limited access"
+  ]
+}

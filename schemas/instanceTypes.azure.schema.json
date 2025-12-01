@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Azure Instance Types",
+  "description": "Standard Azure instance types available on the DNAnexus Platform",
+  "type": "string",
+  "enum": [
+    "azure:mem1_ssd1_x2",
+    "azure:mem1_ssd1_x4",
+    "azure:mem1_ssd1_x8",
+    "azure:mem1_ssd1_x16",
+    "azure:mem2_ssd1_x1",
+    "azure:mem2_ssd1_x2",
+    "azure:mem2_ssd1_x4",
+    "azure:mem2_ssd1_x8",
+    "azure:mem2_ssd1_x16",
+    "azure:mem3_ssd1_x2",
+    "azure:mem3_ssd1_x4",
+    "azure:mem3_ssd1_x8",
+    "azure:mem3_ssd1_x16",
+    "azure:mem3_ssd1_x20",
+    "azure:mem4_ssd1_x2",
+    "azure:mem4_ssd1_x4",
+    "azure:mem4_ssd1_x8",
+    "azure:mem4_ssd1_x16",
+    "azure:mem4_ssd1_x32",
+    "azure:mem5_ssd2_x64",
+    "azure:mem5_ssd2_x128"
+  ]
+}

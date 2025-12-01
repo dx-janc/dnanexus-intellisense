@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DNAnexus App Metadata",
   "type": "object",
   "required": [
@@ -295,6 +295,13 @@
           },
           "additionalProperties": false
         },
+        "systemRequirements": {
+          "type": "object",
+          "description": "System requirements for the app (deprecated, use 'regionalOptions' instead).",
+          "markdownDescription": "**System Requirements**  \nSystem requirements for the app.",
+          "deprecationMessage": "This property is deprecated. Use 'regionalOptions.regionName.systemRequirements' instead for region-specific system requirements.",
+          "additionalProperties": false
+        },
         "interpreter": {
           "type": "string",
           "enum": [
@@ -397,80 +404,197 @@
     "regionalOptions": {
       "type": "object",
       "description": "Region-specific options for app execution.",
-      "markdownDescription": "**Regional Options**  \nRegion-specific options for app execution.",
-      "additionalProperties": {
-        "type": "object",
-        "properties": {
-          "systemRequirements": {
-            "type": "object",
-            "description": "System requirements for the region.",
-            "markdownDescription": "**System Requirements**  \nSystem requirements for the region.",
-            "properties": {
-              "instanceType": {
-                "type": "string",
-                "description": "Instance type for the region.",
-                "markdownDescription": "**Instance Type**  \nInstance type for the region."
-              },
-              "assetDepends": {
-                "type": "array",
-                "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
-                "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
-                "items": {
-                  "type": "object",
+      "markdownDescription": "**Regional Options**  \nRegion-specific options for app execution. Keys must be valid DNAnexus region names.",
+      "propertyNames": {
+        "enum": [
+          "aws:us-east-1",
+          "aws:eu-central-1",
+          "aws:eu-west-2",
+          "aws:eu-west-2-g",
+          "aws:me-south-1",
+          "aws:ap-southeast-2",
+          "azure:westus",
+          "azure:westeurope",
+          "azure:uksouth-ofh"
+        ],
+        "markdownEnumDescriptions": [
+          "`aws:us-east-1`: AWS US (East)",
+          "`aws:eu-central-1`: AWS Europe (Frankfurt)",
+          "`aws:eu-west-2`: AWS UKB-RAP (London)",
+          "`aws:eu-west-2-g`: AWS Europe (London)",
+          "`aws:me-south-1`: AWS Middle East (Bahrain)",
+          "`aws:ap-southeast-2`: AWS Asia Pacific (Sydney)",
+          "`azure:westus`: Azure West US",
+          "`azure:westeurope`: Azure West Europe",
+          "`azure:uksouth-ofh`: Azure OFH-TRE (London)"
+        ]
+      },
+      "patternProperties": {
+        "^aws:": {
+          "type": "object",
+          "properties": {
+            "systemRequirements": {
+              "type": "object",
+              "description": "System requirements for the AWS region.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region.",
+              "properties": {
+                "instanceType": {
                   "oneOf": [
                     {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "ID of the asset."
-                        },
-                        "folder": {
-                          "type": "string",
-                          "description": "Optional folder path for the asset."
-                        }
-                      },
-                      "additionalProperties": false
+                      "$ref": "./instanceTypes.aws.schema.json"
                     },
                     {
-                      "required": [
-                        "name",
-                        "project",
-                        "version"
-                      ],
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Name of the asset."
-                        },
-                        "project": {
-                          "type": "string",
-                          "description": "Project containing the asset."
-                        },
-                        "version": {
-                          "type": "string",
-                          "description": "Version of the asset."
-                        },
-                        "folder": {
-                          "type": "string",
-                          "description": "Optional folder path for the asset."
-                        }
-                      },
-                      "additionalProperties": false
+                      "$ref": "./instanceTypes.gpu.schema.json"
+                    },
+                    {
+                      "$ref": "./instanceTypes.fpga.schema.json"
                     }
                   ],
-                  "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+                  "description": "Instance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types.",
+                  "markdownDescription": "**Instance Type**  \nInstance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types."
                 },
-                "additionalProperties": false
-              }
-            },
-            "additionalProperties": false
-          }
+                "assetDepends": {
+                  "type": "array",
+                  "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
+                  "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
+                  "items": {
+                    "type": "object",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "id"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "ID of the asset."
+                          },
+                          "folder": {
+                            "type": "string",
+                            "description": "Optional folder path for the asset."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      {
+                        "required": [
+                          "name",
+                          "project",
+                          "version"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the asset."
+                          },
+                          "project": {
+                            "type": "string",
+                            "description": "Project containing the asset."
+                          },
+                          "version": {
+                            "type": "string",
+                            "description": "Version of the asset."
+                          },
+                          "folder": {
+                            "type": "string",
+                            "description": "Optional folder path for the asset."
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ],
+                    "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         },
-        "additionalProperties": false
-      }
+        "^azure:": {
+          "type": "object",
+          "properties": {
+            "systemRequirements": {
+              "type": "object",
+              "description": "System requirements for the Azure region.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region.",
+              "properties": {
+                "instanceType": {
+                  "oneOf": [
+                    {
+                      "$ref": "./instanceTypes.azure.schema.json"
+                    },
+                    {
+                      "$ref": "./instanceTypes.gpu.schema.json"
+                    }
+                  ],
+                  "description": "Instance type for this Azure region. Choose from standard Azure or GPU instance types.",
+                  "markdownDescription": "**Instance Type**  \nInstance type for this Azure region. Choose from standard Azure or GPU instance types."
+                },
+                "assetDepends": {
+                  "type": "array",
+                  "description": "List of asset dependencies required for this region. Each item must specify either an 'id' (string) or a combination of 'name', 'project', and 'version' (all strings). Optionally, 'folder' (string) can be included.",
+                  "markdownDescription": "**assetDepends**  \nList of asset dependencies required for this region. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included.",
+                  "items": {
+                    "type": "object",
+                    "oneOf": [
+                      {
+                        "required": [
+                          "id"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "ID of the asset."
+                          },
+                          "folder": {
+                            "type": "string",
+                            "description": "Optional folder path for the asset."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      {
+                        "required": [
+                          "name",
+                          "project",
+                          "version"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the asset."
+                          },
+                          "project": {
+                            "type": "string",
+                            "description": "Project containing the asset."
+                          },
+                          "version": {
+                            "type": "string",
+                            "description": "Version of the asset."
+                          },
+                          "folder": {
+                            "type": "string",
+                            "description": "Optional folder path for the asset."
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ],
+                    "description": "Asset dependency object. Must specify either 'id' or all of 'name', 'project', and 'version'. Optionally, 'folder'."
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "details": {
       "description": "Additional details for the app.",
@@ -500,7 +624,7 @@
     "treeTurnaroundTimeThreshold": {
       "type": "number",
       "description": "Threshold for tree turnaround time in seconds.",
-      "markdownDescription": "**Tree Turnaround Time Threshold**  \nThreshold for tree turnaround time in seconds.",
+      "markdownDescription": "**Tree Turnaround Time Threshold (in seconds)**  \nFor a root execution, the turnaround time is the time between its creation time and the time it reaches the [terminal state](https://documentation.dnanexus.com/user/running-apps-and-workflows/job-lifecycle) (or the current time if it is not in a terminal state). The terminal states of an execution are `done`, `terminated`, and `failed`.",
       "additionalProperties": false
     },
     "billing": {
@@ -523,8 +647,9 @@
           }
         }
       ],
-      "description": "Resource files or directories required by the app.",
-      "markdownDescription": "**Resources**  \nResource files or directories required by the app."
+      "description": "Resource files or directories required by the app (deprecated, use 'regionalOptions' instead).",
+      "markdownDescription": "**Resources**  \nResource files or directories required by the app. **Deprecated:** Use 'regionalOptions' for region-specific resources.",
+      "deprecationMessage": "This property is deprecated. Use 'regionalOptions' for region-specific resources."
     }
   },
   "additionalProperties": false
