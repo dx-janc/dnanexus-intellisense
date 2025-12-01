@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DNAnexus Link",
+  "description": "DNAnexus links are JSON hashes used to refer to data objects and execution outputs. The platform recognizes these special values and resolves them at runtime.",
+  "markdownDescription": "**DNAnexus Link**  \nSpecial JSON syntax recognized by the DNAnexus platform to reference data objects, job outputs, analysis outputs, or metadata. The structure varies based on what you're linking to.",
+  "oneOf": [
+    {
+      "type": "string",
+      "pattern": "^(file|record|applet|workflow|project|container|job|analysis|stage)-[A-Za-z0-9]{24}$",
+      "description": "Simple string form: Data object ID (file-xxx, record-xxx, applet-xxx, etc.)",
+      "markdownDescription": "**Simple Data Object Link**  \nDirect reference to a data object by ID. Example: `file-BFY5vKKgqZk89Vzk0Zj00GQb`  \nUsed for: Files, Records, Applets in the current or findable project."
+    },
+    {
+      "type": "object",
+      "required": ["$dnanexus_link"],
+      "properties": {
+        "$dnanexus_link": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(file|record|applet|workflow|project|container)-[A-Za-z0-9]{24}$",
+              "description": "Data object ID",
+              "markdownDescription": "**Data Object ID**  \nSimple reference by ID. The platform searches for the object if not in the current project."
+            },
+            {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(file|record|applet|workflow|project|container)-[A-Za-z0-9]{24}$",
+                  "description": "Data object ID",
+                  "markdownDescription": "**Data Object ID**  \nThe unique identifier of the data object (e.g., `file-xxx`, `record-xxx`)."
+                },
+                "project": {
+                  "type": "string",
+                  "pattern": "^(project|container)-[A-Za-z0-9]{24}$",
+                  "description": "Project or container ID where the object is located",
+                  "markdownDescription": "**Project ID**  \nOptional. Specifies which project contains the data object. If omitted, the platform searches for the object."
+                },
+                "metadata": {
+                  "type": "string",
+                  "description": "Path to metadata within the object (e.g., 'name', 'properties.foo', 'details.genome')",
+                  "markdownDescription": "**Metadata Path**  \nAccess metadata from the data object:  \n- `name`: Object name  \n- `properties.<key>`: Specific property value  \n- `details` or `details.<path>`: Details object or nested value"
+                }
+              },
+              "additionalProperties": false,
+              "description": "Data object with optional project and metadata",
+              "markdownDescription": "**Data Object Link**  \nReference a specific data object, optionally in a specific project, with optional metadata extraction."
+            },
+            {
+              "type": "object",
+              "required": ["job", "field"],
+              "properties": {
+                "job": {
+                  "type": "string",
+                  "pattern": "^job-[A-Za-z0-9]{24}$",
+                  "description": "Job ID",
+                  "markdownDescription": "**Job ID**  \nThe ID of the job whose output you're referencing (e.g., `job-xxx`)."
+                },
+                "field": {
+                  "type": "string",
+                  "description": "Output field name from the job",
+                  "markdownDescription": "**Output Field**  \nThe name of the output field from the job."
+                },
+                "index": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Array index (0-based) if the output is an array",
+                  "markdownDescription": "**Array Index**  \n0-based index to reference a specific element when the output is an array. Example: `0` for first element."
+                },
+                "metadata": {
+                  "type": "string",
+                  "description": "Path to metadata within the resolved object",
+                  "markdownDescription": "**Metadata Path**  \nExtract metadata from the resolved object once the job completes."
+                }
+              },
+              "additionalProperties": false,
+              "description": "Job-based object reference (JBOR). The job stays in 'waiting_on_input' until the referenced job completes.",
+              "markdownDescription": "**Job Output Reference (JBOR)**  \nReference the output of another job. The dependent job waits until the referenced job completes.  \n**Used for:** Passing data between individual jobs in a pipeline."
+            },
+            {
+              "type": "object",
+              "required": ["analysis", "field"],
+              "properties": {
+                "analysis": {
+                  "type": "string",
+                  "pattern": "^analysis-[A-Za-z0-9]{24}$",
+                  "description": "Analysis ID",
+                  "markdownDescription": "**Analysis ID**  \nThe ID of the analysis (workflow execution) whose output you're referencing."
+                },
+                "field": {
+                  "type": "string",
+                  "description": "Output field name: either 'stage-xxx.outputField' or exported workflow output name",
+                  "markdownDescription": "**Output Field**  \nEither:  \n- `<stage-id>.<output-field>` for stage-specific output  \n- `<exported-name>` for workflow-level exported output"
+                },
+                "stage": {
+                  "type": "string",
+                  "pattern": "^stage-[A-Za-z0-9]{24}$",
+                  "description": "Stage ID (alternative explicit stage reference)",
+                  "markdownDescription": "**Stage ID**  \nOptional. Explicitly specify the stage ID when referencing a stage output."
+                },
+                "index": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Array index (0-based) if the output is an array",
+                  "markdownDescription": "**Array Index**  \n0-based index to reference a specific element when the output is an array."
+                },
+                "metadata": {
+                  "type": "string",
+                  "description": "Path to metadata within the resolved object",
+                  "markdownDescription": "**Metadata Path**  \nExtract metadata from the resolved object once the analysis completes."
+                }
+              },
+              "additionalProperties": false,
+              "description": "Analysis output reference. References the output of a completed or running workflow/analysis.",
+              "markdownDescription": "**Analysis Output Reference**  \nReference the output of a workflow/analysis execution.  \n**Used for:** Accessing results from a completed workflow or passing analysis outputs to downstream jobs."
+            },
+            {
+              "type": "object",
+              "required": ["stage", "outputField"],
+              "properties": {
+                "stage": {
+                  "type": "string",
+                  "description": "Stage ID within a workflow definition",
+                  "markdownDescription": "**Stage ID**  \nThe identifier of the stage within the workflow (e.g., `stage-alignment`)."
+                },
+                "outputField": {
+                  "type": "string",
+                  "description": "Output field name from the stage",
+                  "markdownDescription": "**Output Field**  \nThe name of the output field from the specified stage."
+                }
+              },
+              "additionalProperties": false,
+              "description": "Stage output reference used inside workflow definitions to connect stages.",
+              "markdownDescription": "**Stage Output Reference**  \nUsed inside workflow definitions to pass data from one stage to another.  \n**Used for:** Connecting workflow stages (e.g., passing alignment output to variant calling stage)."
+            },
+            {
+              "type": "object",
+              "required": ["workflowInputField"],
+              "properties": {
+                "workflowInputField": {
+                  "type": "string",
+                  "description": "Name of a workflow-level input field",
+                  "markdownDescription": "**Workflow Input Field**  \nThe name of a workflow-level input parameter."
+                }
+              },
+              "additionalProperties": false,
+              "description": "Workflow input reference used inside workflow stage definitions to access global workflow inputs.",
+              "markdownDescription": "**Workflow Input Reference**  \nUsed inside workflow stage definitions to pass global workflow inputs down to specific stages.  \n**Used for:** Connecting workflow-level inputs to individual stage inputs."
+            },
+            {
+              "type": "object",
+              "required": ["input"],
+              "properties": {
+                "input": {
+                  "type": "string",
+                  "description": "Name of another input field in the same job/app",
+                  "markdownDescription": "**Input Field Name**  \nReferences another input field in the same execution."
+                },
+                "metadata": {
+                  "type": "string",
+                  "description": "Path to metadata within the referenced input object (e.g., 'details.genome')",
+                  "markdownDescription": "**Metadata Path**  \nExtract metadata from the object provided in the referenced input field.  \nExample: `details.genome` to get the genome object used to create an indexed genome."
+                }
+              },
+              "additionalProperties": false,
+              "description": "Input field reference for accessing metadata from another input in the same execution.",
+              "markdownDescription": "**Input Field Reference**  \nReference metadata from another input field in the same job/app.  \n**Used for:** Extracting related data (e.g., getting the original genome from an indexed genome input)."
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

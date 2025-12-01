@@ -405,7 +405,7 @@
             "bundledDepends": {
               "type": "array",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
                 "required": ["name", "id"],
@@ -416,18 +416,9 @@
                     "markdownDescription": "**Name**  \nFilename of the bundled dependency."
                   },
                   "id": {
-                    "type": "object",
+                    "$ref": "./dnanexusLink.schema.json",
                     "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
-                    "properties": {
-                      "$dnanexus_link": {
-                        "type": "string",
-                        "description": "File ID in DNAnexus.",
-                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
-                      }
-                    },
-                    "required": ["$dnanexus_link"],
-                    "additionalProperties": false
+                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
                   }
                 },
                 "additionalProperties": false
@@ -480,7 +471,7 @@
             "bundledDepends": {
               "type": "array",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
                 "required": ["name", "id"],
@@ -491,18 +482,9 @@
                     "markdownDescription": "**Name**  \nFilename of the bundled dependency."
                   },
                   "id": {
-                    "type": "object",
+                    "$ref": "./dnanexusLink.schema.json",
                     "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
-                    "properties": {
-                      "$dnanexus_link": {
-                        "type": "string",
-                        "description": "File ID in DNAnexus.",
-                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
-                      }
-                    },
-                    "required": ["$dnanexus_link"],
-                    "additionalProperties": false
+                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
                   }
                 },
                 "additionalProperties": false
@@ -555,7 +537,7 @@
             "bundledDepends": {
               "type": "array",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
                 "required": ["name", "id"],
@@ -566,18 +548,9 @@
                     "markdownDescription": "**Name**  \nFilename of the bundled dependency."
                   },
                   "id": {
-                    "type": "object",
+                    "$ref": "./dnanexusLink.schema.json",
                     "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
-                    "properties": {
-                      "$dnanexus_link": {
-                        "type": "string",
-                        "description": "File ID in DNAnexus.",
-                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
-                      }
-                    },
-                    "required": ["$dnanexus_link"],
-                    "additionalProperties": false
+                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
                   }
                 },
                 "additionalProperties": false
