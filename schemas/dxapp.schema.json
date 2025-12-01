@@ -388,21 +388,72 @@
           "properties": {
             "systemRequirements": {
               "type": "object",
-              "description": "System requirements for the AWS region.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region.",
-              "properties": {
-                "instanceType": {
-                  "$ref": "./instanceTypes.aws.all.schema.json",
-                  "description": "Instance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types.",
-                  "markdownDescription": "**Instance Type**  \nInstance type for this AWS region. Choose from standard AWS, GPU, or FPGA instance types."
+              "description": "System requirements for this AWS region. Keys are entry point names or '*' for all entry points.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "instanceType": {
+                    "$ref": "./instanceTypes.aws.all.schema.json",
+                    "description": "Instance type for this entry point. Choose from standard AWS, GPU, or FPGA instance types.",
+                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard AWS, GPU, or FPGA instance types."
+                  }
                 },
-                "assetDepends": {
-                  "$ref": "./assetDepends.schema.json",
-                  "description": "List of asset dependencies required for this region.",
-                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
+                "additionalProperties": false
+              }
+            },
+            "bundledDepends": {
+              "type": "array",
+              "description": "Bundled dependencies for this region.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "items": {
+                "type": "object",
+                "required": ["name", "id"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the bundled dependency file.",
+                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
+                  },
+                  "id": {
+                    "type": "object",
+                    "description": "DNAnexus link to the file.",
+                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
+                    "properties": {
+                      "$dnanexus_link": {
+                        "type": "string",
+                        "description": "File ID in DNAnexus.",
+                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
+                      }
+                    },
+                    "required": ["$dnanexus_link"],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "assetDepends": {
+              "$ref": "./assetDepends.schema.json",
+              "description": "Asset dependencies for this region.",
+              "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
+            },
+            "resources": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Project ID or file ID for resources in this region."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "File ID for a resource."
+                  }
                 }
-              },
-              "additionalProperties": false
+              ],
+              "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
+              "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
           },
           "additionalProperties": false
@@ -412,21 +463,72 @@
           "properties": {
             "systemRequirements": {
               "type": "object",
-              "description": "System requirements for the Azure region.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region.",
-              "properties": {
-                "instanceType": {
-                  "$ref": "./instanceTypes.azure.all.schema.json",
-                  "description": "Instance type for this Azure region. Choose from standard Azure or GPU instance types.",
-                  "markdownDescription": "**Instance Type**  \nInstance type for this Azure region. Choose from standard Azure or GPU instance types."
+              "description": "System requirements for this Azure region. Keys are entry point names or '*' for all entry points.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "instanceType": {
+                    "$ref": "./instanceTypes.azure.all.schema.json",
+                    "description": "Instance type for this entry point. Choose from standard Azure or GPU instance types.",
+                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard Azure or GPU instance types."
+                  }
                 },
-                "assetDepends": {
-                  "$ref": "./assetDepends.schema.json",
-                  "description": "List of asset dependencies required for this region.",
-                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
+                "additionalProperties": false
+              }
+            },
+            "bundledDepends": {
+              "type": "array",
+              "description": "Bundled dependencies for this region.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "items": {
+                "type": "object",
+                "required": ["name", "id"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the bundled dependency file.",
+                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
+                  },
+                  "id": {
+                    "type": "object",
+                    "description": "DNAnexus link to the file.",
+                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
+                    "properties": {
+                      "$dnanexus_link": {
+                        "type": "string",
+                        "description": "File ID in DNAnexus.",
+                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
+                      }
+                    },
+                    "required": ["$dnanexus_link"],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "assetDepends": {
+              "$ref": "./assetDepends.schema.json",
+              "description": "Asset dependencies for this region.",
+              "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
+            },
+            "resources": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Project ID or file ID for resources in this region."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "File ID for a resource."
+                  }
                 }
-              },
-              "additionalProperties": false
+              ],
+              "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
+              "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
           },
           "additionalProperties": false
@@ -436,21 +538,72 @@
           "properties": {
             "systemRequirements": {
               "type": "object",
-              "description": "System requirements for the OCI region.",
-              "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region.",
-              "properties": {
-                "instanceType": {
-                  "$ref": "./instanceTypes.oci.all.schema.json",
-                  "description": "Instance type for this OCI region. Choose from standard OCI or GPU instance types.",
-                  "markdownDescription": "**Instance Type**  \nInstance type for this OCI region. Choose from standard OCI or GPU instance types."
+              "description": "System requirements for this OCI region. Keys are entry point names or '*' for all entry points.",
+              "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names or `*` for all entry points. Each value is an object with properties like `instanceType`.",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "instanceType": {
+                    "$ref": "./instanceTypes.oci.all.schema.json",
+                    "description": "Instance type for this entry point. Choose from standard OCI or GPU instance types.",
+                    "markdownDescription": "**Instance Type**  \nInstance type for this entry point. Choose from standard OCI or GPU instance types."
+                  }
                 },
-                "assetDepends": {
-                  "$ref": "./assetDepends.schema.json",
-                  "description": "List of asset dependencies required for this region.",
-                  "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required for this region."
+                "additionalProperties": false
+              }
+            },
+            "bundledDepends": {
+              "type": "array",
+              "description": "Bundled dependencies for this region.",
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and file ID.",
+              "items": {
+                "type": "object",
+                "required": ["name", "id"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the bundled dependency file.",
+                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
+                  },
+                  "id": {
+                    "type": "object",
+                    "description": "DNAnexus link to the file.",
+                    "markdownDescription": "**ID**  \nDNAnexus link object pointing to the file.",
+                    "properties": {
+                      "$dnanexus_link": {
+                        "type": "string",
+                        "description": "File ID in DNAnexus.",
+                        "markdownDescription": "**DNAnexus Link**  \nFile ID (e.g., `file-xxxx`)."
+                      }
+                    },
+                    "required": ["$dnanexus_link"],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "assetDepends": {
+              "$ref": "./assetDepends.schema.json",
+              "description": "Asset dependencies for this region.",
+              "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
+            },
+            "resources": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Project ID or file ID for resources in this region."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "File ID for a resource."
+                  }
                 }
-              },
-              "additionalProperties": false
+              ],
+              "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
+              "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
           },
           "additionalProperties": false
