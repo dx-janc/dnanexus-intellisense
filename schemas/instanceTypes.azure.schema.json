@@ -25,5 +25,28 @@
     "azure:mem4_ssd1_x8",
     "azure:mem5_ssd2_x128",
     "azure:mem5_ssd2_x64"
+  ],
+  "markdownEnumDescriptions": [
+    "`azure:mem1_ssd1_x16`: 16 cores, 31.4 GiB RAM, 254 GB storage",
+    "`azure:mem1_ssd1_x2`: 2 cores, 3.9 GiB RAM, 32 GB storage",
+    "`azure:mem1_ssd1_x4`: 4 cores, 7.8 GiB RAM, 64 GB storage",
+    "`azure:mem1_ssd1_x8`: 8 cores, 15.7 GiB RAM, 128 GB storage",
+    "`azure:mem2_ssd1_x1`: 1 core, 3.5 GiB RAM, 128 GB storage",
+    "`azure:mem2_ssd1_x16`: 16 cores, 56 GiB RAM, 512 GB storage",
+    "`azure:mem2_ssd1_x2`: 2 cores, 7 GiB RAM, 128 GB storage",
+    "`azure:mem2_ssd1_x4`: 4 cores, 14 GiB RAM, 128 GB storage",
+    "`azure:mem2_ssd1_x8`: 8 cores, 28 GiB RAM, 256 GB storage",
+    "`azure:mem3_ssd1_x16`: 16 cores, 112 GiB RAM, 512 GB storage",
+    "`azure:mem3_ssd1_x2`: 2 cores, 14 GiB RAM, 128 GB storage",
+    "`azure:mem3_ssd1_x20`: 20 cores, 140 GiB RAM, 640 GB storage",
+    "`azure:mem3_ssd1_x4`: 4 cores, 28 GiB RAM, 128 GB storage",
+    "`azure:mem3_ssd1_x8`: 8 cores, 56 GiB RAM, 256 GB storage",
+    "`azure:mem4_ssd1_x16`: 16 cores, 224 GiB RAM, 512 GB storage",
+    "`azure:mem4_ssd1_x2`: 2 cores, 28 GiB RAM, 128 GB storage",
+    "`azure:mem4_ssd1_x32`: 32 cores, 448 GiB RAM, 1,024 GB storage",
+    "`azure:mem4_ssd1_x4`: 4 cores, 56 GiB RAM, 128 GB storage",
+    "`azure:mem4_ssd1_x8`: 8 cores, 112 GiB RAM, 256 GB storage",
+    "`azure:mem5_ssd2_x128`: 128 cores, 3,892 GiB RAM, 16,384 GB storage - High memory: Expensive. Use with caution.",
+    "`azure:mem5_ssd2_x64`: 64 cores, 1,792 GiB RAM, 8,192 GB storage - High memory: Expensive. Use with caution."
   ]
 }
