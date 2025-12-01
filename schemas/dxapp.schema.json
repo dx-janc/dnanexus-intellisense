@@ -18,8 +18,9 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "Unique identifier for the app (e.g. 'my-app'). No spaces allowed.",
-      "markdownDescription": "**App Name**  \nUnique identifier for the app. Use lowercase letters, numbers, and underscores only. Example: `my_app`.",
+      "pattern": "^[a-z0-9_-]+$",
+      "description": "Unique identifier for the app(let). Can contain lowercase letters, numbers, hyphens, and underscores. No spaces allowed.",
+      "markdownDescription": "**App Name**  \nUnique identifier for the app(let). Can contain lowercase letters, numbers, hyphens (`-`), and underscores (`_`). No spaces or uppercase letters allowed. Example: `my-app` or `my_app_01`. Note: An app's name cannot be changed across versions.",
       "additionalProperties": false
     },
     "title": {
@@ -585,8 +586,55 @@
       "additionalProperties": false
     },
     "details": {
-      "description": "Additional details for the app.",
-      "markdownDescription": "**Details**  \nAdditional details for the app."
+      "type": "object",
+      "description": "Arbitrary metadata for the app. Recognized fields include contact info, upstream version, author, URL, licenses, citations, and changelog.",
+      "markdownDescription": "**Details**  \nArbitrary metadata for the app. Some key/value pairs are recognized by the DNAnexus website for rendering contact information and other metadata.",
+      "properties": {
+        "contactEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email for the app author or maintainer.",
+          "markdownDescription": "**Contact Email**  \nContact email for the app author or maintainer."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Citations for papers (e.g., DOI references).",
+          "markdownDescription": "**Citations**  \nCitations for papers. Use DOI format: `doi:10.1093/bioinformatics/btp352`"
+        },
+        "upstreamVersion": {
+          "type": "string",
+          "description": "Version number of the upstream executable (e.g., 'bwa-mem 0.7.12').",
+          "markdownDescription": "**Upstream Version**  \nVersion number of the upstream executable. Example: `0.7.12`"
+        },
+        "upstreamAuthor": {
+          "type": "string",
+          "description": "Name of the upstream author.",
+          "markdownDescription": "**Upstream Author**  \nName of the upstream author."
+        },
+        "upstreamUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL for the upstream executable or project.",
+          "markdownDescription": "**Upstream URL**  \nURL for the upstream executable or project."
+        },
+        "upstreamLicenses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Licenses for the upstream executable (e.g., 'GPLv3', 'MIT').",
+          "markdownDescription": "**Upstream Licenses**  \nLicenses for the upstream executable. Example: `GPLv3`, `MIT`"
+        },
+        "whatsNew": {
+          "type": "string",
+          "description": "Changelog or release notes. Can use Markdown formatting.",
+          "markdownDescription": "**What's New**  \nChangelog or release notes. Can use Markdown formatting."
+        }
+      },
+      "additionalProperties": true
     },
     "categories": {
       "type": "array",
