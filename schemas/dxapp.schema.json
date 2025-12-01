@@ -365,6 +365,11 @@
           "description": "Entry points that may be restarted if a restartable error occurs.",
           "markdownDescription": "**Restartable Entry Points**  \nSpecify which entry points can be automatically restarted on restartable errors. Use `\"all\"` to allow all entry points, or provide an array of specific entry point names."
         },
+        "inheritParentRestartOnPolicy": {
+          "type": "boolean",
+          "description": "Whether child jobs inherit parent's restart policy at runtime (defaults to false).",
+          "markdownDescription": "**Inherit Parent Restart On Policy**  \nWhen `true`, an `app-xxxx/new` or `applet-xxxx/new` job from a parent job inherits its parent's selected `executionPolicy.restartOn` value at runtime. When `false` (default), the job retains its policy from build time. Setting this to `false` does not prevent a parent execution (like an analysis) from overriding the job's `restartOn` policy."
+        },
         "executionPolicy": {
           "type": "object",
           "description": "Options governing job restart policy.",
@@ -433,13 +438,15 @@
           "type": "string",
           "enum": [
             "bash",
-            "python3"
+            "python3",
+            "python2.7"
           ],
           "description": "The language interpreter to use for running the app.",
           "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app.",
           "markdownEnumDescriptions": [
             "Bash shell interpreter.",
-            "Python 3 interpreter."
+            "Python 3 interpreter.",
+            "**DEPRECATED** Python 2.7 interpreter. DNAnexus stopped updating the Python 2 AEE on March 1, 2021, and no longer accepts new applets or apps with `python2.7`. Python 2 reached End-of-Life on January 1, 2020. Existing apps/applets using `python2.7` continue to run for reproducibility, but this value should only be present in historical versions."
           ]
         },
         "file": {
@@ -501,11 +508,6 @@
             },
             "additionalProperties": false
           }
-        },
-        "version": {
-          "type": "string",
-          "description": "Version of the run specification.",
-          "markdownDescription": "**RunSpec Version**  \nVersion of the run specification."
         }
       },
       "additionalProperties": false
@@ -823,6 +825,8 @@
           "Debugging",
           "Export",
           "Import",
+          "Interactive",
+          "Machine Learning",
           "Mappings Manipulation",
           "Read Manipulation",
           "Read Mapping",
@@ -830,6 +834,7 @@
           "RNA-Seq",
           "Statistics",
           "Structural Variation",
+          "Translational Informatics",
           "Variation Calling"
         ],
         "markdownEnumDescriptions": [
@@ -838,6 +843,8 @@
           "Development and debugging utilities.",
           "Export data to external formats or systems.",
           "Import data from external sources.",
+          "Interactive applications and visualizations.",
+          "Machine learning and AI-based analysis tools.",
           "Manipulate alignment/mapping files (BAM/SAM/CRAM).",
           "Quality control, trimming, filtering of sequencing reads.",
           "Align reads to reference genomes.",
@@ -845,6 +852,7 @@
           "RNA sequencing analysis (expression, splicing, etc.).",
           "Statistical analysis tools.",
           "Detect structural variants (SVs, CNVs, etc.).",
+          "Translational research and clinical informatics.",
           "Call variants (SNPs, indels) from sequencing data."
         ]
       },
@@ -919,12 +927,6 @@
       "minimum": 0,
       "description": "Threshold for tree turnaround time in seconds.",
       "markdownDescription": "**Tree Turnaround Time Threshold (in seconds)**  \nFor a root execution, the turnaround time is the time between its creation time and the time it reaches the [terminal state](https://documentation.dnanexus.com/user/running-apps-and-workflows/job-lifecycle) (or the current time if it is not in a terminal state). The terminal states of an execution are `done`, `terminated`, and `failed`.",
-      "additionalProperties": false
-    },
-    "billing": {
-      "type": "string",
-      "description": "Billing information for the app.",
-      "markdownDescription": "**Billing**  \nBilling information for the app.",
       "additionalProperties": false
     },
     "resources": {
