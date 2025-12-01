@@ -365,11 +365,6 @@
           "description": "Entry points that may be restarted if a restartable error occurs.",
           "markdownDescription": "**Restartable Entry Points**  \nSpecify which entry points can be automatically restarted on restartable errors. Use `\"all\"` to allow all entry points, or provide an array of specific entry point names."
         },
-        "inheritParentRestartOnPolicy": {
-          "type": "boolean",
-          "description": "Whether child jobs inherit parent's restart policy at runtime (defaults to false).",
-          "markdownDescription": "**Inherit Parent Restart On Policy**  \nWhen `true`, an `app-xxxx/new` or `applet-xxxx/new` job from a parent job inherits its parent's selected `executionPolicy.restartOn` value at runtime. When `false` (default), the job retains its policy from build time. Setting this to `false` does not prevent a parent execution (like an analysis) from overriding the job's `restartOn` policy."
-        },
         "executionPolicy": {
           "type": "object",
           "description": "Options governing job restart policy.",
