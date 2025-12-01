@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "DNAnexus App Metadata",
+  "title": "DNAnexus App/Applet Metadata",
+  "description": "Metadata specification for DNAnexus apps and applets. Apps and applets have different requirements: apps require 'developers', 'authorizedUsers', and 'regionalOptions'; applets only require basic fields and can use top-level 'systemRequirements'.",
   "type": "object",
   "required": [
     "name",
@@ -10,17 +11,14 @@
     "version",
     "inputSpec",
     "outputSpec",
-    "runSpec",
-    "developers",
-    "authorizedUsers",
-    "regionalOptions"
+    "runSpec"
   ],
   "properties": {
     "name": {
       "type": "string",
       "pattern": "^[a-z0-9_-]+$",
       "description": "Unique identifier for the app(let). Can contain lowercase letters, numbers, hyphens, and underscores. No spaces allowed.",
-      "markdownDescription": "**App Name**  \nUnique identifier for the app(let). Can contain lowercase letters, numbers, hyphens (`-`), and underscores (`_`). No spaces or uppercase letters allowed. Example: `my-app` or `my_app_01`. Note: An app's name cannot be changed across versions.",
+      "markdownDescription": "**App/Applet Name**  \nUnique identifier for the app or applet. Can contain lowercase letters, numbers, hyphens (`-`), and underscores (`_`). No spaces or uppercase letters allowed. Example: `my-app` or `my_app_01`.  \n\n**Note:** An **app** name cannot be changed across versions, but an **applet** name can be changed.",
       "additionalProperties": false
     },
     "title": {
@@ -387,9 +385,9 @@
         },
         "systemRequirements": {
           "$ref": "./systemRequirements.schema.json",
-          "description": "System requirements for the app (deprecated, use 'regionalOptions' instead).",
-          "markdownDescription": "**System Requirements**  \nSystem requirements for the app.",
-          "deprecationMessage": "This property is deprecated. Use 'regionalOptions.regionName.systemRequirements' instead for region-specific system requirements."
+          "description": "System requirements (deprecated, use regionalOptions instead).",
+          "markdownDescription": "**System Requirements**  \nSystem requirements for execution. **Deprecated for both apps and applets.** Use `regionalOptions.<region>.systemRequirements` instead. Apps must specify requirements for all regions they support; applets should specify requirements for the region where they run.",
+          "deprecationMessage": "This property is deprecated. Use 'regionalOptions.<region>.systemRequirements' instead for region-specific system requirements."
         },
         "interpreter": {
           "type": "string",
@@ -474,8 +472,8 @@
     },
     "developers": {
       "type": "array",
-      "description": "List of developer usernames for the app.",
-      "markdownDescription": "**Developers**  \nList of developer usernames for the app.",
+      "description": "List of developer usernames (required for apps, optional for applets).",
+      "markdownDescription": "**Developers** (required for apps)  \nList of developer usernames who can modify the app. **Required for apps, optional for applets.** Developers have permission to create new versions and manage the app.",
       "items": {
         "type": "string"
       },
@@ -483,8 +481,8 @@
     },
     "authorizedUsers": {
       "type": "array",
-      "description": "List of authorized user IDs for the app.",
-      "markdownDescription": "**Authorized Users**  \nList of authorized user IDs for the app.",
+      "description": "List of authorized user IDs (required for apps, optional for applets).",
+      "markdownDescription": "**Authorized Users** (required for apps)  \nList of authorized user IDs or org IDs who can access and run the app. **Required for apps, optional for applets.** Use `'PUBLIC'` to make the app publicly available, or `'org-xxxx'` for organization-wide access.",
       "items": {
         "type": "string"
       },
@@ -492,8 +490,8 @@
     },
     "regionalOptions": {
       "type": "object",
-      "description": "Region-specific options for app execution.",
-      "markdownDescription": "**Regional Options**  \nRegion-specific options for app execution. Keys must be valid DNAnexus region names.",
+      "description": "Region-specific options for app execution (required for apps, optional for applets).",
+      "markdownDescription": "**Regional Options** (required for apps)  \nRegion-specific options for app execution. Keys must be valid DNAnexus region names. **Required for apps** (which must specify resources and requirements per region). **Optional for applets** (which can use top-level `systemRequirements` and `resources` instead).",
       "propertyNames": {
         "enum": [
           "aws:us-east-1",
@@ -820,8 +818,8 @@
         "project": {
           "type": "string",
           "enum": ["NONE", "VIEW", "UPLOAD", "CONTRIBUTE", "ADMINISTER"],
-          "description": "Access level to the project in which the app is run.",
-          "markdownDescription": "**Project Access**  \nGrant the app access to the project in which it is run. Default is `NONE` for apps, `VIEW` for applets.",
+          "description": "Access level to the project in which the app/applet is run.",
+          "markdownDescription": "**Project Access**  \nGrant the app/applet access to the project in which it is run.  \n\n**Default:** `NONE` for **apps**, `VIEW` for **applets**.",
           "markdownEnumDescriptions": [
             "No access to the project.",
             "Read-only access to project contents.",
@@ -903,9 +901,9 @@
           }
         }
       ],
-      "description": "Resource files or directories required by the app (deprecated, use 'regionalOptions' instead).",
-      "markdownDescription": "**Resources**  \nResource files or directories required by the app. **Deprecated:** Use 'regionalOptions' for region-specific resources.",
-      "deprecationMessage": "This property is deprecated. Use 'regionalOptions' for region-specific resources."
+      "description": "Resource files or directories (deprecated, use regionalOptions instead).",
+      "markdownDescription": "**Resources**  \nResource files or directories to include in the execution environment. **Deprecated for both apps and applets.** Use `regionalOptions.<region>.resources` instead. Apps must specify resources for all regions they support; applets should specify resources for the region where they run.",
+      "deprecationMessage": "This property is deprecated. Use 'regionalOptions.<region>.resources' instead for region-specific resources."
     }
   },
   "additionalProperties": false
