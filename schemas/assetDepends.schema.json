@@ -49,7 +49,8 @@
                     "folder": {
                         "type": "string",
                         "description": "Optional folder path for the asset.",
-                        "markdownDescription": "**Folder**  \nOptional folder path where the asset is located."
+                        "default": "/",
+                        "markdownDescription": "**Folder**  \nOptional folder path where the asset is located. By default the folder is \"/\""
                     }
                 },
                 "additionalProperties": false
