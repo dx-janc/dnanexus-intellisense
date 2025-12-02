@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bundled Dependencies",
+  "description": "Schema for bundled dependencies specification",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "name",
+      "id"
+    ],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the bundled dependency file.",
+        "markdownDescription": "**Name**  \nFilename of the bundled dependency."
+      },
+      "id": {
+        "$ref": "./dnanexusLink.schema.json",
+        "description": "DNAnexus link to the file.",
+        "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
+      }
+    },
+    "additionalProperties": false
+  }
+}

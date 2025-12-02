@@ -331,29 +331,9 @@
           "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included."
         },
         "bundledDepends": {
-          "type": "array",
+          "$ref": "./bundledDepends.schema.json",
           "description": "Bundled dependencies for the app. Files to be made available in the execution environment.",
-          "markdownDescription": "**Bundled Dependencies**  \nList of files to be made available in the execution environment. Each item specifies a `name` (filename) and `id` (DNAnexus link to the file).",
-          "items": {
-            "type": "object",
-            "required": [
-              "name",
-              "id"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of the bundled dependency file.",
-                "markdownDescription": "**Name**  \nFilename of the bundled dependency."
-              },
-              "id": {
-                "$ref": "./dnanexusLink.schema.json",
-                "description": "DNAnexus link to the file.",
-                "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
-              }
-            },
-            "additionalProperties": false
-          }
+          "markdownDescription": "**Bundled Dependencies**  \nList of files to be made available in the execution environment. Each item specifies a `name` (filename) and `id` (DNAnexus link to the file)."
         },
         "headJobOnDemand": {
           "type": "boolean",
@@ -603,29 +583,9 @@
               ]
             },
             "bundledDepends": {
-              "type": "array",
+              "$ref": "./bundledDepends.schema.json",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
-              "items": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "id"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the bundled dependency file.",
-                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
-                  },
-                  "id": {
-                    "$ref": "./dnanexusLink.schema.json",
-                    "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
-                  }
-                },
-                "additionalProperties": false
-              }
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file."
             },
             "assetDepends": {
               "$ref": "./assetDepends.schema.json",
@@ -633,19 +593,7 @@
               "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
             },
             "resources": {
-              "oneOf": [
-                {
-                  "type": "string",
-                  "description": "Project ID or file ID for resources in this region."
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "File ID for a resource."
-                  }
-                }
-              ],
+              "$ref": "./resources.schema.json",
               "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
               "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
@@ -674,29 +622,9 @@
               ]
             },
             "bundledDepends": {
-              "type": "array",
+              "$ref": "./bundledDepends.schema.json",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
-              "items": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "id"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the bundled dependency file.",
-                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
-                  },
-                  "id": {
-                    "$ref": "./dnanexusLink.schema.json",
-                    "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
-                  }
-                },
-                "additionalProperties": false
-              }
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file."
             },
             "assetDepends": {
               "$ref": "./assetDepends.schema.json",
@@ -704,19 +632,7 @@
               "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
             },
             "resources": {
-              "oneOf": [
-                {
-                  "type": "string",
-                  "description": "Project ID or file ID for resources in this region."
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "File ID for a resource."
-                  }
-                }
-              ],
+              "$ref": "./resources.schema.json",
               "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
               "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
@@ -745,29 +661,9 @@
               ]
             },
             "bundledDepends": {
-              "type": "array",
+              "$ref": "./bundledDepends.schema.json",
               "description": "Bundled dependencies for this region.",
-              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
-              "items": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "id"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the bundled dependency file.",
-                    "markdownDescription": "**Name**  \nFilename of the bundled dependency."
-                  },
-                  "id": {
-                    "$ref": "./dnanexusLink.schema.json",
-                    "description": "DNAnexus link to the file.",
-                    "markdownDescription": "**ID**  \nDNAnexus link pointing to the file. Use `{\"$dnanexus_link\": \"file-xxx\"}` or `{\"$dnanexus_link\": {\"id\": \"file-xxx\", \"project\": \"project-yyy\"}}`."
-                  }
-                },
-                "additionalProperties": false
-              }
+              "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file."
             },
             "assetDepends": {
               "$ref": "./assetDepends.schema.json",
@@ -775,19 +671,7 @@
               "markdownDescription": "**Asset Dependencies**  \nAsset dependencies specific to this region. Overrides or supplements the global assetDepends."
             },
             "resources": {
-              "oneOf": [
-                {
-                  "type": "string",
-                  "description": "Project ID or file ID for resources in this region."
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "File ID for a resource."
-                  }
-                }
-              ],
+              "$ref": "./resources.schema.json",
               "description": "Resources colocated with this region. Can be a project ID or array of file IDs.",
               "markdownDescription": "**Resources**  \nResources colocated with this region. Supply a project ID (string) or array of file IDs that are specific to this region."
             }
@@ -979,21 +863,7 @@
       "additionalProperties": false
     },
     "resources": {
-      "oneOf": [
-        {
-          "type": "string",
-          "pattern": "^(file|record)-[A-Za-z0-9]{24}$",
-          "description": "Resource file or directory."
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^(file|record)-[A-Za-z0-9]{24}$",
-            "description": "Resource file or directory."
-          }
-        }
-      ],
+      "$ref": "./resources.schema.json",
       "description": "Resource files or directories (deprecated, use regionalOptions instead).",
       "markdownDescription": "**Resources**  \nResource files or directories to include in the execution environment. **Deprecated for both apps and applets.** Use `regionalOptions.<region>.resources` instead. Apps must specify resources for all regions they support; applets should specify resources for the region where they run.",
       "deprecationMessage": "This property is deprecated. Use 'regionalOptions.<region>.resources' instead for region-specific resources."

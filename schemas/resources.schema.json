@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resources",
+  "description": "Schema for resources specification",
+  "oneOf": [
+    {
+      "type": "string",
+      "pattern": "^(project|container|file|record)-[A-Za-z0-9]{24}$",
+      "description": "Project ID or file/record ID for resources.",
+      "markdownDescription": "**Resource ID**  \nCan be a project ID (e.g., `project-xxx`), container ID (e.g., `container-xxx`), file ID (e.g., `file-xxx`), or record ID (e.g., `record-xxx`)."
+    },
+    {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(file|record)-[A-Za-z0-9]{24}$",
+        "description": "File or record ID for a resource.",
+        "markdownDescription": "**Resource File/Record ID**  \nFile ID (e.g., `file-xxx`) or record ID (e.g., `record-xxx`)."
+      }
+    }
+  ]
+}
