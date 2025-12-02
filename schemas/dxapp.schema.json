@@ -522,6 +522,10 @@
                 "markdownDescription": "**Hours**  \nTimeout in hours."
               }
             },
+            "anyOf": [
+              { "required": ["minutes"] },
+              { "required": ["hours"] }
+            ],
             "additionalProperties": false
           }
         }
