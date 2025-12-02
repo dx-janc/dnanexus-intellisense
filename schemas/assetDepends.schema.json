@@ -13,8 +13,9 @@
                 "properties": {
                     "id": {
                         "type": "string",
+                        "pattern": "^record-[A-Za-z0-9]{24}$",
                         "description": "ID of the asset.",
-                        "markdownDescription": "**Asset ID**  \nThe unique identifier of the asset."
+                        "markdownDescription": "**Asset ID**  \nThe unique identifier of the asset (e.g., `record-xxx`)."
                     },
                     "folder": {
                         "type": "string",
@@ -38,8 +39,9 @@
                     },
                     "project": {
                         "type": "string",
+                        "pattern": "^(project|container)-[A-Za-z0-9]{24}$",
                         "description": "Project containing the asset.",
-                        "markdownDescription": "**Project**  \nThe project ID where the asset is located."
+                        "markdownDescription": "**Project**  \nThe project or container ID where the asset is located (e.g., `project-xxx` or `container-xxx`)."
                     },
                     "version": {
                         "type": "string",

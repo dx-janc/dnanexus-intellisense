@@ -982,12 +982,14 @@
       "oneOf": [
         {
           "type": "string",
+          "pattern": "^(file|record)-[A-Za-z0-9]{24}$",
           "description": "Resource file or directory."
         },
         {
           "type": "array",
           "items": {
             "type": "string",
+            "pattern": "^(file|record)-[A-Za-z0-9]{24}$",
             "description": "Resource file or directory."
           }
         }
