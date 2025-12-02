@@ -1,71 +1,78 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "System Requirements Entry Point Mapping",
-  "type": "object",
-  "description": "System requirements mapping for entry points. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
-  "markdownDescription": "**System Requirements**  \nDefine system requirements for each entry point. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` to apply requirements to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": {\n    \"instanceType\": \"mem1_ssd1_v2_x4\"\n  },\n  \"main\": {\n    \"instanceType\": \"mem1_ssd1_v2_x8\"\n  }\n}\n```",
-  "additionalProperties": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "System Requirements Entry Point Mapping",
     "type": "object",
-    "description": "Requirements for a specific entry point.",
-    "markdownDescription": "**Entry Point Requirements**  \nSystem requirements for this entry point.",
-    "properties": {
-      "instanceType": {
-        "type": "string",
-        "description": "Instance type for this entry point. Must match the cloud provider for the region.",
-        "markdownDescription": "**Instance Type**  \nInstance type for this entry point. The value must be appropriate for the cloud provider of the region where the app runs."
-      },
-      "fpgaDriver": {
-        "type": "string",
-        "description": "FPGA driver version required. Use format 'version:hash' (e.g., '1.4.0:111.14.4.5.0-1').",
-        "markdownDescription": "**FPGA Driver**  \nFPGA driver version required for this entry point. Format: `version:hash` (e.g., `1.4.0:111.14.4.5.0-1`). Only applicable when using FPGA instance types."
-      },
-      "nvidiaDriver": {
-        "type": "string",
-        "description": "NVIDIA driver version required. Use format 'version:hash' (e.g., '450.80.02:525.147.05-0ubuntu1~20.04.1').",
-        "markdownDescription": "**NVIDIA Driver**  \nNVIDIA GPU driver version required for this entry point. Format: `version:hash` (e.g., `450.80.02:525.147.05-0ubuntu1~20.04.1`). Only applicable when using GPU instance types."
-      },
-      "clusterSpec": {
+    "description": "System requirements mapping for entry points. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
+    "markdownDescription": "**System Requirements**  \nDefine system requirements for each entry point. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` to apply requirements to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": {\n    \"instanceType\": \"mem1_ssd1_v2_x4\"\n  },\n  \"main\": {\n    \"instanceType\": \"mem1_ssd1_v2_x8\"\n  }\n}\n```",
+    "additionalProperties": {
         "type": "object",
-        "description": "Spark cluster configuration for distributed computing.",
-        "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
+        "description": "Requirements for a specific entry point.",
+        "markdownDescription": "**Entry Point Requirements**  \nSystem requirements for this entry point.",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["spark"],
-            "description": "Type of cluster. Currently only 'spark' is supported.",
-            "markdownDescription": "**Cluster Type**  \nType of cluster to provision. Currently only `spark` is supported."
-          },
-          "version": {
-            "type": "string",
-            "description": "Version of the cluster software (e.g., '2.4.4').",
-            "markdownDescription": "**Version**  \nVersion of Spark to use (e.g., `2.4.4`, `3.1.1`)."
-          },
-          "initialInstanceCount": {
-            "type": "integer",
-            "minimum": 1,
-            "description": "Initial number of worker instances in the cluster.",
-            "markdownDescription": "**Initial Instance Count**  \nNumber of worker nodes to provision initially. Must be at least 1."
-          },
-          "ports": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 65535
+            "instanceType": {
+                "type": "string",
+                "description": "Instance type for this entry point. Must match the cloud provider for the region.",
+                "markdownDescription": "**Instance Type**  \nInstance type for this entry point. The value must be appropriate for the cloud provider of the region where the app runs."
             },
-            "description": "Array of port numbers to expose from worker nodes.",
-            "markdownDescription": "**Ports**  \nPort numbers to expose from worker nodes for inter-node communication."
-          },
-          "bootstrapScript": {
-            "type": "string",
-            "description": "Shell script to run on each worker node after startup.",
-            "markdownDescription": "**Bootstrap Script**  \nShell script to execute on each worker node after it starts. Use this to install additional software or configure the environment."
-          }
+            "fpgaDriver": {
+                "type": "string",
+                "description": "FPGA driver to install on FPGA-enabled instances. Accepted values: 'edico-1.4.9.2' (for mem3_ssd2_fpga1_x24, mem3_ssd2_fpga2_x48, mem3_ssd2_fpga8_x192), 'edico-1.4.2', 'edico-1.4.5', 'edico-1.4.7' (for mem3_ssd2_fpga1_x8, mem3_ssd2_fpga1_x16, mem3_ssd2_fpga1_x64).",
+                "markdownDescription": "**FPGA Driver** (optional)  \nSpecifies the FPGA driver to install on the FPGA-enabled cloud host instance before app code execution.\n\n**Accepted values by instance type:**\n- `mem3_ssd2_fpga1_x24`, `mem3_ssd2_fpga2_x48`, `mem3_ssd2_fpga8_x192`: `edico-1.4.9.2` (default)\n- `mem3_ssd2_fpga1_x8`, `mem3_ssd2_fpga1_x16`, `mem3_ssd2_fpga1_x64`: `edico-1.4.2` (default), `edico-1.4.5`, `edico-1.4.7`"
+            },
+            "nvidiaDriver": {
+                "type": "string",
+                "description": "NVIDIA driver to install on GPU-enabled instances. Accepted values: 'R470' (default, driver 470.256.02, CUDA 11.4), 'R535' (driver 535.247.01, CUDA 12.2).",
+                "markdownDescription": "**NVIDIA Driver** (optional)  \nSpecifies the NVIDIA driver to install on the GPU-enabled cloud host instance before app code execution.\n\n**Accepted values:**\n- `R470` (default): Driver version [470.256.02](https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-256-02/index.html), supports CUDA 11.4\n- `R535`: Driver version [535.247.01](https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html), supports CUDA 12.2"
+            },
+            "clusterSpec": {
+                "type": "object",
+                "description": "Spark cluster configuration for distributed computing.",
+                "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "dxspark",
+                            "apachespark",
+                            "generic"
+                        ],
+                        "description": "Type of cluster. Supported values: 'spark', 'dxspark', 'apachespark', 'generic'.",
+                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values: `spark`, `dxspark`, `apachespark`, `generic`."
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Requested version for dxspark or apachespark clusters. Supported values: '2.4.4', '3.2.3', '3.5.2'.",
+                        "markdownDescription": "**Version** (optional)  \nRequested version for `dxspark` or `apachespark` clusters. Supported values: `2.4.4`, `3.2.3`, `3.5.2`."
+                    },
+                    "initialInstanceCount": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "Number of nodes in the cluster, including the driver. Min value 1 indicates a cluster with no worker nodes.",
+                        "markdownDescription": "**Initial Instance Count**  \nThe number of nodes (including the driver) in the cluster. Minimum value is 1, indicating a cluster with no `clusterWorker` nodes (driver only).\n\n**Note:** This is the only `clusterSpec` field that can be overridden at runtime using the `--instance-count` flag with `dx run`."
+                    },
+                    "ports": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 65535
+                        },
+                        "description": "Array of port numbers to open between nodes in the cluster.",
+                        "markdownDescription": "**Ports** (optional)  \nArray of port numbers to open between nodes in the cluster for inter-node communication. Specify individual ports or use ranges.\n\n**Note:** The API accepts an array of integers, but some interfaces may accept a comma-delimited string like `\"1000, 1100-1200\"`."
+                    },
+                    "bootstrapScript": {
+                        "type": "string",
+                        "description": "Path to the bootstrap script run on all cluster nodes before the driver begins running the application code.",
+                        "markdownDescription": "**Bootstrap Script** (optional)  \nThe path to the bootstrap script (relative to the app/applet source directory). The bootstrap script is run on **all cluster nodes** (including the driver) before the driver begins running the application code.\n\n**Note:** In dxapp.json, specify the filename/path only. The file content will be embedded by `dx build`. Use this to install additional software or configure the environment."
+                    }
+                },
+                "required": [
+                    "type",
+                    "initialInstanceCount"
+                ],
+                "additionalProperties": false
+            }
         },
-        "required": ["type", "version", "initialInstanceCount"],
         "additionalProperties": false
-      }
-    },
-    "additionalProperties": false
-  }
+    }
 }
