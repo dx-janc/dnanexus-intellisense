@@ -849,7 +849,7 @@
         "developer": {
           "type": "boolean",
           "description": "Allow the app to act as a developer on behalf of the user.",
-          "markdownDescription": "**Developer Access**  \nGrant the app permissions to act as a developer on behalf of the user. This allows the app to create new apps, access unpublished apps, etc. **Use with extreme caution**."
+          "markdownDescription": "**Developer Access**  \nGrant the app permissions to act as a developer on behalf of the user. This allows the app to create new apps, access unpublished apps, etc."
         }
       },
       "additionalProperties": false
