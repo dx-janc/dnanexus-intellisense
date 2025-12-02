@@ -1,95 +1,496 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DNAnexus Workflow Metadata",
+  "description": "Metadata specification for DNAnexus workflows and global workflows. Workflows are local to a project; global workflows are versioned and can be published globally.",
   "type": "object",
+  "required": [
+    "name"
+  ],
   "properties": {
     "name": {
       "type": "string",
-      "description": "Workflow name"
+      "pattern": "^[a-z0-9_-]+$",
+      "description": "Unique identifier for the workflow. Lowercase letters, numbers, hyphens, underscores only.",
+      "markdownDescription": "**Workflow Name**  \nUnique identifier for the workflow. Can contain lowercase letters, numbers, hyphens (`-`), and underscores (`_`). No spaces or uppercase letters allowed."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human readable name shown in the UI.",
+      "markdownDescription": "**Title**  \nHuman readable name for the workflow, shown in the DNAnexus UI."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short summary of the workflow's functionality.",
+      "markdownDescription": "**Summary**  \nShort summary describing the workflow's main purpose."
     },
     "description": {
       "type": "string",
-      "description": "Workflow description"
+      "description": "Detailed description of the workflow.",
+      "markdownDescription": "**Description**  \nDetailed description of the workflow. If not provided, `dx build` includes the `Readme.md` file content."
+    },
+    "dxapi": {
+      "type": "string",
+      "description": "DNAnexus API version required by the workflow.",
+      "markdownDescription": "**dxAPI**  \nDNAnexus API version required by the workflow. Example: `1.0.0`."
     },
     "version": {
       "type": "string",
-      "description": "Workflow version"
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$",
+      "description": "Semantic versioning (required for global workflows).",
+      "markdownDescription": "**Version** (required for global workflows)  \nSemantic versioning for global workflows following [semver](https://semver.org/) specification. Examples: `1.0.0`, `1.0.0-rc.1`. Required for global workflows, optional for regular workflows."
     },
-    "inputs": {
-      "type": "object",
-      "description": "Workflow input specification",
-      "additionalProperties": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "optional": {
-            "type": "boolean"
-          },
-          "default": {},
-          "description": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type"
-        ]
-      }
-    },
-    "outputs": {
-      "type": "object",
-      "description": "Workflow output specification",
-      "additionalProperties": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type"
-        ]
-      }
+    "outputFolder": {
+      "type": "string",
+      "description": "Default output folder for workflow results.",
+      "markdownDescription": "**Output Folder**  \nDefault output folder path where workflow results will be placed. Example: `/output` or `/results`."
     },
     "stages": {
       "type": "array",
-      "description": "Workflow stages",
+      "description": "Array of workflow stages defining the execution order.",
+      "markdownDescription": "**Stages**  \nArray of workflow stages. Each stage represents an executable (app/applet/workflow) with its inputs and configuration.",
       "items": {
         "type": "object",
+        "required": ["executable"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier for this stage within the workflow.",
+            "markdownDescription": "**Stage ID**  \nUnique identifier for this stage. Used to reference this stage's outputs in other stages. Example: `stage_0`, `align`, `call_variants`."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable name for the stage.",
+            "markdownDescription": "**Stage Name**  \nHuman-readable name for the stage, shown in the UI."
           },
-          "app": {
-            "type": "string"
+          "executable": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "DNAnexus ID of the executable (app/applet/workflow)."
+              },
+              {
+                "type": "object",
+                "description": "DNAnexus link to the executable.",
+                "properties": {
+                  "$dnanexus_link": {
+                    "oneOf": [
+                      {"type": "string"},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "string"},
+                          "project": {"type": "string"}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "description": "Executable to run in this stage (app-xxxx, applet-xxxx, workflow-xxxx, or globalworkflow-xxxx).",
+            "markdownDescription": "**Executable**  \nThe app, applet, or workflow to run in this stage. Can be an ID string like `app-xxxx`, `applet-xxxx`, or a DNAnexus link."
           },
-          "inputs": {
+          "folder": {
+            "type": "string",
+            "description": "Output folder for this stage's results.",
+            "markdownDescription": "**Folder**  \nOutput folder path for this stage's results. Example: `/stage_1_output`."
+          },
+          "input": {
             "type": "object",
-            "additionalProperties": {}
+            "description": "Input values for this stage.",
+            "markdownDescription": "**Input**  \nInput values for this stage. Keys are input parameter names from the executable's inputSpec. Values can be literals or DNAnexus links to other stages or workflow inputs.",
+            "additionalProperties": true
           },
-          "outputs": {
+          "executionPolicy": {
             "type": "object",
-            "additionalProperties": {}
+            "description": "Execution policy for this stage.",
+            "markdownDescription": "**Execution Policy**  \nConfigure restart behavior for this stage.",
+            "properties": {
+              "restartOn": {
+                "type": "object",
+                "description": "Mapping of restartable failure reasons to restart limits.",
+                "markdownDescription": "**Restart On**  \nMap restartable failure reasons to maximum restart attempts.",
+                "properties": {
+                  "ExecutionError": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "UnresponsiveWorker": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "JMInternalError": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "AppInternalError": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "JobTimeoutExceeded": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "SpotInstanceInterruption": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "*": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              "onNonRestartableFailure": {
+                "type": "string",
+                "enum": ["failStage", "failAllStages"],
+                "description": "Action to take when a non-restartable failure occurs.",
+                "markdownDescription": "**On Non-Restartable Failure**  \nDefines what happens when a stage fails with a non-restartable error. `failStage` continues with other stages; `failAllStages` fails the entire analysis."
+              }
+            },
+            "additionalProperties": false
+          },
+          "systemRequirements": {
+            "type": "object",
+            "description": "System requirements for this stage's executable entry points.",
+            "markdownDescription": "**System Requirements**  \nOverride system requirements for specific entry points of the executable in this stage. Keys are entry point names (e.g., `main`) or `*` for all.",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "instanceType": {
+                  "type": "string",
+                  "description": "Instance type to use for this entry point."
+                },
+                "clusterSpec": {
+                  "type": "object",
+                  "description": "Spark cluster configuration."
+                }
+              },
+              "additionalProperties": true
+            }
           }
         },
-        "required": [
-          "id",
-          "name",
-          "app"
-        ]
+        "additionalProperties": false
       }
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Workflow-level input specification (used in API, becomes 'workflow_inputs' in dxworkflow.json).",
+      "markdownDescription": "**Inputs** (API field name)  \nWorkflow-level input specification. In dxworkflow.json files, use `workflow_inputs` instead.",
+      "items": {
+        "type": "object",
+        "required": ["name", "class"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the workflow input."
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
+            "description": "Data type of the input."
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Whether the input is optional."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the input."
+          },
+          "default": {
+            "description": "Default value for the input."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "workflow_inputs": {
+      "type": "array",
+      "description": "Workflow-level input specification (dxworkflow.json field name).",
+      "markdownDescription": "**Workflow Inputs**  \nDefine explicit workflow-level inputs. When specified, inputs can only be passed to the workflow as a whole, not to individual stages.",
+      "items": {
+        "type": "object",
+        "required": ["name", "class"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the workflow input."
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
+            "description": "Data type of the input."
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Whether the input is optional."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the input."
+          },
+          "default": {
+            "description": "Default value for the input."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Workflow-level output specification (used in API, becomes 'workflow_outputs' in dxworkflow.json).",
+      "markdownDescription": "**Outputs** (API field name)  \nWorkflow-level output specification. In dxworkflow.json files, use `workflow_outputs` instead.",
+      "items": {
+        "type": "object",
+        "required": ["name", "class", "outputSource"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the workflow output."
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
+            "description": "Data type of the output."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the output."
+          },
+          "outputSource": {
+            "type": "object",
+            "description": "Link to the stage output that provides this workflow output.",
+            "properties": {
+              "$dnanexus_link": {
+                "type": "object",
+                "required": ["stage", "outputField"],
+                "properties": {
+                  "stage": {
+                    "type": "string",
+                    "description": "Stage ID to get output from."
+                  },
+                  "outputField": {
+                    "type": "string",
+                    "description": "Output field name from that stage."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "workflow_outputs": {
+      "type": "array",
+      "description": "Workflow-level output specification (dxworkflow.json field name).",
+      "markdownDescription": "**Workflow Outputs**  \nDefine explicit workflow-level outputs by linking to stage outputs.",
+      "items": {
+        "type": "object",
+        "required": ["name", "class", "outputSource"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the workflow output."
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "int",
+              "float",
+              "string",
+              "boolean",
+              "hash",
+              "record",
+              "file",
+              "applet",
+              "array:int",
+              "array:float",
+              "array:string",
+              "array:boolean",
+              "array:record",
+              "array:file",
+              "array:applet"
+            ],
+            "description": "Data type of the output."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label."
+          },
+          "help": {
+            "type": "string",
+            "description": "Help text for the output."
+          },
+          "outputSource": {
+            "type": "object",
+            "description": "Link to the stage output that provides this workflow output.",
+            "properties": {
+              "$dnanexus_link": {
+                "type": "object",
+                "required": ["stage", "outputField"],
+                "properties": {
+                  "stage": {
+                    "type": "string",
+                    "description": "Stage ID to get output from."
+                  },
+                  "outputField": {
+                    "type": "string",
+                    "description": "Output field name from that stage."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ignoreReuse": {
+      "oneOf": [
+        {
+          "type": "boolean",
+          "description": "If true, disables reuse for all stages."
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of stage IDs for which to disable reuse, or ['*'] for all stages."
+        }
+      ],
+      "description": "Control job reuse behavior for stages.",
+      "markdownDescription": "**Ignore Reuse**  \nDisable job reuse for specific stages or all stages. Can be `true` (disable for all), `false` (enable for all), an array of stage IDs, or `['*']` (disable for all)."
+    },
+    "treeTurnaroundTimeThreshold": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Threshold for tree turnaround time in seconds.",
+      "markdownDescription": "**Tree Turnaround Time Threshold**  \nFor a root execution, the turnaround time is the time between its creation time and the time it reaches terminal state. Measured in seconds."
+    },
+    "regionalOptions": {
+      "type": "object",
+      "description": "Region-specific options (required for global workflows).",
+      "markdownDescription": "**Regional Options** (required for global workflows)  \nFor global workflows, specify the workflow ID for each region. Keys must be valid DNAnexus region names.",
+      "propertyNames": {
+        "enum": [
+          "aws:us-east-1",
+          "aws:eu-central-1",
+          "aws:eu-west-2",
+          "aws:eu-west-2-g",
+          "aws:me-south-1",
+          "aws:ap-southeast-2",
+          "azure:westus",
+          "azure:westeurope",
+          "azure:uksouth-ofh",
+          "oci:us-ashburn-1"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "workflow": {
+            "type": "string",
+            "description": "Workflow ID for this region (workflow-xxxx).",
+            "markdownDescription": "**Workflow**  \nThe workflow-xxxx ID that should be used when running this global workflow in this region."
+          }
+        },
+        "required": ["workflow"]
+      }
+    },
+    "developers": {
+      "type": "array",
+      "description": "List of developer usernames (for global workflows).",
+      "markdownDescription": "**Developers** (for global workflows)  \nList of developer usernames who can modify the global workflow.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authorizedUsers": {
+      "type": "array",
+      "description": "List of authorized user/org IDs (for global workflows).",
+      "markdownDescription": "**Authorized Users** (for global workflows)  \nList of authorized user IDs or org IDs who can access and run the global workflow. Use `'PUBLIC'` for public access.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "description": "Categories for the global workflow.",
+      "markdownDescription": "**Categories** (for global workflows)  \nCategorize your global workflow for easier discovery.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "details": {
+      "type": "object",
+      "description": "Arbitrary metadata.",
+      "markdownDescription": "**Details**  \nArbitrary metadata for the workflow.",
+      "additionalProperties": true
     }
   },
-  "required": [
-    "name",
-    "version",
-    "stages"
-  ]
+  "additionalProperties": false
 }
