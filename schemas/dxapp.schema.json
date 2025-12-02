@@ -78,14 +78,23 @@
               "type": "array",
               "items": {
                 "type": "integer",
-                "enum": [443, 8080, 8081]
+                "enum": [
+                  443,
+                  8080,
+                  8081
+                ]
               },
               "description": "Array of ports to expose via HTTPS proxy.",
               "markdownDescription": "**Ports**  \nArray of ports to allow access through the HTTPS proxy. Allowed values: `443`, `8080`, `8081`."
             },
             "shared_access": {
               "type": "string",
-              "enum": ["VIEW", "CONTRIBUTE", "ADMINISTER", "NONE"],
+              "enum": [
+                "VIEW",
+                "CONTRIBUTE",
+                "ADMINISTER",
+                "NONE"
+              ],
               "description": "Access level required to access the HTTPS endpoint.",
               "markdownDescription": "**Shared Access**  \nRestrict access to users with the specified project access level. Use `NONE` to limit access to only the launching user.",
               "markdownEnumDescriptions": [
@@ -312,7 +321,8 @@
         "interpreter",
         "file",
         "distribution",
-        "release"
+        "release",
+        "version"
       ],
       "properties": {
         "assetDepends": {
@@ -326,7 +336,10 @@
           "markdownDescription": "**Bundled Dependencies**  \nList of files to be made available in the execution environment. Each item specifies a `name` (filename) and `id` (DNAnexus link to the file).",
           "items": {
             "type": "object",
-            "required": ["name", "id"],
+            "required": [
+              "name",
+              "id"
+            ],
             "properties": {
               "name": {
                 "type": "string",
@@ -351,7 +364,9 @@
           "oneOf": [
             {
               "type": "string",
-              "enum": ["all"],
+              "enum": [
+                "all"
+              ],
               "description": "Allow all entry points to be restarted."
             },
             {
@@ -479,6 +494,12 @@
             "Ubuntu 12.04 LTS."
           ]
         },
+        "version": {
+          "type": "integer",
+          "enum": [0],
+          "description": "Execution environment version. Must be 0.",
+          "markdownDescription": "**Execution Environment Version**  \nSpecifies the version of the execution environment. Only `0` is supported. This field, together with `distribution` and `release`, determines the complete execution environment configuration."
+        },
         "execDepends": {
           "$ref": "./execDepends.schema.json",
           "markdownDescription": "**execDepends**  \nList of software dependencies required by the app. See execDepends.schema.json for details."
@@ -561,7 +582,9 @@
           "properties": {
             "systemRequirements": {
               "allOf": [
-                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "$ref": "./systemRequirements.schema.json"
+                },
                 {
                   "description": "System requirements for this AWS region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
                   "markdownDescription": "**System Requirements**  \nSystem requirements for this AWS region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For AWS regions, `instanceType` must reference AWS instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"mem1_ssd1_v2_x4\" },\n  \"main\": { \"instanceType\": \"mem3_ssd1_v2_x8\" }\n}\n```",
@@ -581,7 +604,10 @@
               "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
-                "required": ["name", "id"],
+                "required": [
+                  "name",
+                  "id"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -627,7 +653,9 @@
           "properties": {
             "systemRequirements": {
               "allOf": [
-                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "$ref": "./systemRequirements.schema.json"
+                },
                 {
                   "description": "System requirements for this Azure region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
                   "markdownDescription": "**System Requirements**  \nSystem requirements for this Azure region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For Azure regions, `instanceType` must reference Azure instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"azure:mem1_ssd1_x4\" }\n}\n```",
@@ -647,7 +675,10 @@
               "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
-                "required": ["name", "id"],
+                "required": [
+                  "name",
+                  "id"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -693,7 +724,9 @@
           "properties": {
             "systemRequirements": {
               "allOf": [
-                {"$ref": "./systemRequirements.schema.json"},
+                {
+                  "$ref": "./systemRequirements.schema.json"
+                },
                 {
                   "description": "System requirements for this OCI region. Keys are entry point names (e.g., 'main', 'process') or '*' for all entry points.",
                   "markdownDescription": "**System Requirements**  \nSystem requirements for this OCI region. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or use `\"*\"` for all entry points. For OCI regions, `instanceType` must reference OCI instance types.\n\n**Example:**\n```json\n{\n  \"*\": { \"instanceType\": \"oci:VM.Standard.E3.Flex.4.16\" }\n}\n```",
@@ -713,7 +746,10 @@
               "markdownDescription": "**Bundled Dependencies**  \nBundled dependencies for this region. Each item specifies a name and a DNAnexus link to the file.",
               "items": {
                 "type": "object",
-                "required": ["name", "id"],
+                "required": [
+                  "name",
+                  "id"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -860,7 +896,13 @@
       "properties": {
         "project": {
           "type": "string",
-          "enum": ["NONE", "VIEW", "UPLOAD", "CONTRIBUTE", "ADMINISTER"],
+          "enum": [
+            "NONE",
+            "VIEW",
+            "UPLOAD",
+            "CONTRIBUTE",
+            "ADMINISTER"
+          ],
           "description": "Access level to the project in which the app/applet is run.",
           "markdownDescription": "**Project Access**  \nGrant the app/applet access to the project in which it is run.  \n\n**Default:** `NONE` for **apps**, `VIEW` for **applets**.",
           "markdownEnumDescriptions": [
@@ -873,7 +915,13 @@
         },
         "allProjects": {
           "type": "string",
-          "enum": ["NONE", "VIEW", "UPLOAD", "CONTRIBUTE", "ADMINISTER"],
+          "enum": [
+            "NONE",
+            "VIEW",
+            "UPLOAD",
+            "CONTRIBUTE",
+            "ADMINISTER"
+          ],
           "description": "Access level to all projects the user can access.",
           "markdownDescription": "**All Projects Access**  \nGrant the app access to all projects the user running the app can access. Use this carefully as it grants broad access.",
           "markdownEnumDescriptions": [
@@ -896,7 +944,9 @@
             },
             {
               "type": "string",
-              "enum": ["*"],
+              "enum": [
+                "*"
+              ],
               "description": "Grant access to all domains."
             }
           ],
