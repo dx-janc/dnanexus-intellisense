@@ -517,7 +517,10 @@
       "description": "List of developer usernames (required for apps, optional for applets).",
       "markdownDescription": "**Developers** (required for apps)  \nList of developer usernames who can modify the app. **Required for apps, optional for applets.** Developers have permission to create new versions and manage the app.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-z0-9._-]+$",
+        "description": "DNAnexus username (lowercase alphanumeric with dots, underscores, or hyphens).",
+        "markdownDescription": "**Username**  \nDNAnexus username (e.g., `john.doe`, `user_name`, `dev-account`). Use lowercase alphanumeric characters, dots (`.`), underscores (`_`), or hyphens (`-`)."
       },
       "additionalProperties": false
     },
@@ -526,7 +529,10 @@
       "description": "List of authorized user IDs (required for apps, optional for applets).",
       "markdownDescription": "**Authorized Users** (required for apps)  \nList of authorized user IDs or org IDs who can access and run the app. **Required for apps, optional for applets.** Use `'PUBLIC'` to make the app publicly available, or `'org-xxxx'` for organization-wide access.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "pattern": "^(PUBLIC|user-[0-9a-zA-Z]{24}|org-[0-9a-zA-Z]{24})$",
+        "description": "Either 'PUBLIC', a user ID, or an org ID.",
+        "markdownDescription": "**Authorized Entity**  \nEither:  \n- `PUBLIC` - Make app publicly available  \n- `user-<24 chars>` - Specific user ID (e.g., `user-aB3456789012345678901234`)  \n- `org-<24 chars>` - Organization ID (e.g., `org-aB3456789012345678901234`)"
       },
       "additionalProperties": false
     },
