@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DNAnexus Link",
-  "description": "DNAnexus links are JSON hashes used to refer to data objects and execution outputs. The platform recognizes these special values and resolves them at runtime.",
+  "description": "DNAnexus links are JSON hashes used to refer to data objects and execution outputs. the DNAnexus Platform recognizes these special values and resolves them at runtime.",
   "markdownDescription": "**DNAnexus Link**  \nSpecial JSON syntax recognized by the DNAnexus platform to reference data objects, job outputs, analysis outputs, or metadata. The structure varies based on what you're linking to.",
   "oneOf": [
     {
@@ -20,7 +20,7 @@
               "type": "string",
               "pattern": "^(file|record|applet|workflow|project|container)-[A-Za-z0-9]{24}$",
               "description": "Data object ID",
-              "markdownDescription": "**Data Object ID**  \nSimple reference by ID. The platform searches for the object if not in the current project."
+              "markdownDescription": "**Data Object ID**  \nSimple reference by ID. the DNAnexus Platform searches for the object if not in the current project."
             },
             {
               "type": "object",
@@ -36,7 +36,7 @@
                   "type": "string",
                   "pattern": "^(project|container)-[A-Za-z0-9]{24}$",
                   "description": "Project or container ID where the object is located",
-                  "markdownDescription": "**Project ID**  \nOptional. Specifies which project contains the data object. If omitted, the platform searches for the object."
+                  "markdownDescription": "**Project ID**  \nOptional. Specifies which project contains the data object. If omitted, the DNAnexus Platform searches for the object."
                 },
                 "metadata": {
                   "type": "string",

@@ -495,9 +495,9 @@
           ]
         },
         "version": {
-          "type": "integer",
-          "enum": [0],
-          "description": "Execution environment version. Must be 0.",
+          "type": "string",
+          "enum": ["0"],
+          "description": "Execution environment version.",
           "markdownDescription": "**Execution Environment Version**  \nSpecifies the version of the execution environment. Only `0` is supported. This field, together with `distribution` and `release`, determines the complete execution environment configuration."
         },
         "execDepends": {
@@ -850,7 +850,7 @@
     },
     "categories": {
       "type": "array",
-      "description": "Categories for the app. Recognized categories are displayed specially on the platform, but custom categories are also allowed.",
+      "description": "Categories for the app. Recognized categories are displayed specially on the DNAnexus Platform, but custom categories are also allowed.",
       "markdownDescription": "**Categories**  \nCategorize your app for easier discovery on the DNAnexus platform. The values listed below are **recognized categories** that receive special treatment in the UI (organized sections, filtering, etc.). However, you can also specify **custom category names** if none of the recognized categories fit your use case.",
       "items": {
         "type": "string",
