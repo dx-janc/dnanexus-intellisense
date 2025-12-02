@@ -60,8 +60,8 @@
     },
     "openSource": {
       "type": "boolean",
-      "description": "Indicates if the app is open source.",
-      "markdownDescription": "**Open Source**  \nSet to `true` if the app is open source.",
+      "description": "Whether the contents of this app version's resources container should be viewable by all members of the app's developers and authorized users",
+      "markdownDescription": "**Open Source**  \nSet to `true` if you want the contents of this app version's resources container to be viewable by all members of the app's developers and authorized users.",
       "additionalProperties": false
     },
     "httpsApp": {
