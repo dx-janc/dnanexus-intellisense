@@ -1,7 +1,7 @@
 {
   "name": "dnanexus-intellisense",
-  "displayName": "dnanexus-intellisense",
-  "description": "Validation and Intellisense for DNAnexus config files",
+  "displayName": "DNAnexus IntelliSense",
+  "description": "Schema-driven validation and IntelliSense for DNAnexus configuration files (dxapp.json, dxworkflow.json, dxasset.json)",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.106.1"

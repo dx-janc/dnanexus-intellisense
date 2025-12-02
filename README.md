@@ -1,71 +1,103 @@
-# dnanexus-intellisense README
+# DNAnexus IntelliSense
 
-This is the README for your extension "dnanexus-intellisense". After writing up a brief description, we recommend including the following sections.
+Schema-driven validation and IntelliSense for DNAnexus configuration files across multiple IDEs.
+
+## Overview
+
+This project provides comprehensive JSON schema definitions for DNAnexus configuration files (`dxapp.json`, `dxworkflow.json`, `dxasset.json`), enabling intelligent code completion, validation, and documentation directly in your IDE.
+
+### Schema-Driven Architecture
+
+The core of this project is a collection of **JSON schemas** that serve as the single source of truth for DNAnexus configuration file specifications. These schemas define:
+
+- Required and optional fields
+- Field types and validation rules
+- Allowed values and enumerations (e.g., instance types for AWS, Azure, OCI)
+- Inline documentation and help text
+- Cross-field relationships and dependencies
+
+### Multi-Platform Support
+
+**Current Implementation:**
+- **VS Code Extension** - Currently functional, providing validation and IntelliSense for DNAnexus config files
+
+**Planned Implementation:**
+- **IntelliJ IDEA Plugin** - Planned for future development
+
+Both implementations will leverage the same underlying JSON schemas, ensuring consistent behavior and validation rules across all supported IDEs.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Real-time Validation**: Catch configuration errors as you type
+- **IntelliSense/Autocomplete**: Context-aware suggestions for field names, values, and structure
+- **Inline Documentation**: View field descriptions and usage guidelines directly in your editor
+- **Schema Completeness**: Comprehensive coverage of DNAnexus configuration specifications including:
+  - App and Applet configurations (`dxapp.json`)
+  - Workflow definitions (`dxworkflow.json`)
+  - Asset specifications (`dxasset.json`)
+  - System requirements and instance types (AWS, Azure, OCI)
+  - Dependency specifications
+  - DNAnexus links and resources
 
-For example if there is an image subfolder under your extension project workspace:
+## Supported Files
 
-\!\[feature X\]\(images/feature-x.png\)
+The extension automatically activates for the following file types:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- `dxapp.json` - App and applet metadata and configuration
+- `dxworkflow.json` - Workflow and global workflow definitions
+- `dxasset.json` - Asset bundle specifications
 
-## Requirements
+## Project Structure
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+```
+dnanexus-intellisense/
+├── schemas/              # JSON Schema definitions (source of truth)
+│   ├── dxapp.schema.json
+│   ├── dxworkflow.schema.json
+│   ├── dxasset.schema.json
+│   ├── instanceTypes.*.schema.json
+│   └── ...additional schema files
+├── src/                  # VS Code extension implementation
+│   └── extension.ts
+└── package.json          # Extension manifest
+```
 
-## Extension Settings
+## Development Status
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+**Current Phase**: Schema refinement and VS Code extension development
 
-For example:
+The JSON schemas are actively being developed and refined to ensure comprehensive coverage of all DNAnexus configuration options. Once the schemas are stable, they will serve as the foundation for both the VS Code extension and the planned IntelliJ IDEA plugin.
 
-This extension contributes the following settings:
+## Installation
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### VS Code Extension
 
-## Known Issues
+The extension is currently in development. To use it locally:
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+1. Clone this repository
+2. Run `npm install`
+3. Run `npm run watch` to start the build process
+4. Press `F5` to launch the Extension Development Host
 
-## Release Notes
+## Contributing
 
-Users appreciate release notes as you update your extension.
+Contributions to the JSON schemas and extension implementations are welcome. Please ensure any schema changes maintain backward compatibility and include appropriate documentation.
 
-### 1.0.0
+## Schema Development
 
-Initial release of ...
+The schemas follow the [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12/schema) specification and include:
 
-### 1.0.1
+- Standard JSON Schema validation rules
+- Enhanced descriptions using `markdownDescription` for rich formatting in IDEs
+- Comprehensive enumerations for cloud provider-specific configurations
+- Modular structure with referenced sub-schemas for reusability
 
-Fixed issue #.
+## License
 
-### 1.1.0
+[License information to be added]
 
-Added features X, Y, and Z.
+## Resources
 
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- [DNAnexus Documentation](https://documentation.dnanexus.com/)
+- [DNAnexus API Specification](https://documentation.dnanexus.com/developer)
+- [JSON Schema Specification](https://json-schema.org/)
