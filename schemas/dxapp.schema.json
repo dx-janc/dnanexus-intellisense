@@ -5,11 +5,6 @@
   "type": "object",
   "required": [
     "name",
-    "title",
-    "summary",
-    "dxapi",
-    "inputSpec",
-    "outputSpec",
     "runSpec"
   ],
   "properties": {
@@ -22,14 +17,14 @@
     },
     "title": {
       "type": "string",
-      "description": "Human readable name shown in the UI.",
-      "markdownDescription": "**Title**  \nHuman readable name for the app, shown in the DNAnexus UI.",
+      "description": "Human readable name shown in the UI (strongly recommended).",
+      "markdownDescription": "**Title** (strongly recommended)  \nHuman readable name for the app, shown in the DNAnexus UI. While technically optional, omitting this field is not recommended for production apps/applets.",
       "additionalProperties": false
     },
     "summary": {
       "type": "string",
-      "description": "Short summary of the app's functionality.",
-      "markdownDescription": "**Summary**  \nShort summary describing the app's main purpose.",
+      "description": "Short summary of the app's functionality (strongly recommended).",
+      "markdownDescription": "**Summary** (strongly recommended)  \nShort summary describing the app's main purpose. While technically optional, omitting this field is not recommended for production apps/applets.",
       "additionalProperties": false
     },
     "description": {
@@ -46,8 +41,9 @@
     },
     "dxapi": {
       "type": "string",
-      "description": "DNAnexus API version required by the app.",
-      "markdownDescription": "**dxAPI**  \nDNAnexus API version required by the app. Example: `1.0.0`.",
+      "default": "1.0.0",
+      "description": "DNAnexus API version required by the app (strongly recommended).",
+      "markdownDescription": "**dxAPI** (strongly recommended)  \nDNAnexus API version required by the app. Example: `1.0.0`. While technically optional, it's recommended to explicitly specify the API version.",
       "additionalProperties": false
     },
     "version": {
@@ -112,8 +108,8 @@
     },
     "inputSpec": {
       "type": "array",
-      "description": "Defines the input parameters for the app.",
-      "markdownDescription": "**Input Specification**  \nDefines the input parameters for the app.",
+      "description": "Defines the input parameters for the app (required for apps, strongly recommended for applets).",
+      "markdownDescription": "**Input Specification** (required for apps, strongly recommended for applets)  \nDefines the input parameters for the app.  \n**Warning:** Applets without `inputSpec` cannot be used as apps, run from the GUI, or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -236,8 +232,8 @@
     },
     "outputSpec": {
       "type": "array",
-      "description": "Defines the output parameters for the app.",
-      "markdownDescription": "**Output Specification**  \nDefines the output parameters for the app.",
+      "description": "Defines the output parameters for the app (required for apps, strongly recommended for applets).",
+      "markdownDescription": "**Output Specification** (required for apps, strongly recommended for applets)  \nDefines the output parameters for the app.  \n**Warning:** Applets without `outputSpec` cannot be used as apps, run from the GUI, or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -464,13 +460,13 @@
             "12.04"
           ],
           "description": "Ubuntu release version.",
-          "markdownDescription": "**Release**  \nUbuntu release version for the app.",
+          "markdownDescription": "**Release**  \nUbuntu release version for the app. **Recommended:** Use `20.04` or `24.04` for new apps and applets. Legacy versions (`12.04`, `14.04`, `16.04`) are supported for backward compatibility but not recommended for new development.",
           "markdownEnumDescriptions": [
-            "Ubuntu 24.04 LTS (latest supported release).",
+            "Ubuntu 24.04 LTS",
             "Ubuntu 20.04 LTS.",
-            "Ubuntu 16.04 LTS.",
-            "Ubuntu 14.04 LTS.",
-            "Ubuntu 12.04 LTS."
+            "**LEGACY** Ubuntu 16.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead.",
+            "**LEGACY** Ubuntu 14.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead.",
+            "**LEGACY** Ubuntu 12.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead."
           ]
         },
         "version": {
