@@ -60,51 +60,42 @@
       "additionalProperties": false
     },
     "httpsApp": {
-      "oneOf": [
-        {
-          "type": "boolean",
-          "description": "Enable HTTPS app with default settings."
-        },
-        {
-          "type": "object",
-          "description": "HTTPS app configuration with custom settings.",
-          "properties": {
-            "ports": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "enum": [
-                  443,
-                  8080,
-                  8081
-                ]
-              },
-              "description": "Array of ports to expose via HTTPS proxy.",
-              "markdownDescription": "**Ports**  \nArray of ports to allow access through the HTTPS proxy. Allowed values: `443`, `8080`, `8081`."
-            },
-            "shared_access": {
-              "type": "string",
-              "enum": [
-                "VIEW",
-                "CONTRIBUTE",
-                "ADMINISTER",
-                "NONE"
-              ],
-              "description": "Access level required to access the HTTPS endpoint.",
-              "markdownDescription": "**Shared Access**  \nRestrict access to users with the specified project access level. Use `NONE` to limit access to only the launching user.",
-              "markdownEnumDescriptions": [
-                "Users with VIEW access to the project can access the endpoint.",
-                "Users with CONTRIBUTE access to the project can access the endpoint.",
-                "Users with ADMINISTER access to the project can access the endpoint.",
-                "Only the launching user can access the endpoint."
-              ]
-            }
+      "type": "object",
+      "description": "HTTPS app configuration. Externally expose jobs to the internet via an HTTPS proxy.",
+      "markdownDescription": "**HTTPS App**  \nExternally expose jobs to the internet via an HTTPS proxy at `https://job-xxxx.dnanexus.cloud/`. Provide an object to configure `ports` and `shared_access`. To disable HTTPS, omit this property entirely.",
+      "properties": {
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "enum": [
+              443,
+              8080,
+              8081
+            ]
           },
-          "additionalProperties": false
+          "description": "Array of ports to expose via HTTPS proxy.",
+          "markdownDescription": "**Ports**  \nArray of ports to allow access through the HTTPS proxy. Allowed values: `443`, `8080`, `8081`."
+        },
+        "shared_access": {
+          "type": "string",
+          "enum": [
+            "VIEW",
+            "CONTRIBUTE",
+            "ADMINISTER",
+            "NONE"
+          ],
+          "description": "Access level required to access the HTTPS endpoint.",
+          "markdownDescription": "**Shared Access**  \nRestrict access to users with the specified project access level. Use `NONE` to limit access to only the launching user.",
+          "markdownEnumDescriptions": [
+            "Users with VIEW access to the project can access the endpoint.",
+            "Users with CONTRIBUTE access to the project can access the endpoint.",
+            "Users with ADMINISTER access to the project can access the endpoint.",
+            "Only the launching user can access the endpoint."
+          ]
         }
-      ],
-      "description": "Enable HTTPS access to jobs. Can be boolean or object with ports and shared_access.",
-      "markdownDescription": "**HTTPS App**  \nExternally expose jobs to the internet via an HTTPS proxy at `https://job-xxxx.dnanexus.cloud/`. Set to `true` for default settings, or provide an object to configure `ports` and `shared_access`."
+      },
+      "additionalProperties": false
     },
     "inputSpec": {
       "type": "array",
