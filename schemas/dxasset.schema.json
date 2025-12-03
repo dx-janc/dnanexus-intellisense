@@ -8,7 +8,6 @@
     "description",
     "distribution",
     "release",
-    "execDepends",
     "title"
   ],
   "additionalProperties": false,
