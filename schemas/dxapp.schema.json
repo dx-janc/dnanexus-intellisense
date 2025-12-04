@@ -18,19 +18,19 @@
     "title": {
       "type": "string",
       "description": "Human readable name shown in the UI (strongly recommended).",
-      "markdownDescription": "**Title** (strongly recommended)  \nHuman readable name for the app, shown in the DNAnexus UI. While technically optional, omitting this field is not recommended for production apps/applets.",
+      "markdownDescription": "**Title** (strongly recommended)  \nHuman readable name for the app, shown in the DNAnexus UI.  \n**Warning:** Building without this field will generate a warning and the app will have poor discoverability in the UI.",
       "additionalProperties": false
     },
     "summary": {
       "type": "string",
       "description": "Short summary of the app's functionality (strongly recommended).",
-      "markdownDescription": "**Summary** (strongly recommended)  \nShort summary describing the app's main purpose. While technically optional, omitting this field is not recommended for production apps/applets.",
+      "markdownDescription": "**Summary** (strongly recommended)  \nShort summary describing the app's main purpose.  \n**Warning:** Building without this field will generate a warning and users will have difficulty understanding the app's purpose.",
       "additionalProperties": false
     },
     "description": {
       "type": "string",
       "description": "Detailed description of the app, its features, and usage notes.",
-      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes. If not provided, `dx build` includes the `Readme.md` file content.",
+      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes. If not provided, `dx build` includes the `Readme.md` file content.  \n**Warning:** Omitting both this field and `Readme.md` will generate a build warning and the app will lack proper documentation.",
       "additionalProperties": false
     },
     "developerNotes": {
@@ -50,7 +50,7 @@
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$",
       "description": "Semantic versioning (required for apps, optional for applets).",
-      "markdownDescription": "**Version** (required for apps)  \nSemantic versioning for the app following [semver](https://semver.org/) specification. Examples: `1.0.0`, `1.0.0-rc.1`, `1.0.0+build.123`. **Required for apps, optional for applets.** Update this field whenever you make changes to the app.",
+      "markdownDescription": "**Version** (required for apps)  \nSemantic versioning for the app following [semver](https://semver.org/) specification. Examples: `1.0.0`, `1.0.0-rc.1`, `1.0.0+build.123`.  \n**Required for apps to build successfully.** Optional for applets. Update this field whenever you make changes to the app.",
       "additionalProperties": false
     },
     "openSource": {
@@ -99,8 +99,8 @@
     },
     "inputSpec": {
       "type": "array",
-      "description": "Defines the input parameters for the app (required for apps, strongly recommended for applets).",
-      "markdownDescription": "**Input Specification** (required for apps, strongly recommended for applets)  \nDefines the input parameters for the app.  \n**Warning:** Applets without `inputSpec` cannot be used as apps, run from the GUI, or composed in workflows.",
+      "description": "Defines the input parameters for the app (required for apps to build).",
+      "markdownDescription": "**Input Specification** (required for apps)  \nDefines the input parameters for the app. **Required for apps to build successfully.** Can be an empty array `[]` if the app has no inputs.  \n**Note:** Apps/applets with an empty `inputSpec` can build but cannot be run from the GUI or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -237,8 +237,8 @@
     },
     "outputSpec": {
       "type": "array",
-      "description": "Defines the output parameters for the app (required for apps, strongly recommended for applets).",
-      "markdownDescription": "**Output Specification** (required for apps, strongly recommended for applets)  \nDefines the output parameters for the app.  \n**Warning:** Applets without `outputSpec` cannot be used as apps, run from the GUI, or composed in workflows.",
+      "description": "Defines the output parameters for the app (required for apps to build).",
+      "markdownDescription": "**Output Specification** (required for apps)  \nDefines the output parameters for the app. **Required for apps to build successfully.** Can be an empty array `[]` if the app has no outputs.  \n**Note:** Apps/applets with an empty `outputSpec` can build but cannot be run from the GUI or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -529,8 +529,8 @@
     },
     "developers": {
       "type": "array",
-      "description": "List of developer usernames or IDs (required for apps, optional for applets).",
-      "markdownDescription": "**Developers** (required for apps)  \nList of developers who can modify the app. **Required for apps, optional for applets.** Can specify usernames, user IDs, or org IDs.",
+      "description": "List of developer usernames or IDs (strongly recommended for apps).",
+      "markdownDescription": "**Developers** (strongly recommended for apps)  \nList of developers who can modify the app. Can specify usernames, user IDs, or org IDs.  \n**Note:** While technically optional, omitting this field means only the creating user can manage the app. For applets, this field is optional.",
       "items": {
         "type": "string",
         "pattern": "^(user-[a-z0-9_-]+|org-[a-z0-9_-]+|[a-z0-9._-]+)$",
@@ -541,8 +541,8 @@
     },
     "authorizedUsers": {
       "type": "array",
-      "description": "List of authorized users or orgs (required for apps, optional for applets).",
-      "markdownDescription": "**Authorized Users** (required for apps)  \nList of authorized users or organizations who can access and run the app. **Required for apps, optional for applets.** Can specify usernames, user IDs, or org IDs.",
+      "description": "List of authorized users or orgs (strongly recommended for apps).",
+      "markdownDescription": "**Authorized Users** (strongly recommended for apps)  \nList of authorized users or organizations who can access and run the app. Can specify usernames, user IDs, or org IDs.  \n**Warning:** Building without this field will generate a warning. No one will be able to view or run the app except the developers listed in the app spec. For applets, this field is optional.",
       "items": {
         "type": "string",
         "pattern": "^(PUBLIC|user-[a-z0-9_-]+|org-[a-z0-9_-]+|[a-z0-9._-]+)$",
@@ -553,8 +553,8 @@
     },
     "regionalOptions": {
       "type": "object",
-      "description": "Region-specific options for app execution (required for apps, optional for applets).",
-      "markdownDescription": "**Regional Options** (required for apps)  \nRegion-specific options for app execution. Keys must be valid DNAnexus region names. **Required for apps** (which must specify resources and requirements per region). **Optional for applets** (which can use top-level `systemRequirements` and `resources` instead).",
+      "description": "Region-specific options for app execution (recommended for apps, optional for applets).",
+      "markdownDescription": "**Regional Options** (recommended for apps)  \nRegion-specific options for app execution. Keys must be valid DNAnexus region names. **Recommended for apps** to specify resources and requirements per region. **Optional for applets** (which can use deprecated top-level `systemRequirements` and `resources` instead).",
       "propertyNames": {
         "enum": [
           "aws:us-east-1",
