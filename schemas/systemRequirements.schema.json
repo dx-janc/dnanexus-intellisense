@@ -36,8 +36,8 @@
                             "apachespark",
                             "generic"
                         ],
-                        "description": "Type of cluster. Supported values: 'spark', 'dxspark', 'apachespark', 'generic'.",
-                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values: `spark`, `dxspark`, `apachespark`, `generic`."
+                        "description": "Type of cluster. Supported values: 'dxspark', 'apachespark', 'generic'.",
+                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values: `dxspark`, `apachespark`, `generic`."
                     },
                     "version": {
                         "type": "string",
