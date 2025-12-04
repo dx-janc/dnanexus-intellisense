@@ -63,6 +63,10 @@
       "type": "object",
       "description": "HTTPS app configuration. Externally expose jobs to the internet via an HTTPS proxy.",
       "markdownDescription": "**HTTPS App**  \nExternally expose jobs to the internet via an HTTPS proxy at `https://job-xxxx.dnanexus.cloud/`. Provide an object to configure `ports` and `shared_access`. To disable HTTPS, omit this property entirely.",
+      "required": [
+        "ports",
+        "shared_access"
+      ],
       "properties": {
         "ports": {
           "type": "array",
