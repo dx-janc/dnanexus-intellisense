@@ -41,8 +41,13 @@
                     },
                     "version": {
                         "type": "string",
+                        "enum": [
+                            "2.4.4",
+                            "3.2.3",
+                            "3.5.2"
+                        ],
                         "description": "Requested version for dxspark or apachespark clusters. Supported values: '2.4.4', '3.2.3', '3.5.2'.",
-                        "markdownDescription": "**Version** (optional)  \nRequested version for `dxspark` or `apachespark` clusters. Supported values: `2.4.4`, `3.2.3`, `3.5.2`."
+                        "markdownDescription": "**Version**  \nRequested version for `dxspark` or `apachespark` clusters. Supported values: `2.4.4`, `3.2.3`, `3.5.2`."
                     },
                     "initialInstanceCount": {
                         "type": "integer",
@@ -58,17 +63,18 @@
                             "maximum": 65535
                         },
                         "description": "Array of port numbers to open between nodes in the cluster.",
-                        "markdownDescription": "**Ports** (optional)  \nArray of port numbers to open between nodes in the cluster for inter-node communication. Specify individual ports or use ranges.\n\n**Note:** The API accepts an array of integers, but some interfaces may accept a comma-delimited string like `\"1000, 1100-1200\"`."
+                        "markdownDescription": "**Ports**  \nArray of port numbers to open between nodes in the cluster for inter-node communication. Specify individual ports or use ranges.\n\n**Note:** The API accepts an array of integers, but some interfaces may accept a comma-delimited string like `\"1000, 1100-1200\"`."
                     },
                     "bootstrapScript": {
                         "type": "string",
                         "description": "Path to the bootstrap script run on all cluster nodes before the driver begins running the application code.",
-                        "markdownDescription": "**Bootstrap Script** (optional)  \nThe path to the bootstrap script (relative to the app/applet source directory). The bootstrap script is run on **all cluster nodes** (including the driver) before the driver begins running the application code.\n\n**Note:** In dxapp.json, specify the filename/path only. The file content will be embedded by `dx build`. Use this to install additional software or configure the environment."
+                        "markdownDescription": "**Bootstrap Script**  \nThe path to the bootstrap script (relative to the app/applet source directory). The bootstrap script is run on **all cluster nodes** (including the driver) before the driver begins running the application code.\n\n**Note:** In dxapp.json, specify the filename/path only. The file content will be embedded by `dx build`. Use this to install additional software or configure the environment."
                     }
                 },
                 "required": [
                     "type",
-                    "initialInstanceCount"
+                    "initialInstanceCount",
+                    "version"
                 ],
                 "additionalProperties": false
             }
