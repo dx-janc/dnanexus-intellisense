@@ -18,32 +18,32 @@
     "title": {
       "type": "string",
       "description": "Human readable name shown in the UI (strongly recommended).",
-      "markdownDescription": "**Title** (strongly recommended)  \nHuman readable name for the app, shown in the DNAnexus UI.  \n**Warning:** Building without this field will generate a warning and the app will have poor discoverability in the UI.",
+      "markdownDescription": "**Title** (strongly recommended)  \nHuman readable name for the app or applet, shown in the DNAnexus UI.  \n**Warning:** Building without this field will generate a warning and the app or applet will have poor discoverability in the UI.",
       "additionalProperties": false
     },
     "summary": {
       "type": "string",
-      "description": "Short summary of the app's functionality (strongly recommended).",
-      "markdownDescription": "**Summary** (strongly recommended)  \nShort summary describing the app's main purpose.  \n**Warning:** Building without this field will generate a warning and users will have difficulty understanding the app's purpose.",
+      "description": "Short summary of the app or applet's functionality (strongly recommended).",
+      "markdownDescription": "**Summary** (strongly recommended)  \nShort summary describing the app or applet's main purpose.  \n**Warning:** Building without this field will generate a warning and users will have difficulty understanding the app or applet's purpose.",
       "additionalProperties": false
     },
     "description": {
       "type": "string",
-      "description": "Detailed description of the app, its features, and usage notes.",
-      "markdownDescription": "**Description**  \nDetailed description of the app, its features, and any important usage notes. If not provided, `dx build` includes the `Readme.md` file content.  \n**Warning:** Omitting both this field and `Readme.md` will generate a build warning and the app will lack proper documentation.",
+      "description": "Detailed description of the app or applet, its features, and usage notes.",
+      "markdownDescription": "**Description**  \nDetailed description of the app or applet, its features, and any important usage notes. If not provided, `dx build` includes the `Readme.md` file content.  \n**Warning:** Omitting both this field and `Readme.md` will generate a build warning and the app or applet will lack proper documentation.",
       "additionalProperties": false
     },
     "developerNotes": {
       "type": "string",
       "description": "Detailed notes covering extra details for developers.",
-      "markdownDescription": "**Developer Notes**  \nDetailed notes for developers working with this app. If not provided, `dx build` includes the `Readme.developer.md` file content, if available.",
+      "markdownDescription": "**Developer Notes**  \nDetailed notes for developers working with this app or applet. If not provided, `dx build` includes the `Readme.developer.md` file content, if available.",
       "additionalProperties": false
     },
     "dxapi": {
       "type": "string",
       "default": "1.0.0",
-      "description": "DNAnexus API version required by the app (strongly recommended).",
-      "markdownDescription": "**dxAPI** (strongly recommended)  \nDNAnexus API version required by the app. Example: `1.0.0`. While technically optional, it's recommended to explicitly specify the API version.",
+      "description": "DNAnexus API version required by the app or applet (strongly recommended).",
+      "markdownDescription": "**dxAPI** (strongly recommended)  \nDNAnexus API version required by the app or applet. Example: `1.0.0`. While technically optional, it's recommended to explicitly specify the API version.",
       "additionalProperties": false
     },
     "version": {
@@ -55,8 +55,8 @@
     },
     "openSource": {
       "type": "boolean",
-      "description": "Whether the contents of this app version's resources container should be viewable by all members of the app's developers and authorized users",
-      "markdownDescription": "**Open Source**  \nSet to `true` if you want the contents of this app version's resources container to be viewable by all members of the app's developers and authorized users.",
+      "description": "Whether the contents of this app version's resources container should be viewable by all members of the developers and authorized users (apps only)",
+      "markdownDescription": "**Open Source** (apps only)  \nSet to `true` if you want the contents of this app version's resources container to be viewable by all members of the `developers` and `authorizedUsers`. This field is only meaningful for apps, as applets do not have `developers` or `authorizedUsers` fields that would define who can view the resources.",
       "additionalProperties": false
     },
     "httpsApp": {
@@ -99,8 +99,8 @@
     },
     "inputSpec": {
       "type": "array",
-      "description": "Defines the input parameters for the app (required for apps to build).",
-      "markdownDescription": "**Input Specification** (required for apps)  \nDefines the input parameters for the app. **Required for apps to build successfully.** Can be an empty array `[]` if the app has no inputs.  \n**Note:** Apps/applets with an empty `inputSpec` can build but cannot be run from the GUI or composed in workflows.",
+      "description": "Defines the input parameters for the app or applet (required for apps to build).",
+      "markdownDescription": "**Input Specification** (required for apps)  \nDefines the input parameters for the app or applet. **Required for apps to build successfully.** Can be an empty array `[]` if the app or applet has no inputs.  \n**Note:** Applets without this field (not just an empty array, but completely absent) cannot be run from the GUI or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -237,8 +237,8 @@
     },
     "outputSpec": {
       "type": "array",
-      "description": "Defines the output parameters for the app (required for apps to build).",
-      "markdownDescription": "**Output Specification** (required for apps)  \nDefines the output parameters for the app. **Required for apps to build successfully.** Can be an empty array `[]` if the app has no outputs.  \n**Note:** Apps/applets with an empty `outputSpec` can build but cannot be run from the GUI or composed in workflows.",
+      "description": "Defines the output parameters for the app or applet (required for apps to build).",
+      "markdownDescription": "**Output Specification** (required for apps)  \nDefines the output parameters for the app or applet. **Required for apps to build successfully.** Can be an empty array `[]` if the app or applet has no outputs.  \n**Note:** Applets without this field (not just an empty array, but completely absent) cannot be run from the GUI or composed in workflows.",
       "items": {
         "type": "object",
         "required": [
@@ -315,8 +315,8 @@
     },
     "runSpec": {
       "type": "object",
-      "description": "Defines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
-      "markdownDescription": "**Run Specification**  \nDefines how the app is executed, including interpreter, entry point, OS, dependencies, and more.",
+      "description": "Defines how the app or applet is executed, including interpreter, entry point, OS, dependencies, and more.",
+      "markdownDescription": "**Run Specification**  \nDefines how the app or applet is executed, including interpreter, entry point, OS, dependencies, and more.",
       "required": [
         "interpreter",
         "file",
@@ -327,8 +327,8 @@
       "properties": {
         "assetDepends": {
           "$ref": "./assetDepends.schema.json",
-          "description": "List of asset dependencies required by the app.",
-          "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required by the app. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included."
+          "description": "List of asset dependencies required by the app or applet.",
+          "markdownDescription": "**Asset Dependencies**  \nList of asset dependencies required by the app or applet. Each item must specify either an `id` (string) or a combination of `name`, `project`, and `version` (all strings). Optionally, `folder` (string) can be included."
         },
         "bundledDepends": {
           "$ref": "./bundledDepends.schema.json",
@@ -436,8 +436,8 @@
             "python3",
             "python2.7"
           ],
-          "description": "The language interpreter to use for running the app.",
-          "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app.",
+          "description": "The language interpreter to use for running the app or applet.",
+          "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app or applet.",
           "markdownEnumDescriptions": [
             "Bash shell interpreter.",
             "Python 3 interpreter.",
@@ -447,7 +447,7 @@
         "file": {
           "type": "string",
           "description": "Entry point script filename.",
-          "markdownDescription": "**File**  \nEntry point script filename for the app."
+          "markdownDescription": "**File**  \nEntry point script filename for the app or applet."
         },
         "distribution": {
           "type": "string",
@@ -455,9 +455,9 @@
             "Ubuntu"
           ],
           "description": "OS Distribution.",
-          "markdownDescription": "**Distribution**  \nOperating system distribution for the app. Only `Ubuntu` is supported.",
+          "markdownDescription": "**Distribution**  \nOperating system distribution for the app or applet. Only `Ubuntu` is supported.",
           "markdownEnumDescriptions": [
-            "The only supported OS distribution for DNAnexus apps."
+            "The only supported OS distribution for DNAnexus apps and applets."
           ]
         },
         "release": {
@@ -470,13 +470,13 @@
             "12.04"
           ],
           "description": "Ubuntu release version.",
-          "markdownDescription": "**Release**  \nUbuntu release version for the app. **Recommended:** Use `20.04` or `24.04` for new apps and applets. Legacy versions (`12.04`, `14.04`, `16.04`) are supported for backward compatibility but not recommended for new development.",
+          "markdownDescription": "**Release**  \nUbuntu release version for the app or applet. **Recommended:** Use `20.04` or `24.04` for new apps and applets. Legacy versions (`12.04`, `14.04`, `16.04`) are supported for backward compatibility but not recommended for new development.",
           "markdownEnumDescriptions": [
             "Ubuntu 24.04 LTS",
             "Ubuntu 20.04 LTS.",
-            "**LEGACY** Ubuntu 16.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead.",
-            "**LEGACY** Ubuntu 14.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead.",
-            "**LEGACY** Ubuntu 12.04 LTS. Not recommended for new apps. Use 20.04 or 24.04 instead."
+            "**LEGACY** Ubuntu 16.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead.",
+            "**LEGACY** Ubuntu 14.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead.",
+            "**LEGACY** Ubuntu 12.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead."
           ]
         },
         "version": {
@@ -489,12 +489,12 @@
         },
         "execDepends": {
           "$ref": "./execDepends.schema.json",
-          "markdownDescription": "**execDepends**  \nList of software dependencies required by the app. See execDepends.schema.json for details."
+          "markdownDescription": "**execDepends**  \nList of software dependencies required by the app or applet. See execDepends.schema.json for details."
         },
         "timeoutPolicy": {
           "type": "object",
-          "description": "Timeout policy for app execution. Keys can be entry point names or '*' for all. Each value is an object with 'minutes' or 'hours'.",
-          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app execution. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or `\"*\"` to apply to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": { \"hours\": 48 },\n  \"main\": { \"minutes\": 30 }\n}\n```",
+          "description": "Timeout policy for app or applet execution. Keys can be entry point names or '*' for all. Each value is an object with 'minutes' or 'hours'.",
+          "markdownDescription": "**Timeout Policy**  \nTimeout policy for app or applet execution. Keys are entry point names (e.g., `\"main\"`, `\"process\"`), or `\"*\"` to apply to all entry points.\n\n**Example:**\n```json\n{\n  \"*\": { \"hours\": 48 },\n  \"main\": { \"minutes\": 30 }\n}\n```",
           "additionalProperties": {
             "type": "object",
             "properties": {
@@ -704,14 +704,14 @@
     },
     "details": {
       "type": "object",
-      "description": "Arbitrary metadata for the app. Recognized fields include contact info, upstream version, author, URL, licenses, citations, and changelog.",
-      "markdownDescription": "**Details**  \nArbitrary metadata for the app. The properties listed below are **recognized by the DNAnexus platform**, but you can add any custom key-value pairs.\n\n**Custom keys example:**\n```json\n{\n  \"contactEmail\": \"dev@example.com\",\n  \"myCustomField\": \"custom value\",\n  \"internalVersion\": \"v2.3.1\"\n}\n```",
+      "description": "Arbitrary metadata for the app or applet. Recognized fields include contact info, upstream version, author, URL, licenses, citations, and changelog.",
+      "markdownDescription": "**Details**  \nArbitrary metadata for the app or applet. The properties listed below are **recognized by the DNAnexus platform**, but you can add any custom key-value pairs.\n\n**Custom keys example:**\n```json\n{\n  \"contactEmail\": \"dev@example.com\",\n  \"myCustomField\": \"custom value\",\n  \"internalVersion\": \"v2.3.1\"\n}\n```",
       "properties": {
         "contactEmail": {
           "type": "string",
           "format": "email",
-          "description": "Contact email for the app author or maintainer.",
-          "markdownDescription": "**Contact Email**  \nContact email for the app author or maintainer."
+          "description": "Contact email for the app or applet author or maintainer.",
+          "markdownDescription": "**Contact Email**  \nContact email for the app or applet author or maintainer."
         },
         "citations": {
           "type": "array",
@@ -755,8 +755,8 @@
     },
     "categories": {
       "type": "array",
-      "description": "Categories for the app. Recognized categories are displayed specially on the DNAnexus Platform, but custom categories are also allowed.",
-      "markdownDescription": "**Categories**  \nCategorize your app for easier discovery on the DNAnexus platform. The values listed below are **recognized categories** that receive special treatment in the UI (organized sections, filtering, etc.). However, you can also specify **custom category names** if none of the recognized categories fit your use case.",
+      "description": "Categories for the app or applet. Recognized categories are displayed specially on the DNAnexus Platform, but custom categories are also allowed.",
+      "markdownDescription": "**Categories**  \nCategorize your app or applet for easier discovery on the DNAnexus platform. The values listed below are **recognized categories** that receive special treatment in the UI (organized sections, filtering, etc.). However, you can also specify **custom category names** if none of the recognized categories fit your use case.",
       "items": {
         "type": "string",
         "enum": [
@@ -800,8 +800,8 @@
     },
     "access": {
       "type": "object",
-      "description": "Access control settings for the app. Request additional permissions beyond default limited access.",
-      "markdownDescription": "**Access**  \nRequest additional permissions for the app. By default, apps have limited access to ensure privacy and reproducibility. See [App Permissions](https://documentation.dnanexus.com/developer/apps/app-permissions) for details.",
+      "description": "Access control settings for the app or applet. Request additional permissions beyond default limited access.",
+      "markdownDescription": "**Access**  \nRequest additional permissions for the app or applet. By default, apps and applets have limited access to ensure privacy and reproducibility. See [App Permissions](https://documentation.dnanexus.com/developer/apps/app-permissions) for details.",
       "properties": {
         "project": {
           "type": "string",
@@ -832,7 +832,7 @@
             "ADMINISTER"
           ],
           "description": "Access level to all projects the user can access.",
-          "markdownDescription": "**All Projects Access**  \nGrant the app access to all projects the user running the app can access. Use this carefully as it grants broad access.",
+          "markdownDescription": "**All Projects Access**  \nGrant the app or applet access to all projects the user running it can access. Use this carefully as it grants broad access.",
           "markdownEnumDescriptions": [
             "No access to other projects.",
             "Read-only access to all user projects.",
@@ -860,12 +860,12 @@
             }
           ],
           "description": "Network access permissions. Provide specific domains or '*' for all.",
-          "markdownDescription": "**Network Access**  \nGrant the app network access. Provide an array of specific domains (e.g., `['github.com', 'api.example.com']`) or use `'*'` to allow all domains."
+          "markdownDescription": "**Network Access**  \nGrant the app or applet network access. Provide an array of specific domains (e.g., `['github.com', 'api.example.com']`) or use `'*'` to allow all domains."
         },
         "developer": {
           "type": "boolean",
-          "description": "Allow the app to act as a developer on behalf of the user.",
-          "markdownDescription": "**Developer Access**  \nGrant the app permissions to act as a developer on behalf of the user. This allows the app to create new apps, access unpublished apps, etc."
+          "description": "Allow the app or applet to act as a developer on behalf of the user.",
+          "markdownDescription": "**Developer Access**  \nGrant the app or applet permissions to act as a developer on behalf of the user. This allows the app or applet to create new apps, access unpublished apps, etc."
         }
       },
       "additionalProperties": false
