@@ -154,8 +154,8 @@
           },
           "optional": {
             "type": "boolean",
-            "description": "Whether the input parameter is optional.",
-            "markdownDescription": "**Optional**  \nSet to `true` if the input parameter is optional."
+            "description": "Whether the input parameter is optional. Note: inputs with a 'default' value are treated as optional even if this is not explicitly set.",
+            "markdownDescription": "**Optional**  \nSet to `true` if the input parameter is optional.  \n**Note:** Inputs with a `default` value are automatically treated as optional, even if `optional` is not explicitly set to `true`."
           },
           "label": {
             "type": "string",
@@ -163,8 +163,8 @@
             "markdownDescription": "**Label**  \nLabel for the input parameter."
           },
           "default": {
-            "description": "Default value for the input parameter.",
-            "markdownDescription": "**Default**  \nDefault value for the input parameter."
+            "description": "Default value for the input parameter. Providing a default automatically makes the input optional.",
+            "markdownDescription": "**Default**  \nDefault value for the input parameter.  \n**Note:** Providing a `default` value automatically makes the input optional, even without setting `optional: true`."
           },
           "patterns": {
             "type": "array",
@@ -173,6 +173,11 @@
             },
             "description": "Patterns to validate the input parameter.",
             "markdownDescription": "**Patterns**  \nPatterns to validate the input parameter."
+          },
+          "type": {
+            "type": "string",
+            "description": "Constrains data object inputs (file/record/applet/workflow) to specific object types.",
+            "markdownDescription": "**Type Constraint**  \nFor data object inputs (file, record, applet, workflow), this constrains which object types are acceptable. For example, for a file input with `\"type\": \"AssetBundle\"`, only files of type `AssetBundle` will be accepted. This can also be a complex type specification using `$and` or `$or` operators.  \n**Note:** This field only applies to data object classes, not primitives like int/string."
           },
           "help": {
             "type": "string",
@@ -198,12 +203,21 @@
                   "type": "string",
                   "description": "Folder path in the project (defaults to '/').",
                   "markdownDescription": "**Path**  \nFolder path within the project. Defaults to `/` if not specified."
+                },
+                "value": {
+                  "description": "A specific suggested value. Can be a primitive value or an object with a '$dnanexus_link' key.",
+                  "markdownDescription": "**Value**  \nA specific suggested value. Can be:\n- A primitive value matching the input class (e.g., string, int)\n- An object with `$dnanexus_link` in **limited format**:\n  - Simple string: `{\"$dnanexus_link\": \"file-xxxx\"}`\n  - Object with project: `{\"$dnanexus_link\": {\"project\": \"project-xxxx\", \"id\": \"file-yyyy\"}}`\n\n**Note:** Only simple data object references (file, record) are supported, not complex JBOR or workflow links."
+                },
+                "$dnanexus_link": {
+                  "type": "string",
+                  "description": "Direct link to a DNAnexus data object (file-xxxx, record-xxxx, etc). Simple string format only.",
+                  "markdownDescription": "**DNAnexus Link (Simple Format)**  \nDirect link to a DNAnexus data object using the simple string format. Example: `file-xxxx` or `record-yyyy`.  \n**Note:** Only simple object ID strings are supported here, not complex JBOR (job-based object references) or workflow links."
                 }
               },
               "additionalProperties": false
             },
             "description": "Array of suggestion objects to help users select input values.",
-            "markdownDescription": "**Suggestions**  \nHelp users select input values by suggesting projects and folders containing appropriate files."
+            "markdownDescription": "**Suggestions**  \nHelp users select input values by providing suggestions. Each suggestion typically uses one of these patterns (though the validation allows combinations):\n\n- **Project/Path**: `{\"name\": \"label\", \"project\": \"project-xxxx\", \"path\": \"/folder\"}` - suggests browsing a specific project folder\n- **Direct link**: `{\"$dnanexus_link\": \"file-xxxx\"}` - references a specific data object by ID\n- **Value**: `{\"value\": {\"$dnanexus_link\": \"file-xxxx\"}}` or `{\"value\": primitive}` - provides a specific suggested value\n\n**Note:** While properties can technically be combined, they serve distinct purposes and are typically used independently per suggestion."
           },
           "group": {
             "type": "string",
@@ -462,7 +476,9 @@
         },
         "version": {
           "type": "string",
-          "enum": ["0"],
+          "enum": [
+            "0"
+          ],
           "description": "Execution environment version.",
           "markdownDescription": "**Execution Environment Version**  \nSpecifies the version of the execution environment. Only `0` is supported. This field, together with `distribution` and `release`, determines the complete execution environment configuration."
         },
@@ -489,8 +505,16 @@
               }
             },
             "anyOf": [
-              { "required": ["minutes"] },
-              { "required": ["hours"] }
+              {
+                "required": [
+                  "minutes"
+                ]
+              },
+              {
+                "required": [
+                  "hours"
+                ]
+              }
             ],
             "additionalProperties": false
           }
