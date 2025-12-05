@@ -547,12 +547,12 @@
     "authorizedUsers": {
       "type": "array",
       "description": "List of authorized users or orgs (strongly recommended for apps).",
-      "markdownDescription": "**Authorized Users** (strongly recommended for apps)  \nList of authorized users or organizations who can access and run the app. Can specify usernames, user IDs, or org IDs.  \n**Warning:** Building without this field will generate a warning. No one will be able to view or run the app except the developers listed in the app spec. For applets, this field is optional.",
+      "markdownDescription": "**Authorized Users** (strongly recommended for apps)  \nList of authorized users or organizations who can access and run the app. Must use `user-` or `org-` prefixed IDs, or `PUBLIC`.  \n**Warning:** Building without this field will generate a warning. No one will be able to view or run the app except the developers listed in the app spec. For applets, this field is optional.",
       "items": {
         "type": "string",
-        "pattern": "^(PUBLIC|user-[a-z0-9_-]+|org-[a-z0-9_-]+|[a-z0-9._-]+)$",
-        "description": "Username, user ID (user-xxx), org ID (org-xxx), or PUBLIC.",
-        "markdownDescription": "**Authorized Entity**  \nCan be:  \n- Plain username (e.g., `eve`, `john.doe`)  \n- User ID with prefix (e.g., `user-eve`, `user-dnanexus`)  \n- Organization ID (e.g., `org-piratelabs`, `org-dnanexus_apps`)  \n- `PUBLIC` to make app publicly available"
+        "pattern": "^(PUBLIC|user-[a-z0-9_-]+|org-[a-z0-9_-]+)$",
+        "description": "User ID (user-xxx), org ID (org-xxx), or PUBLIC. Plain usernames not accepted.",
+        "markdownDescription": "**Authorized Entity**  \nMust be:  \n- User ID with prefix (e.g., `user-eve`, `user-dnanexus`)  \n- Organization ID (e.g., `org-piratelabs`, `org-dnanexus_apps`)  \n- `PUBLIC` to make app publicly available  \n\n**Note:** Plain usernames without the `user-` prefix are not accepted for `authorizedUsers`."
       },
       "additionalProperties": false
     },
