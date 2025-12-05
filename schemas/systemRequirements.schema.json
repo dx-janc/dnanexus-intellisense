@@ -16,11 +16,31 @@
             },
             "fpgaDriver": {
                 "type": "string",
+                "enum": [
+                    "edico-1.4.2",
+                    "edico-1.4.5",
+                    "edico-1.4.7",
+                    "edico-1.4.9.2"
+                ],
+                "markdownEnumDescriptions": [
+                    "Edico 1.4.2 - Default for `mem3_ssd2_fpga1_x8`, `mem3_ssd2_fpga1_x16`, `mem3_ssd2_fpga1_x64`",
+                    "Edico 1.4.5 - Compatible with `mem3_ssd2_fpga1_x8`, `mem3_ssd2_fpga1_x16`, `mem3_ssd2_fpga1_x64`",
+                    "Edico 1.4.7 - Compatible with `mem3_ssd2_fpga1_x8`, `mem3_ssd2_fpga1_x16`, `mem3_ssd2_fpga1_x64`",
+                    "Edico 1.4.9.2 - Default for `mem3_ssd2_fpga1_x24`, `mem3_ssd2_fpga2_x48`, `mem3_ssd2_fpga8_x192`"
+                ],
                 "description": "FPGA driver to install on FPGA-enabled instances. Accepted values: 'edico-1.4.9.2' (for mem3_ssd2_fpga1_x24, mem3_ssd2_fpga2_x48, mem3_ssd2_fpga8_x192), 'edico-1.4.2', 'edico-1.4.5', 'edico-1.4.7' (for mem3_ssd2_fpga1_x8, mem3_ssd2_fpga1_x16, mem3_ssd2_fpga1_x64).",
                 "markdownDescription": "**FPGA Driver** (optional)  \nSpecifies the FPGA driver to install on the FPGA-enabled cloud host instance before app code execution.\n\n**Accepted values by instance type:**\n- `mem3_ssd2_fpga1_x24`, `mem3_ssd2_fpga2_x48`, `mem3_ssd2_fpga8_x192`: `edico-1.4.9.2` (default)\n- `mem3_ssd2_fpga1_x8`, `mem3_ssd2_fpga1_x16`, `mem3_ssd2_fpga1_x64`: `edico-1.4.2` (default), `edico-1.4.5`, `edico-1.4.7`"
             },
             "nvidiaDriver": {
                 "type": "string",
+                "enum": [
+                    "R470",
+                    "R535"
+                ],
+                "markdownEnumDescriptions": [
+                    "R470 (default) - Driver version 470.256.02, supports CUDA 11.4",
+                    "R535 - Driver version 535.247.01, supports CUDA 12.2"
+                ],
                 "description": "NVIDIA driver to install on GPU-enabled instances. Accepted values: 'R470' (default, driver 470.256.02, CUDA 11.4), 'R535' (driver 535.247.01, CUDA 12.2).",
                 "markdownDescription": "**NVIDIA Driver** (optional)  \nSpecifies the NVIDIA driver to install on the GPU-enabled cloud host instance before app code execution.\n\n**Accepted values:**\n- `R470` (default): Driver version [470.256.02](https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-256-02/index.html), supports CUDA 11.4\n- `R535`: Driver version [535.247.01](https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html), supports CUDA 12.2"
             },
