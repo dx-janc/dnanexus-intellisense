@@ -486,10 +486,11 @@
         "version": {
           "type": "string",
           "enum": [
-            "0"
+            "0",
+            "1"
           ],
           "description": "Execution environment version.",
-          "markdownDescription": "**Execution Environment Version**  \nSpecifies the version of the execution environment. Only `0` is supported. This field, together with `distribution` and `release`, determines the complete execution environment configuration."
+          "markdownDescription": "**Execution Environment Version**  \nSpecifies the version of the execution environment. This field, together with `distribution` and `release`, determines the complete execution environment configuration."
         },
         "execDepends": {
           "$ref": "./execDepends.schema.json",
