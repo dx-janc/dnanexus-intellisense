@@ -27,7 +27,7 @@
             "clusterSpec": {
                 "type": "object",
                 "description": "Cluster configuration for distributed computing.",
-                "markdownDescription": "**Cluster Specification**  \nConfigure a cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
+                "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. When the app is launched, the system instantiates a Spark cluster specifically for that execution.\n\n**Cluster Management:**  \nSpark apps use [Spark Standalone](https://spark.apache.org/docs/latest/spark-standalone.html) for cluster management and [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) to share data between nodes.\n\n**Cluster Lifecycle:**  \nThe job lifecycle reflects the state of the driver node. A Spark job fails if the driver node fails. If a clusterWorker node fails, a new node is automatically provisioned.",
                 "properties": {
                     "type": {
                         "type": "string",
@@ -37,12 +37,12 @@
                             "apachespark"
                         ],
                         "markdownEnumDescriptions": [
-                            "Alias for `dxspark` - Apollo Spark cluster (DNAnexus managed Spark with metastore integration)",
-                            "Apollo Spark cluster (DNAnexus managed Spark with metastore integration)",
-                            "Generic Apache Spark cluster (open-source Spark)"
+                            "Alias for `dxspark` - Apollo Spark cluster (fully integrated with DNAnexus Platform, includes Hive Metastore integration, database objects, and SQL permissions)",
+                            "Apollo Spark cluster - Fully integrated with DNAnexus Platform. Database objects are created in the same project. Requires network access and VIEW/UPLOAD project permissions.",
+                            "Generic Apache Spark cluster - Open-source Spark without Platform integration. Use for custom storage locations (e.g., S3). No database objects created by Platform."
                         ],
                         "description": "Type of cluster. Supported values (case-insensitive): 'spark' (alias for dxspark), 'dxspark', 'apachespark'.",
-                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values (case-insensitive):  \n- `spark` or `dxspark` - Apollo Spark cluster (DNAnexus managed Spark with metastore integration)  \n- `apachespark` - Generic Apache Spark cluster (open-source Spark)"
+                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values (case-insensitive):  \n- `spark` or `dxspark` - Apollo Spark cluster (fully integrated with DNAnexus Platform, includes Hive Metastore integration, database objects created in project, requires network access and VIEW/UPLOAD permissions)  \n- `apachespark` - Generic Apache Spark cluster (open-source Spark without Platform integration, use for custom storage locations like S3)"
                     },
                     "version": {
                         "type": "string",
@@ -52,29 +52,35 @@
                             "3.2.3",
                             "3.5.2"
                         ],
+                        "markdownEnumDescriptions": [
+                            "Spark 2.4.4 - Compatible with Ubuntu 14.04/16.04 (Python 2.7.x or 3.5.x)",
+                            "Spark 3.2.0 - Compatible with Ubuntu 20.04 (Python 3.8.10)",
+                            "Spark 3.2.3 - Compatible with Ubuntu 20.04 (Python 3.8.10)",
+                            "Spark 3.5.2 - Compatible with Ubuntu 20.04 (Python 3.8.10)"
+                        ],
                         "description": "Software version for the cluster. Required. Supported: '2.4.4', '3.2.0', '3.2.3', '3.5.2'.",
-                        "markdownDescription": "**Version**  \nSoftware version for the cluster. Supported versions: `2.4.4`, `3.2.0`, `3.2.3`, `3.5.2`."
+                        "markdownDescription": "**Version**  \nApache Spark version for the cluster. Must be compatible with the runSpec distribution/release.\n\n**Compatibility:**  \n- `2.4.4`: Ubuntu 14.04/16.04  \n- `3.2.0`, `3.2.3`, `3.5.2`: Ubuntu 20.04"
                     },
                     "initialInstanceCount": {
                         "type": "integer",
                         "minimum": 1,
-                        "description": "Number of nodes in the cluster, including the driver. Min value 1 indicates a cluster with no worker nodes.",
-                        "markdownDescription": "**Initial Instance Count**  \nThe number of nodes (including the driver) in the cluster. Minimum value is 1, indicating a cluster with no `clusterWorker` nodes (driver only).\n\n**Note:** This is the only `clusterSpec` field that can be overridden at runtime using the `--instance-count` flag with `dx run`."
+                        "description": "Number of nodes in the cluster, including the driver. Min value 1 indicates a single-node cluster where both driver and clusterWorker run on the same node.",
+                        "markdownDescription": "**Initial Instance Count**  \nThe total number of nodes in the cluster, including the driver node. Minimum value is 1.\n\n**Configuration:**  \n- Value of `1`: Single-node Spark cluster where both driver and clusterWorker run on the same node  \n- Value > `1`: Multi-node cluster with one driver node and (n-1) clusterWorker nodes\n\n**Node Details:**  \n- **Driver node**: Runs Spark master service, driver, HDFS namenode/datanode, and application code  \n- **ClusterWorker nodes**: Run Spark clusterWorker service and executors that process data\n\n**Note:** This is the only `clusterSpec` field that can be overridden at runtime using the `--instance-count` flag with `dx run`. All nodes have identical hardware and software configurations (same instance type, packages, and resources)."
                     },
                     "ports": {
                         "type": "string",
-                        "description": "Comma-delimited string of ports/ranges to open between cluster nodes (e.g., '443, 8080, 9000, 40000-55000'). Default ports are included automatically for spark/dxspark/apachespark.",
-                        "markdownDescription": "**Ports**  \nComma-delimited string specifying ports or port ranges to open between cluster nodes for inter-node communication (e.g., `\"443, 8080, 9000, 40000-55000\"`).\n\n**Note:** Default ports for the cluster type are automatically included. You only need to specify additional custom ports. Empty string `\"\"` uses defaults only."
+                        "description": "Comma-delimited string of additional ports/ranges to open between cluster nodes (e.g., '9500, 9700-9750'). Default ports are included automatically for spark/dxspark/apachespark.",
+                        "markdownDescription": "**Ports** (optional)  \nComma-delimited string specifying additional ports or port ranges to open between cluster nodes for inter-node communication.\n\n**Example:** `\"9500, 9700-9750\"` opens port 9500 and ports 9700-9750\n\n**Important:**  \n- The system automatically includes default ports required by Spark for `dxspark` and `apachespark` cluster types  \n- Only specify additional custom ports your application needs  \n- Some ports are reserved for Platform internal functions and should not be used  \n- Empty string or omit to use defaults only"
                     },
                     "bootstrapScript": {
                         "type": "string",
                         "description": "Path to the bootstrap script run on all cluster nodes before the driver begins running the application code.",
-                        "markdownDescription": "**Bootstrap Script**  \nThe path to the bootstrap script (relative to the app/applet source directory). The bootstrap script is run on **all cluster nodes** (including the driver) before the driver begins running the application code.\n\n**Note:** In dxapp.json, specify the filename/path only. The file content will be embedded by `dx build`. Use this to install additional software or configure the environment."
+                        "markdownDescription": "**Bootstrap Script** (optional)  \nPath to a bootstrap script (relative to the app/applet source directory) that runs on **all cluster nodes** (both driver and clusterWorker nodes) before the driver begins running the application code.\n\n**Use Cases:**  \n- Installing additional software or services  \n- Downloading data needed on all nodes  \n- Environment configuration\n\n**Execution:**  \nThe script runs after packages are installed but before Spark services start. Use environment variable `$DX_CLUSTER_MASTER_IP` to determine if running on driver (empty) or worker (set) node.\n\n**Note:** In dxapp.json, specify the filename/path only (e.g., `\"src/bootstrap.sh\"`). The file content will be embedded by `dx build`. It's recommended to locate the script in the same location as application code."
                     },
                     "slaveInstanceType": {
                         "type": "string",
-                        "description": "Instance type for worker nodes. If not specified, workers use the same instance type as the driver.",
-                        "markdownDescription": "**Slave Instance Type**  \nThe instance type for worker nodes (e.g., `mem1_ssd1_v2_x4`). If not specified, worker nodes use the same instance type as the driver (specified in `instanceType`)."
+                        "description": "Instance type for clusterWorker (worker) nodes. If not specified, workers use the same instance type as the driver.",
+                        "markdownDescription": "**Slave Instance Type** (optional)  \nThe instance type for clusterWorker (worker) nodes (e.g., `mem1_ssd1_v2_x4`).\n\n**Default behavior:** If not specified, worker nodes use the same instance type as the driver node (specified in `instanceType`).\n\n**Note:** This property uses legacy terminology (`slave`). In current DNAnexus documentation, worker nodes are referred to as `clusterWorker` nodes."
                     }
                 },
                 "required": [
