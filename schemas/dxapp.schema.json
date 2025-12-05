@@ -895,5 +895,5 @@
       "deprecationMessage": "This property is deprecated. Use 'regionalOptions.<region>.resources' instead for region-specific resources."
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }
