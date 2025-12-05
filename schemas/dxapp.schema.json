@@ -440,12 +440,12 @@
             "python3",
             "python2.7"
           ],
-          "description": "The language interpreter to use for running the app or applet.",
-          "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app or applet.",
+          "description": "The language interpreter to use for running the app or applet. The specific version is determined by the Ubuntu release.",
+          "markdownDescription": "**Interpreter**  \nThe language interpreter to use for running the app or applet.\n\n**Note:** The specific version of the interpreter depends on the selected `release` (Ubuntu version), as the native built-in interpreter for that Ubuntu release is used. See the `release` property descriptions for specific interpreter versions.",
           "markdownEnumDescriptions": [
-            "Bash shell interpreter.",
-            "Python 3 interpreter.",
-            "**DEPRECATED** Python 2.7 interpreter. DNAnexus stopped updating the Python 2 AEE on March 1, 2021, and no longer accepts new applets or apps with `python2.7`. Python 2 reached End-of-Life on January 1, 2020. Existing apps/applets using `python2.7` continue to run for reproducibility, but this value should only be present in historical versions."
+            "Bash shell interpreter. Version depends on Ubuntu release: 12.04 (4.2.25), 14.04 (4.3.11), 16.04 (4.3.48), 20.04 (5.0.17), 24.04 (5.2.21).",
+            "Python 3 interpreter. Version depends on Ubuntu release: 14.04 (3.4.3), 16.04 (3.5.2), 20.04 (3.8.10), 24.04 (3.12.3). Not available on 12.04.",
+            "**DEPRECATED** Python 2.7 interpreter. DNAnexus stopped updating the Python 2 AEE on March 1, 2021, and no longer accepts new applets or apps with `python2.7`. Python 2 reached End-of-Life on January 1, 2020. Existing apps/applets using `python2.7` continue to run for reproducibility, but this value should only be present in historical versions. Version depends on Ubuntu release: 12.04 (2.7.3), 14.04 (2.7.6), 16.04 (2.7.12). Not available on 20.04+."
           ]
         },
         "file": {
@@ -473,14 +473,14 @@
             "14.04",
             "12.04"
           ],
-          "description": "Ubuntu release version.",
-          "markdownDescription": "**Release**  \nUbuntu release version for the app or applet. **Recommended:** Use `20.04` or `24.04` for new apps and applets. Legacy versions (`12.04`, `14.04`, `16.04`) are supported for backward compatibility but not recommended for new development.",
+          "description": "Ubuntu release version. Determines the specific versions of interpreters (Bash, Python) available.",
+          "markdownDescription": "**Release**  \nUbuntu release version for the app or applet. **Recommended:** Use `20.04` or `24.04` for new apps and applets. Legacy versions (`12.04`, `14.04`, `16.04`) are supported for backward compatibility but not recommended for new development.\n\n**Note:** The selected release determines the specific versions of interpreters available, as the native built-in interpreter for that Ubuntu release is used.",
           "markdownEnumDescriptions": [
-            "Ubuntu 24.04 LTS",
-            "Ubuntu 20.04 LTS.",
-            "**LEGACY** Ubuntu 16.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead.",
-            "**LEGACY** Ubuntu 14.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead.",
-            "**LEGACY** Ubuntu 12.04 LTS. Not recommended for new apps or applets. Use 20.04 or 24.04 instead."
+            "Ubuntu 24.04 LTS (Noble). Includes: Bash 5.2.21, Python 3.12.3, dxpy latest. Python 2 not available.",
+            "Ubuntu 20.04 LTS (Focal). Includes: Bash 5.0.17, Python 3.8.10, dxpy latest. Python 2 not available.",
+            "**LEGACY** Ubuntu 16.04 LTS (Xenial). Not recommended for new apps or applets. Use 20.04 or 24.04 instead. Includes: Bash 4.3.48, Python 2.7.12, Python 3.5.2, dxpy 0.361.",
+            "**LEGACY** Ubuntu 14.04 LTS (Trusty). Not recommended for new apps or applets. Use 20.04 or 24.04 instead. Includes: Bash 4.3.11, Python 2.7.6, Python 3.4.3, dxpy 0.296.",
+            "**LEGACY** Ubuntu 12.04 LTS (Precise). Not recommended for new apps or applets. Use 20.04 or 24.04 instead. Includes: Bash 4.2.25, Python 2.7.3, dxpy 0.29. Python 3 not available."
           ]
         },
         "version": {
