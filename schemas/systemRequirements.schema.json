@@ -27,7 +27,7 @@
             "clusterSpec": {
                 "type": "object",
                 "description": "Cluster configuration for distributed computing.",
-                "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. When the app is launched, the system instantiates a Spark cluster specifically for that execution.\n\n**Cluster Management:**  \nSpark apps use [Spark Standalone](https://spark.apache.org/docs/latest/spark-standalone.html) for cluster management and [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) to share data between nodes.\n\n**Cluster Lifecycle:**  \nThe job lifecycle reflects the state of the driver node. A Spark job fails if the driver node fails. If a clusterWorker node fails, a new node is automatically provisioned.",
+                "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. When the app is launched, the system instantiates a Spark cluster specifically for that execution.\n\n- **Cluster management:** Spark apps use [Spark Standalone](https://spark.apache.org/docs/latest/spark-standalone.html) for cluster management and [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) to share data between nodes.\n- **Cluster lifecycle:**  \nThe job lifecycle reflects the state of the driver node. A Spark job fails if the driver node fails. If a clusterWorker node fails, a new node is automatically provisioned.",
                 "properties": {
                     "type": {
                         "type": "string",
