@@ -26,28 +26,34 @@
             },
             "clusterSpec": {
                 "type": "object",
-                "description": "Spark cluster configuration for distributed computing.",
-                "markdownDescription": "**Cluster Specification**  \nConfigure a Spark cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
+                "description": "Cluster configuration for distributed computing.",
+                "markdownDescription": "**Cluster Specification**  \nConfigure a cluster for distributed computing workloads. The cluster will be provisioned automatically when the job runs.",
                 "properties": {
                     "type": {
                         "type": "string",
                         "enum": [
+                            "spark",
                             "dxspark",
-                            "apachespark",
-                            "generic"
+                            "apachespark"
                         ],
-                        "description": "Type of cluster. Supported values: 'dxspark', 'apachespark', 'generic'.",
-                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values: `dxspark`, `apachespark`, `generic`."
+                        "markdownEnumDescriptions": [
+                            "Alias for `dxspark` - Apollo Spark cluster (DNAnexus managed Spark with metastore integration)",
+                            "Apollo Spark cluster (DNAnexus managed Spark with metastore integration)",
+                            "Generic Apache Spark cluster (open-source Spark)"
+                        ],
+                        "description": "Type of cluster. Supported values (case-insensitive): 'spark' (alias for dxspark), 'dxspark', 'apachespark'.",
+                        "markdownDescription": "**Cluster Type**  \nThe type of cluster to provision. Supported values (case-insensitive):  \n- `spark` or `dxspark` - Apollo Spark cluster (DNAnexus managed Spark with metastore integration)  \n- `apachespark` - Generic Apache Spark cluster (open-source Spark)"
                     },
                     "version": {
                         "type": "string",
                         "enum": [
                             "2.4.4",
+                            "3.2.0",
                             "3.2.3",
                             "3.5.2"
                         ],
-                        "description": "Requested version for dxspark or apachespark clusters. Supported values: '2.4.4', '3.2.3', '3.5.2'.",
-                        "markdownDescription": "**Version**  \nRequested version for `dxspark` or `apachespark` clusters. Supported values: `2.4.4`, `3.2.3`, `3.5.2`."
+                        "description": "Software version for the cluster. Required. Supported: '2.4.4', '3.2.0', '3.2.3', '3.5.2'.",
+                        "markdownDescription": "**Version**  \nSoftware version for the cluster. Supported versions: `2.4.4`, `3.2.0`, `3.2.3`, `3.5.2`."
                     },
                     "initialInstanceCount": {
                         "type": "integer",
@@ -56,25 +62,25 @@
                         "markdownDescription": "**Initial Instance Count**  \nThe number of nodes (including the driver) in the cluster. Minimum value is 1, indicating a cluster with no `clusterWorker` nodes (driver only).\n\n**Note:** This is the only `clusterSpec` field that can be overridden at runtime using the `--instance-count` flag with `dx run`."
                     },
                     "ports": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": 65535
-                        },
-                        "description": "Array of port numbers to open between nodes in the cluster.",
-                        "markdownDescription": "**Ports**  \nArray of port numbers to open between nodes in the cluster for inter-node communication. Specify individual ports or use ranges.\n\n**Note:** The API accepts an array of integers, but some interfaces may accept a comma-delimited string like `\"1000, 1100-1200\"`."
+                        "type": "string",
+                        "description": "Comma-delimited string of ports/ranges to open between cluster nodes (e.g., '443, 8080, 9000, 40000-55000'). Default ports are included automatically for spark/dxspark/apachespark.",
+                        "markdownDescription": "**Ports**  \nComma-delimited string specifying ports or port ranges to open between cluster nodes for inter-node communication (e.g., `\"443, 8080, 9000, 40000-55000\"`).\n\n**Note:** Default ports for the cluster type are automatically included. You only need to specify additional custom ports. Empty string `\"\"` uses defaults only."
                     },
                     "bootstrapScript": {
                         "type": "string",
                         "description": "Path to the bootstrap script run on all cluster nodes before the driver begins running the application code.",
                         "markdownDescription": "**Bootstrap Script**  \nThe path to the bootstrap script (relative to the app/applet source directory). The bootstrap script is run on **all cluster nodes** (including the driver) before the driver begins running the application code.\n\n**Note:** In dxapp.json, specify the filename/path only. The file content will be embedded by `dx build`. Use this to install additional software or configure the environment."
+                    },
+                    "slaveInstanceType": {
+                        "type": "string",
+                        "description": "Instance type for worker nodes. If not specified, workers use the same instance type as the driver.",
+                        "markdownDescription": "**Slave Instance Type**  \nThe instance type for worker nodes (e.g., `mem1_ssd1_v2_x4`). If not specified, worker nodes use the same instance type as the driver (specified in `instanceType`)."
                     }
                 },
                 "required": [
                     "type",
-                    "initialInstanceCount",
-                    "version"
+                    "version",
+                    "initialInstanceCount"
                 ],
                 "additionalProperties": false
             }
